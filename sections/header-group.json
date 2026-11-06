@@ -1,16 +1,33 @@
 {
-  "name": "Header",
+  "name": "Header Group",
   "type": "header",
   "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {
+        "show_announcement": true,
+        "is_marquee": false,
+        "text": "Complimentary Nationwide Express Shipping on All Orders",
+        "bg_color": "#0A0A0A",
+        "text_color": "#FFFFFF"
+      }
+    },
     "header": {
       "type": "header",
       "settings": {
         "menu": "main-menu",
+        "sticky_header": true,
+        "transparent_header": true,
+        "show_notification_bell": true,
+        "notification_count": "2",
+        "show_wishlist": true,
+        "show_account": true,
         "show_cart": true
       }
     }
   },
   "order": [
+    "announcement-bar",
     "header"
   ]
 }

@@ -1,45 +1,275 @@
-<header class="site-header">
-  <div class="container site-header__wrapper">
-    <div class="site-header__logo">
-      <a href="{{ routes.root_url }}">
+{%- liquid
+  assign sticky_class = ''
+  if section.settings.sticky_header
+    assign sticky_class = ' site-header--sticky'
+  endif
+-%}
+
+<header
+  class="site-header{{ sticky_class }}{% if section.settings.transparent_header %} site-header--transparent{% endif %}"
+  data-section-id="{{ section.id }}"
+  data-sticky="{{ section.settings.sticky_header }}"
+>
+  <div class="site-header__inner container-fluid">
+    <!-- Left Action Group: Menu Drawer, Search, Notifications -->
+    <div class="site-header__group site-header__group--left">
+      <button
+        type="button"
+        class="header-icon-btn js-drawer-open"
+        aria-label="Open Navigation Menu"
+        aria-controls="NavDrawer"
+        aria-expanded="false"
+      >
+        {% render 'icon-menu' %}
+        <span class="sr-only">Menu</span>
+      </button>
+
+      <button
+        type="button"
+        class="header-icon-btn js-search-open"
+        aria-label="Open Search"
+        aria-controls="SearchDrawer"
+        aria-expanded="false"
+      >
+        {% render 'icon-search' %}
+        <span class="sr-only">Search</span>
+      </button>
+
+      {%- if section.settings.show_notification_bell -%}
+        <div class="header-notification-wrapper">
+          <a
+            href="{{ section.settings.notification_link | default: routes.all_products_collection_url }}"
+            class="header-icon-btn header-notification-btn"
+            aria-label="New Drops Notifications"
+          >
+            {% render 'icon-bell' %}
+            {%- if section.settings.notification_count != blank -%}
+              <span class="notification-badge">{{ section.settings.notification_count }}</span>
+            {%- endif -%}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Center: Brand Logo / Wordmark -->
+    <div class="site-header__logo-container">
+      <a href="{{ routes.root_url }}" class="site-header__logo-link">
         {%- if section.settings.logo != blank -%}
-          {{ section.settings.logo | image_url: width: 300 | image_tag: alt: shop.name }}
+          <img
+            src="{{ section.settings.logo | image_url: width: 400 }}"
+            alt="{{ shop.name }}"
+            class="site-header__logo-image"
+            width="{{ section.settings.logo_width }}"
+            height="auto"
+            loading="eager"
+          >
         {%- else -%}
-          <span>{{ shop.name }}</span>
+          <!-- ELOURA Minimalist Luxury Wordmark Matching Brand Identity -->
+          <div class="eloura-brandmark">
+            <span class="eloura-brandmark__text">E L O U R A</span>
+            <span class="eloura-brandmark__line"></span>
+          </div>
         {%- endif -%}
       </a>
     </div>
 
-    <nav class="site-nav" role="navigation" aria-label="Main Navigation">
-      <ul class="site-nav__list">
+    <!-- Right Action Group: Wishlist, Account, Cart Bag -->
+    <div class="site-header__group site-header__group--right">
+      {%- if section.settings.show_wishlist -%}
+        <a
+          href="{{ section.settings.wishlist_link | default: '/pages/wishlist' }}"
+          class="header-icon-btn header-wishlist-btn"
+          aria-label="Wishlist / Saved Items"
+        >
+          {% render 'icon-bookmark' %}
+          <span class="sr-only">Wishlist</span>
+        </a>
+      {%- endif -%}
+
+      {%- if shop.customer_accounts_enabled and section.settings.show_account -%}
+        <a
+          href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+          class="header-icon-btn header-account-btn"
+          aria-label="Account"
+        >
+          {% render 'icon-account' %}
+          <span class="sr-only">Account</span>
+        </a>
+      {%- endif -%}
+
+      {%- if section.settings.show_cart -%}
+        <a
+          href="{{ routes.cart_url }}"
+          class="header-icon-btn header-cart-btn js-cart-drawer-trigger"
+          aria-label="Shopping Bag"
+        >
+          {% render 'icon-cart' %}
+          <span class="cart-bubble" id="CartBubble" data-cart-count="{{ cart.item_count }}">
+            {{ cart.item_count }}
+          </span>
+          <span class="sr-only">Shopping Bag</span>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.enable_desktop_nav and linklists[section.settings.menu].links.size > 0 -%}
+    <nav class="site-header__desktop-nav container" role="navigation" aria-label="Desktop Navigation">
+      <ul class="desktop-nav__list">
         {%- for link in linklists[section.settings.menu].links -%}
-          <li class="site-nav__item">
-            <a href="{{ link.url }}" class="site-nav__link{% if link.current %} site-nav__link--active{% endif %}">
-              {{ link.title }}
+          <li class="desktop-nav__item">
+            <a
+              href="{{ link.url }}"
+              class="desktop-nav__link{% if link.current %} desktop-nav__link--active{% endif %}"
+            >
+              {{ link.title | upcase }}
             </a>
           </li>
         {%- endfor -%}
       </ul>
     </nav>
+  {%- endif -%}
+</header>
 
-    <div class="site-header__actions">
-      <a href="{{ routes.search_url }}" class="site-header__icon" aria-label="{{ 'general.search' | t }}">
-        {% render 'icon-search' %}
-      </a>
+<!-- ==========================================================================
+     REPRESENT-STYLE SLIDE-OVER NAVIGATION DRAWER
+     ========================================================================== -->
+<div id="NavDrawer" class="nav-drawer" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="nav-drawer__overlay js-drawer-close"></div>
 
-      {%- if section.settings.show_cart -%}
-        <a href="{{ routes.cart_url }}" class="site-header__icon site-header__cart" aria-label="{{ 'header.cart' | t }}">
-          {% render 'icon-cart' %}
-          <span class="cart-count">{{ cart.item_count }}</span>
-        </a>
-      {%- endif -%}
-
-      <button type="button" class="mobile-menu-toggle" aria-expanded="false" aria-label="{{ 'header.menu' | t }}">
-        {% render 'icon-menu' %}
+  <div class="nav-drawer__panel">
+    <!-- Drawer Header -->
+    <div class="nav-drawer__header">
+      <div class="nav-drawer__brand">
+        <span class="eloura-brandmark__text" style="font-size: 1.15rem; letter-spacing: 0.22em;">E L O U R A</span>
+      </div>
+      <button type="button" class="nav-drawer__close js-drawer-close" aria-label="Close Navigation">
+        {% render 'icon-close' %}
       </button>
     </div>
+
+    <!-- Quick Search inside Drawer -->
+    <div class="nav-drawer__search">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="drawer-search-form">
+        <input
+          type="search"
+          name="q"
+          placeholder="SEARCH PRODUCTS & COLLECTIONS..."
+          class="drawer-search-input"
+          autocomplete="off"
+        >
+        <button type="submit" class="drawer-search-btn" aria-label="Submit Search">
+          {% render 'icon-search' %}
+        </button>
+      </form>
+    </div>
+
+    <!-- Drawer Navigation Links -->
+    <div class="nav-drawer__body">
+      <ul class="drawer-nav__list">
+        {%- for link in linklists[section.settings.menu].links -%}
+          <li class="drawer-nav__item">
+            {%- if link.links.size > 0 -%}
+              <details class="drawer-nav__details">
+                <summary class="drawer-nav__link drawer-nav__link--parent">
+                  <span>{{ link.title | upcase }}</span>
+                  <span class="drawer-nav__arrow">&rsaquo;</span>
+                </summary>
+                <ul class="drawer-nav__sublist">
+                  {%- for childlink in link.links -%}
+                    <li class="drawer-nav__subitem">
+                      <a href="{{ childlink.url }}" class="drawer-nav__sublink">
+                        {{ childlink.title | upcase }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </details>
+            {%- else -%}
+              <a href="{{ link.url }}" class="drawer-nav__link">
+                {{ link.title | upcase }}
+              </a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      <!-- Curated Drops Fast-Links (Represent Look) -->
+      <div class="drawer-curated-links">
+        <span class="drawer-section-label">FEATURED DROPS</span>
+        <ul class="drawer-curated__list">
+          <li><a href="{{ routes.all_products_collection_url }}?sort_by=created-descending">→ LATEST RELEASES</a></li>
+          <li><a href="{{ routes.all_products_collection_url }}">→ ICONIC OUTERWEAR</a></li>
+          <li><a href="{{ routes.all_products_collection_url }}">→ HEAVYWEIGHT ESSENTIALS</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Drawer Footer Actions -->
+    <div class="nav-drawer__footer">
+      <div class="drawer-footer__actions">
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="drawer-footer__link">
+            {% render 'icon-account' %}
+            <span>{% if customer %}MY ACCOUNT{% else %}LOG IN / REGISTER{% endif %}</span>
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.show_wishlist -%}
+          <a href="{{ section.settings.wishlist_link | default: '/pages/wishlist' }}" class="drawer-footer__link">
+            {% render 'icon-bookmark' %}
+            <span>WISHLIST</span>
+          </a>
+        {%- endif -%}
+      </div>
+
+      <div class="drawer-footer__meta">
+        <p class="drawer-brand-tagline">Refined Apparel & Artisan Creations</p>
+        <div class="drawer-socials">
+          <a href="https://instagram.com/eloura.pk1" target="_blank" rel="noopener" class="drawer-social__link">INSTAGRAM (@eloura.pk1)</a>
+        </div>
+      </div>
+    </div>
   </div>
-</header>
+</div>
+
+<!-- ==========================================================================
+     SLIDE-DOWN QUICK SEARCH MODAL
+     ========================================================================== -->
+<div id="SearchDrawer" class="search-drawer" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="search-drawer__overlay js-search-close"></div>
+
+  <div class="search-drawer__content">
+    <div class="container search-drawer__container">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-bar-form">
+        <input type="hidden" name="type" value="product">
+        <div class="search-bar__input-wrapper">
+          <input
+            type="search"
+            name="q"
+            id="SearchInput"
+            placeholder="TYPE TO SEARCH ELOURA CATALOG..."
+            class="search-bar__input"
+            autocomplete="off"
+          >
+          <button type="button" class="search-bar__close js-search-close" aria-label="Close Search">
+            {% render 'icon-close' %}
+          </button>
+        </div>
+      </form>
+
+      <!-- Popular / Trending Search Pills -->
+      <div class="search-suggestions">
+        <span class="search-suggestions__label">POPULAR:</span>
+        <a href="{{ routes.search_url }}?q=Jacket&type=product" class="search-tag">JACKETS</a>
+        <a href="{{ routes.search_url }}?q=Hoodie&type=product" class="search-tag">HOODIES</a>
+        <a href="{{ routes.search_url }}?q=Pants&type=product" class="search-tag">PANTS</a>
+        <a href="{{ routes.search_url }}?q=Black&type=product" class="search-tag">JET BLACK</a>
+        <a href="{{ routes.search_url }}?q=Green&type=product" class="search-tag">ARMY GREEN</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% schema %}
 {
@@ -48,18 +278,86 @@
     {
       "type": "image_picker",
       "id": "logo",
-      "label": "Logo image"
+      "label": "Custom Logo Image",
+      "info": "If left blank, the signature ELOURA luxury wordmark will display automatically."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 100,
+      "max": 250,
+      "step": 10,
+      "default": 140,
+      "unit": "px",
+      "label": "Logo Width"
     },
     {
       "type": "link_list",
       "id": "menu",
-      "label": "Menu",
+      "label": "Navigation Menu",
       "default": "main-menu"
     },
     {
       "type": "checkbox",
+      "id": "enable_desktop_nav",
+      "label": "Show Horizontal Navigation on Desktop",
+      "default": false,
+      "info": "When disabled, the clean Represent icon-first layout is used."
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_header",
+      "label": "Enable Sticky Frosted Header",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_header",
+      "label": "Enable Translucent Overlay Mode",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Action Icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_notification_bell",
+      "label": "Show Drop Notifications Bell",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "notification_count",
+      "label": "Notification Badge Number",
+      "default": "2"
+    },
+    {
+      "type": "url",
+      "id": "notification_link",
+      "label": "Notification Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "label": "Show Bookmark / Wishlist Icon",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "wishlist_link",
+      "label": "Wishlist Page Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show Account Icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
       "id": "show_cart",
-      "label": "Show cart icon",
+      "label": "Show Bag / Cart Icon",
       "default": true
     }
   ]
