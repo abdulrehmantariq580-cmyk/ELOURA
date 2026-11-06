@@ -3,12 +3,13 @@
     "hero": {
       "type": "hero",
       "settings": {
-        "heading": "Welcome to ELOURA",
-        "subheading": "Crafted from scratch. Start designing your brand experience here.",
-        "button_text": "Shop All Products",
+        "subheading": "Latest Release",
+        "heading": "Initial FW26",
+        "button_label": "SHOP NOW",
         "button_link": "/collections/all",
-        "alignment": "center",
-        "bg_color": "#f4f4f5"
+        "height": "fullscreen",
+        "content_alignment": "bottom-center",
+        "overlay_opacity": 25
       }
     }
   },
@@ -16,4 +17,3 @@
     "hero"
   ]
 }
-
