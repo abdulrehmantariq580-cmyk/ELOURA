@@ -108,7 +108,7 @@
           aria-label="Shopping Bag"
         >
           {% render 'icon-cart' %}
-          <span class="cart-bubble" id="CartBubble" data-cart-count="{{ cart.item_count }}">
+          <span class="cart-bubble{% if cart.item_count == 0 %} is-empty{% endif %}" id="CartBubble" data-cart-count="{{ cart.item_count }}">
             {{ cart.item_count }}
           </span>
           <span class="sr-only">Shopping Bag</span>

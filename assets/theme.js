@@ -9,22 +9,40 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * 1. Sticky Frosted Header on Scroll
+ * 1. Represent Clo Header Scroll Behavior:
+ * - Inside Hero Section: 100% transparent, white icons & logo (NO black bar!).
+ * - Below Hero Section: Blank / clean light background with black icons & logo.
+ * - Scrolling back up into Hero: Instantly returns to transparent with white icons.
  */
 function initStickyHeader() {
   const header = document.querySelector('.site-header');
   if (!header) return;
 
-  const handleScroll = () => {
-    if (window.scrollY > 20) {
-      header.classList.add('is-scrolled');
+  const heroSection = document.querySelector('.hero-banner');
+
+  const updateHeaderState = () => {
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+    // Calculate Hero threshold
+    let heroThreshold = window.innerHeight - 60;
+    if (heroSection) {
+      heroThreshold = heroSection.offsetTop + heroSection.offsetHeight - 60;
+    }
+
+    if (scrollY >= heroThreshold) {
+      // User has scrolled PAST the hero section into normal content
+      header.classList.add('header--below-hero');
+      header.classList.remove('header--on-hero');
     } else {
-      header.classList.remove('is-scrolled');
+      // User is INSIDE the hero section -> Always transparent, NO black background!
+      header.classList.remove('header--below-hero');
+      header.classList.add('header--on-hero');
     }
   };
 
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  handleScroll(); // Initial check
+  window.addEventListener('scroll', updateHeaderState, { passive: true });
+  window.addEventListener('resize', updateHeaderState, { passive: true });
+  updateHeaderState(); // Check immediately on load
 }
 
 /**
