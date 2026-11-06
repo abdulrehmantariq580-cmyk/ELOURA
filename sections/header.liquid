@@ -3,10 +3,14 @@
   if section.settings.sticky_header
     assign sticky_class = ' site-header--sticky'
   endif
+  assign overlay_class = ''
+  if template.name == 'index' or section.settings.transparent_header
+    assign overlay_class = ' site-header--overlay'
+  endif
 -%}
 
 <header
-  class="site-header{{ sticky_class }}{% if section.settings.transparent_header %} site-header--transparent{% endif %}"
+  class="site-header{{ sticky_class }}{{ overlay_class }}"
   data-section-id="{{ section.id }}"
   data-sticky="{{ section.settings.sticky_header }}"
 >

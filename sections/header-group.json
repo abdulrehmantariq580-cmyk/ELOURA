@@ -11,16 +11,6 @@
   "name": "Header Group",
   "type": "header",
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
-      "settings": {
-        "show_announcement": true,
-        "is_marquee": false,
-        "text": "Complimentary Nationwide Express Shipping on All Orders",
-        "bg_color": "#0A0A0A",
-        "text_color": "#FFFFFF"
-      }
-    },
     "header": {
       "type": "header",
       "settings": {
@@ -30,7 +20,6 @@
     }
   },
   "order": [
-    "announcement-bar",
     "header"
   ]
 }
