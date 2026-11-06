@@ -1,0 +1,36 @@
+<div class="list-collections container" style="padding: 3rem 0;">
+  <h1 style="text-align: center; margin-bottom: 3rem;">All Collections</h1>
+
+  <div class="grid grid-cols-3">
+    {%- for collection in collections -%}
+      {%- unless collection.handle == 'frontpage' -%}
+        <div class="product-card">
+          <a href="{{ collection.url }}" class="product-card__link">
+            <div class="product-card__image-wrapper">
+              {%- if collection.image != blank -%}
+                {{ collection.image | image_url: width: 600 | image_tag: class: 'product-card__image', alt: collection.title }}
+              {%- elsif collection.products.first.featured_image != blank -%}
+                {{ collection.products.first.featured_image | image_url: width: 600 | image_tag: class: 'product-card__image', alt: collection.title }}
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'product-card__image' }}
+              {%- endif -%}
+            </div>
+          </a>
+          <div class="product-card__info" style="text-align: center;">
+            <h3 class="product-card__title">
+              <a href="{{ collection.url }}">{{ collection.title }}</a>
+            </h3>
+            <p style="color: var(--color-text-muted); font-size: 0.875rem;">{{ collection.all_products_count }} products</p>
+          </div>
+        </div>
+      {%- endunless -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collections List",
+  "settings": []
+}
+{% endschema %}

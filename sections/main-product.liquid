@@ -1,0 +1,75 @@
+<div class="product-single container">
+  <div class="grid grid-cols-2">
+    <div class="product-single__gallery">
+      {%- if product.featured_image != blank -%}
+        {{ product.featured_image | image_url: width: 1000 | image_tag: alt: product.title }}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag }}
+      {%- endif -%}
+    </div>
+
+    <div class="product-single__details">
+      <h1>{{ product.title }}</h1>
+
+      <div class="product-single__price">
+        {{ product.selected_or_first_available_variant.price | money }}
+        {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
+          <span style="text-decoration: line-through; color: var(--color-text-muted); font-size: 1.1rem; margin-left: 0.5rem;">
+            {{ product.selected_or_first_available_variant.compare_at_price | money }}
+          </span>
+        {%- endif -%}
+      </div>
+
+      {%- form 'product', product, class: 'product-form' -%}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+        {%- unless product.has_only_default_variant -%}
+          <div>
+            <label class="form-label" for="ProductSelect-{{ section.id }}">Variants</label>
+            <select name="id" id="ProductSelect-{{ section.id }}" class="form-select product-variant-selector">
+              {%- for variant in product.variants -%}
+                <option
+                  {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
+                  {% unless variant.available %}disabled="disabled"{% endunless %}
+                  value="{{ variant.id }}"
+                  data-price="{{ variant.price | money }}"
+                >
+                  {{ variant.title }} - {{ variant.price | money }}
+                </option>
+              {%- endfor -%}
+            </select>
+          </div>
+        {%- endunless -%}
+
+        <div>
+          <label class="form-label" for="Quantity-{{ section.id }}">Quantity</label>
+          <input type="number" id="Quantity-{{ section.id }}" name="quantity" value="1" min="1" class="form-input" style="max-width: 120px;">
+        </div>
+
+        <button
+          type="submit"
+          name="add"
+          class="btn btn-primary btn-full"
+          {% unless product.selected_or_first_available_variant.available %}disabled="disabled"{% endunless %}
+        >
+          {%- if product.selected_or_first_available_variant.available -%}
+            {{ 'sections.product.add_to_cart' | t }}
+          {%- else -%}
+            {{ 'sections.product.sold_out' | t }}
+          {%- endif -%}
+        </button>
+      {%- endform -%}
+
+      <div class="product-single__description">
+        {{ product.description }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Information",
+  "settings": []
+}
+{% endschema %}
