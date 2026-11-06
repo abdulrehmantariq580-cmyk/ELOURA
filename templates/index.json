@@ -27,9 +27,18 @@
         "content_alignment": "bottom-center",
         "show_scroll_indicator": false
       }
+    },
+    "sliding_products": {
+      "type": "sliding-products",
+      "settings": {
+        "products_to_show": 8,
+        "link_text": "SHOP INITIAL FW26",
+        "link": "/collections/all"
+      }
     }
   },
   "order": [
-    "hero"
+    "hero",
+    "sliding_products"
   ]
 }

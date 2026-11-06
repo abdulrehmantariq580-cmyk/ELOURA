@@ -1,0 +1,128 @@
+{%- liquid
+  assign collection = collections[section.settings.collection]
+  assign product_limit = section.settings.products_to_show | default: 8
+-%}
+
+<section class="sliding-products-section" data-section-id="{{ section.id }}">
+  <div class="sliding-products__wrapper">
+    <!-- Slider Track Container with smooth horizontal scrolling -->
+    <div class="sliding-products__track-container js-product-slider">
+      <div class="sliding-products__track">
+        {%- if collection != blank and collection.products.size > 0 -%}
+          {%- for product in collection.products limit: product_limit -%}
+            <div class="sliding-products__item">
+              {% render 'product-card', product: product %}
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <!-- Clean Default Fallback Streetwear Items matching Reference -->
+          {%- for i in (1..6) -%}
+            <div class="sliding-products__item">
+              <div class="product-card">
+                <div class="product-card__media-box">
+                  <button type="button" class="product-card__bookmark-btn" aria-label="Save to Wishlist">
+                    {% render 'icon-bookmark' %}
+                  </button>
+                  <div class="product-card__link">
+                    {{ 'product-' | append: i | placeholder_svg_tag: 'product-card__img product-card__img--placeholder' }}
+                  </div>
+                  <button type="button" class="product-card__quick-add-btn" aria-label="Quick Add">
+                    {% render 'icon-plus' %}
+                  </button>
+                </div>
+                <div class="product-card__meta">
+                  <h3 class="product-card__name">
+                    <a href="#">
+                      {%- case i -%}
+                        {%- when 1 -%}Initial Quarter Zip Jacket
+                        {%- when 2 -%}Initial Knitted Coach Jacket
+                        {%- when 3 -%}Ribbed Knitted Track Jacket
+                        {%- when 4 -%}Heavyweight Loopback Hoodie
+                        {%- when 5 -%}Relaxed Tailored Cargo Pant
+                        {%- else -%}Artisan Relaxed Tracksuit
+                      {%- endcase -%}
+                    </a>
+                  </h3>
+                  <p class="product-card__color-title">
+                    {%- case i -%}
+                      {%- when 3 -%}Vintage Black
+                      {%- when 4 -%}Army Olive
+                      {%- else -%}Jet Black
+                    {%- endcase -%}
+                  </p>
+                  <div class="product-card__swatch-row">
+                    <span class="product-card__swatch-dot" style="background-color: {% if i == 4 %}#3B443B{% elsif i == 3 %}#2B2B2B{% else %}#111111{% endif %};"></span>
+                    <span class="product-card__colour-count">1 Colour</span>
+                  </div>
+                  <div class="product-card__pricing">
+                    <span class="product-card__price">
+                      {%- case i -%}
+                        {%- when 1 -%}$165
+                        {%- when 2 -%}$245
+                        {%- when 3 -%}$245
+                        {%- when 4 -%}$185
+                        {%- else -%}$210
+                      {%- endcase -%}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+
+    <!-- Centered Bottom Collection Link (Represent Style: → SHOP INITIAL FW26) -->
+    <div class="sliding-products__footer">
+      <a
+        href="{{ section.settings.link | default: routes.all_products_collection_url }}"
+        class="sliding-products__cta-link"
+      >
+        <span class="sliding-products__arrow">&rarr;</span>
+        <span class="sliding-products__link-text">{{ section.settings.link_text | default: 'SHOP INITIAL FW26' | upcase }}</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sliding Products Section",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 16,
+      "step": 2,
+      "default": 8,
+      "label": "Number of products to show"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Bottom Link Text",
+      "default": "SHOP INITIAL FW26"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Bottom Link URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sliding Products Section",
+      "settings": {
+        "link_text": "SHOP INITIAL FW26"
+      }
+    }
+  ]
+}
+{% endschema %}
