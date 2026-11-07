@@ -843,7 +843,7 @@ button {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  background-color: #0A0A0A;
+  background-color: transparent;
 }
 
 /* Heights */
@@ -864,8 +864,19 @@ button {
 
 @media (max-width: 768px) {
   .hero-banner--fullscreen {
-    height: 92vh;
-    min-height: 540px;
+    height: 100vh;
+    height: 100dvh;
+    min-height: unset;
+  }
+  .hero-banner--large {
+    height: 85vh;
+    height: 85dvh;
+    min-height: unset;
+  }
+  .hero-banner--medium {
+    height: 70vh;
+    height: 70dvh;
+    min-height: unset;
   }
 }
 
@@ -877,6 +888,12 @@ button {
   width: 100%;
   height: 100%;
   z-index: 1;
+}
+
+.hero-banner__media picture {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .hero-banner__image,
@@ -1274,7 +1291,7 @@ button {
   font-weight: 400;
 }
 
-/* Bottom CTA Link: → SHOP INITIAL FW26 */
+/* Bottom CTA Link: â†’ SHOP INITIAL FW26 */
 .sliding-products__footer {
   display: flex;
   align-items: center;

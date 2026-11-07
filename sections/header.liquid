@@ -38,21 +38,6 @@
         {% render 'icon-search' %}
         <span class="sr-only">Search</span>
       </button>
-
-      {%- if section.settings.show_notification_bell -%}
-        <div class="header-notification-wrapper">
-          <a
-            href="{{ section.settings.notification_link | default: routes.all_products_collection_url }}"
-            class="header-icon-btn header-notification-btn"
-            aria-label="New Drops Notifications"
-          >
-            {% render 'icon-bell' %}
-            {%- if section.settings.notification_count != blank -%}
-              <span class="notification-badge">{{ section.settings.notification_count }}</span>
-            {%- endif -%}
-          </a>
-        </div>
-      {%- endif -%}
     </div>
 
     <!-- Center: Brand Logo / Wordmark -->
@@ -77,19 +62,8 @@
       </a>
     </div>
 
-    <!-- Right Action Group: Wishlist, Account, Cart Bag -->
+    <!-- Right Action Group: Account, Cart Bag -->
     <div class="site-header__group site-header__group--right">
-      {%- if section.settings.show_wishlist -%}
-        <a
-          href="{{ section.settings.wishlist_link | default: '/pages/wishlist' }}"
-          class="header-icon-btn header-wishlist-btn"
-          aria-label="Wishlist / Saved Items"
-        >
-          {% render 'icon-bookmark' %}
-          <span class="sr-only">Wishlist</span>
-        </a>
-      {%- endif -%}
-
       {%- if shop.customer_accounts_enabled and section.settings.show_account -%}
         <a
           href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
@@ -216,13 +190,6 @@
           <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="drawer-footer__link">
             {% render 'icon-account' %}
             <span>{% if customer %}MY ACCOUNT{% else %}LOG IN / REGISTER{% endif %}</span>
-          </a>
-        {%- endif -%}
-
-        {%- if section.settings.show_wishlist -%}
-          <a href="{{ section.settings.wishlist_link | default: '/pages/wishlist' }}" class="drawer-footer__link">
-            {% render 'icon-bookmark' %}
-            <span>WISHLIST</span>
           </a>
         {%- endif -%}
       </div>
