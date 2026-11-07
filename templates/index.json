@@ -36,14 +36,14 @@
     "hero_xczFzf": {
       "type": "hero",
       "settings": {
-        "collection": "",
+        "collection": "world-hoodie",
         "use_all_products": true,
         "image_desktop": "shopify://shop_images/heropc.jpg",
         "image_mobile": "shopify://shop_images/heromob.jpg",
         "video_url": "",
         "overlay_opacity": 25,
         "subheading": "Introducing",
-        "heading": "Initial FW26",
+        "heading": "World Hoodies",
         "description": "",
         "button_label": "SHOP NOW",
         "button_link": "shopify://collections/all",
