@@ -12,6 +12,32 @@
     "hero": {
       "type": "hero",
       "settings": {
+        "collection": "eloura-layered-jacket",
+        "use_all_products": true,
+        "image_desktop": "shopify://shop_images/heropc.jpg",
+        "image_mobile": "shopify://shop_images/heromob.jpg",
+        "video_url": "",
+        "overlay_opacity": 25,
+        "subheading": "Introducing",
+        "heading": "Eloura Layered Jacket",
+        "description": "",
+        "button_label": "SHOP NOW",
+        "button_link": "shopify://collections/all",
+        "secondary_button_label": "",
+        "secondary_button_link": "",
+        "height": "fullscreen",
+        "content_alignment": "bottom-center",
+        "show_scroll_indicator": false,
+        "show_products": true,
+        "products_to_show": 8,
+        "bottom_link_text": ""
+      }
+    },
+    "hero_xczFzf": {
+      "type": "hero",
+      "settings": {
+        "collection": "",
+        "use_all_products": true,
         "image_desktop": "shopify://shop_images/heropc.jpg",
         "image_mobile": "shopify://shop_images/heromob.jpg",
         "video_url": "",
@@ -20,18 +46,20 @@
         "heading": "Initial FW26",
         "description": "",
         "button_label": "SHOP NOW",
-        "button_link": "/collections/all",
+        "button_link": "shopify://collections/all",
         "secondary_button_label": "",
         "secondary_button_link": "",
         "height": "fullscreen",
         "content_alignment": "bottom-center",
         "show_scroll_indicator": false,
         "show_products": true,
-        "products_to_show": 8
+        "products_to_show": 8,
+        "bottom_link_text": ""
       }
     }
   },
   "order": [
-    "hero"
+    "hero",
+    "hero_xczFzf"
   ]
 }
