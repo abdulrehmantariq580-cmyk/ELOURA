@@ -1433,3 +1433,16 @@ button {
   display: flex;
   justify-content: center;
 }
+
+/* Unified Hero Collection Section Background & Padding */
+.hero-collection-section {
+  position: relative;
+  width: 100%;
+  background-color: #FFFFFF;
+}
+
+.hero-collection-section .sliding-products__wrapper {
+  background-color: #FFFFFF;
+  padding: 3.5rem 0 4rem;
+  overflow: hidden;
+}
