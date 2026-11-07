@@ -128,6 +128,57 @@
         "products_to_show": 8,
         "bottom_link_text": ""
       }
+    },
+    "category_grid_4xmLmw": {
+      "type": "category-grid",
+      "blocks": {
+        "category_qQUiQW": {
+          "type": "category",
+          "settings": {
+            "title": "JACKETS",
+            "collection": "",
+            "image": "shopify://shop_images/Gemini_Generated_Image_q65zmnq65zmnq65z.jpg",
+            "link": ""
+          }
+        },
+        "category_AhC3Fy": {
+          "type": "category",
+          "settings": {
+            "title": "HOODIES",
+            "collection": "",
+            "image": "shopify://shop_images/Gemini_Generated_Image_iimtgwiimtgwiimt.jpg",
+            "link": ""
+          }
+        },
+        "category_WVTfGK": {
+          "type": "category",
+          "settings": {
+            "title": "SWEATSHIRTS",
+            "collection": "",
+            "image": "shopify://shop_images/Gemini_Generated_Image_d24ty0d24ty0d24t.jpg",
+            "link": ""
+          }
+        },
+        "category_9miXrz": {
+          "type": "category",
+          "settings": {
+            "title": "PANTS & CARGOS",
+            "collection": "",
+            "image": "shopify://shop_images/Gemini_Generated_Image_659tmd659tmd659t.jpg",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_qQUiQW",
+        "category_AhC3Fy",
+        "category_WVTfGK",
+        "category_9miXrz"
+      ],
+      "name": "Editorial Category Grid",
+      "settings": {
+        "section_heading": ""
+      }
     }
   },
   "order": [
@@ -135,6 +186,7 @@
     "hero_xczFzf",
     "hero_jwFYxR",
     "hero_4QtRGF",
-    "hero_E6ExFJ"
+    "hero_E6ExFJ",
+    "category_grid_4xmLmw"
   ]
 }
