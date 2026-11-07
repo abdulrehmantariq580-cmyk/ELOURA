@@ -56,10 +56,85 @@
         "products_to_show": 8,
         "bottom_link_text": ""
       }
+    },
+    "hero_jwFYxR": {
+      "type": "hero",
+      "settings": {
+        "collection": "16-reflector",
+        "use_all_products": true,
+        "image_desktop": "shopify://shop_images/heropc.jpg",
+        "image_mobile": "shopify://shop_images/heromob.jpg",
+        "video_url": "",
+        "overlay_opacity": 25,
+        "subheading": "Introducing",
+        "heading": "16 Reflector",
+        "description": "",
+        "button_label": "SHOP NOW",
+        "button_link": "shopify://collections/all",
+        "secondary_button_label": "",
+        "secondary_button_link": "",
+        "height": "fullscreen",
+        "content_alignment": "bottom-center",
+        "show_scroll_indicator": false,
+        "show_products": true,
+        "products_to_show": 8,
+        "bottom_link_text": ""
+      }
+    },
+    "hero_4QtRGF": {
+      "type": "hero",
+      "settings": {
+        "collection": "aura-sweatwear-shirt",
+        "use_all_products": true,
+        "image_desktop": "shopify://shop_images/heropc.jpg",
+        "image_mobile": "shopify://shop_images/heromob.jpg",
+        "video_url": "",
+        "overlay_opacity": 25,
+        "subheading": "Introducing",
+        "heading": "Aura Seatwear Shirts",
+        "description": "",
+        "button_label": "SHOP NOW",
+        "button_link": "shopify://collections/all",
+        "secondary_button_label": "",
+        "secondary_button_link": "",
+        "height": "fullscreen",
+        "content_alignment": "bottom-center",
+        "show_scroll_indicator": false,
+        "show_products": true,
+        "products_to_show": 8,
+        "bottom_link_text": ""
+      }
+    },
+    "hero_E6ExFJ": {
+      "type": "hero",
+      "settings": {
+        "collection": "16-reflector",
+        "use_all_products": true,
+        "image_desktop": "shopify://shop_images/heropc.jpg",
+        "image_mobile": "shopify://shop_images/heromob.jpg",
+        "video_url": "",
+        "overlay_opacity": 25,
+        "subheading": "Introducing",
+        "heading": "THUNDER ",
+        "description": "",
+        "button_label": "SHOP NOW",
+        "button_link": "shopify://collections/all",
+        "secondary_button_label": "",
+        "secondary_button_link": "",
+        "height": "fullscreen",
+        "content_alignment": "bottom-center",
+        "show_scroll_indicator": false,
+        "show_products": true,
+        "products_to_show": 8,
+        "bottom_link_text": ""
+      }
     }
   },
   "order": [
     "hero",
-    "hero_xczFzf"
+    "hero_xczFzf",
+    "hero_jwFYxR",
+    "hero_4QtRGF",
+    "hero_E6ExFJ"
   ]
 }
