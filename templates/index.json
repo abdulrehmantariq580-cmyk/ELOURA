@@ -16,8 +16,8 @@
         "image_mobile": "shopify://shop_images/heromob.jpg",
         "video_url": "",
         "overlay_opacity": 25,
-        "subheading": "Refined Apparel & Artisan Creations",
-        "heading": "Timeless Design & Exceptional Craft",
+        "subheading": "Introducing",
+        "heading": "Initial FW26",
         "description": "",
         "button_label": "SHOP NOW",
         "button_link": "/collections/all",
@@ -25,23 +25,13 @@
         "secondary_button_link": "",
         "height": "fullscreen",
         "content_alignment": "bottom-center",
-        "show_scroll_indicator": false
-      }
-    },
-    "collection_category": {
-      "type": "collection-category",
-      "settings": {
-        "subheading": "Introducing",
-        "heading": "",
-        "button_label": "SHOP NOW",
-        "banner_height": "large",
-        "overlay_opacity": 30,
+        "show_scroll_indicator": false,
+        "show_products": true,
         "products_to_show": 8
       }
     }
   },
   "order": [
-    "hero",
-    "collection_category"
+    "hero"
   ]
 }

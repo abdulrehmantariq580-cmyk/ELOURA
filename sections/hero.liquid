@@ -1,130 +1,270 @@
 {%- liquid
+  assign collection = collections[section.settings.collection]
+  assign product_limit = section.settings.products_to_show | default: 8
+  assign overlay_opacity = section.settings.overlay_opacity | divided_by: 100.0
+
+  assign hero_title = section.settings.heading
+  if hero_title == blank and collection != blank
+    assign hero_title = collection.title
+  endif
+  if hero_title == blank
+    assign hero_title = 'Initial FW26'
+  endif
+
+  assign target_link = section.settings.button_link
+  if target_link == blank and collection != blank
+    assign target_link = collection.url
+  endif
+  if target_link == blank
+    assign target_link = routes.all_products_collection_url
+  endif
+
   assign hero_height_class = 'hero-banner--' | append: section.settings.height
   assign content_align_class = 'hero-content--' | append: section.settings.content_alignment
-  assign overlay_opacity = section.settings.overlay_opacity | divided_by: 100.0
 -%}
 
 <section
-  class="hero-banner {{ hero_height_class }}"
+  class="hero-collection-section"
   data-section-id="{{ section.id }}"
   style="--overlay-opacity: {{ overlay_opacity }};"
 >
-  <!-- Background Media (Video or Image) -->
-  <div class="hero-banner__media">
-    {%- if section.settings.video_url != blank -%}
-      <video
-        class="hero-banner__video"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-      >
-        <source src="{{ section.settings.video_url }}" type="video/mp4">
-      </video>
-    {%- elsif section.settings.image_desktop != blank -%}
-      <picture>
-        {%- if section.settings.image_mobile != blank -%}
-          <source
-            media="(max-width: 767px)"
-            srcset="{{ section.settings.image_mobile | image_url: width: 800 }}"
+  <!-- ======================================================================
+       1. HERO EDITORIAL CAMPAIGN BANNER (FULL-BLEED / SCREEN)
+       ====================================================================== -->
+  <div class="hero-banner {{ hero_height_class }}">
+    <!-- Background Media (Video or Image) -->
+    <div class="hero-banner__media">
+      {%- if section.settings.video_url != blank -%}
+        <video
+          class="hero-banner__video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+        >
+          <source src="{{ section.settings.video_url }}" type="video/mp4">
+        </video>
+      {%- elsif section.settings.image_desktop != blank -%}
+        <picture>
+          {%- if section.settings.image_mobile != blank -%}
+            <source
+              media="(max-width: 767px)"
+              srcset="{{ section.settings.image_mobile | image_url: width: 900 }}"
+            >
+          {%- endif -%}
+          <img
+            src="{{ section.settings.image_desktop | image_url: width: 2400 }}"
+            alt="{{ hero_title | escape }}"
+            class="hero-banner__image"
+            loading="eager"
+            width="2400"
+            height="1400"
           >
-        {%- endif -%}
+        </picture>
+      {%- elsif collection.image != blank -%}
         <img
-          src="{{ section.settings.image_desktop | image_url: width: 2400 }}"
-          alt="{{ section.settings.heading | escape }}"
+          src="{{ collection.image | image_url: width: 2400 }}"
+          alt="{{ hero_title | escape }}"
           class="hero-banner__image"
           loading="eager"
           width="2400"
           height="1400"
         >
-      </picture>
-    {%- else -%}
-      <!-- Default Luxury Streetwear Campaign Fallback -->
-      <img
-        src="{{ 'hero-campaign-default.jpg' | asset_url }}"
-        alt="ELOURA Autumn Winter Campaign"
-        class="hero-banner__image"
-        loading="eager"
-        width="2400"
-        height="1400"
-      >
-    {%- endif -%}
-
-    <!-- Dark Gradient Vignette Overlay for Text Legibility -->
-    <div class="hero-banner__overlay"></div>
-  </div>
-
-  <!-- Hero Content (Represent Signature Bottom-Centered Layout) -->
-  <div class="container hero-banner__container">
-    <div class="hero-content {{ content_align_class }}">
-      {%- if section.settings.subheading != blank -%}
-        <p class="hero-content__subheading">
-          {{ section.settings.subheading }}
-        </p>
+      {%- else -%}
+        <img
+          src="{{ 'hero-campaign-default.jpg' | asset_url }}"
+          alt="ELOURA Campaign"
+          class="hero-banner__image"
+          loading="eager"
+          width="2400"
+          height="1400"
+        >
       {%- endif -%}
 
-      {%- if section.settings.heading != blank -%}
+      <!-- Dark Gradient Vignette Overlay -->
+      <div class="hero-banner__overlay"></div>
+    </div>
+
+    <!-- Hero Content: "Introducing" -> Collection Name -> SHOP NOW -->
+    <div class="container hero-banner__container">
+      <div class="hero-content {{ content_align_class }}">
+        {%- if section.settings.subheading != blank -%}
+          <p class="hero-content__subheading">
+            {{ section.settings.subheading }}
+          </p>
+        {%- endif -%}
+
         <h1 class="hero-content__heading">
-          {{ section.settings.heading }}
+          {{ hero_title }}
         </h1>
-      {%- endif -%}
 
-      {%- if section.settings.description != blank -%}
-        <p class="hero-content__description">
-          {{ section.settings.description }}
-        </p>
-      {%- endif -%}
-
-      <!-- Action Buttons -->
-      <div class="hero-content__actions">
-        {%- if section.settings.button_label != blank -%}
-          <a
-            href="{{ section.settings.button_link | default: routes.all_products_collection_url }}"
-            class="hero-btn hero-btn--frosted"
-          >
-            {{ section.settings.button_label | upcase }}
-          </a>
+        {%- if section.settings.description != blank -%}
+          <p class="hero-content__description">
+            {{ section.settings.description }}
+          </p>
         {%- endif -%}
 
-        {%- if section.settings.secondary_button_label != blank -%}
-          <a
-            href="{{ section.settings.secondary_button_link | default: '/pages/lookbook' }}"
-            class="hero-btn hero-btn--outline"
-          >
-            {{ section.settings.secondary_button_label | upcase }}
-          </a>
-        {%- endif -%}
+        <!-- Action Buttons -->
+        <div class="hero-content__actions">
+          {%- if section.settings.button_label != blank -%}
+            <a
+              href="{{ target_link }}"
+              class="hero-btn hero-btn--frosted"
+            >
+              {{ section.settings.button_label | upcase }}
+            </a>
+          {%- endif -%}
+
+          {%- if section.settings.secondary_button_label != blank -%}
+            <a
+              href="{{ section.settings.secondary_button_link | default: '/pages/lookbook' }}"
+              class="hero-btn hero-btn--outline"
+            >
+              {{ section.settings.secondary_button_label | upcase }}
+            </a>
+          {%- endif -%}
+        </div>
       </div>
     </div>
+
+    {%- if section.settings.show_scroll_indicator -%}
+      <div class="hero-scroll-indicator" aria-hidden="true">
+        <span class="hero-scroll-line"></span>
+      </div>
+    {%- endif -%}
   </div>
 
-  {%- if section.settings.show_scroll_indicator -%}
-    <div class="hero-scroll-indicator" aria-hidden="true">
-      <span class="hero-scroll-line"></span>
+  <!-- ======================================================================
+       2. SLIDING PRODUCT CATALOG FOR THIS HERO COLLECTION
+       ====================================================================== -->
+  {%- if section.settings.show_products -%}
+    <div class="sliding-products__wrapper">
+      <div class="sliding-products__track-container js-product-slider">
+        <div class="sliding-products__track">
+          {%- if collection != blank and collection.products.size > 0 -%}
+            {%- for product in collection.products limit: product_limit -%}
+              <div class="sliding-products__item">
+                {% render 'product-card', product: product %}
+              </div>
+            {%- endfor -%}
+          {%- elsif section.settings.use_all_products -%}
+            {%- for product in collections.all.products limit: product_limit -%}
+              <div class="sliding-products__item">
+                {% render 'product-card', product: product %}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            <!-- Clean Default Fallback Streetwear Items matching Reference -->
+            {%- for i in (1..6) -%}
+              <div class="sliding-products__item">
+                <div class="product-card">
+                  <div class="product-card__media-box">
+                    <button type="button" class="product-card__bookmark-btn" aria-label="Save to Wishlist">
+                      {% render 'icon-bookmark' %}
+                    </button>
+                    <div class="product-card__link">
+                      {{ 'product-' | append: i | placeholder_svg_tag: 'product-card__img product-card__img--placeholder' }}
+                    </div>
+                    <button type="button" class="product-card__quick-add-btn" aria-label="Quick Add">
+                      {% render 'icon-plus' %}
+                    </button>
+                  </div>
+                  <div class="product-card__meta">
+                    <h3 class="product-card__name">
+                      <a href="#">
+                        {%- case i -%}
+                          {%- when 1 -%}Initial Quarter Zip Jacket
+                          {%- when 2 -%}Initial Knitted Coach Jacket
+                          {%- when 3 -%}Ribbed Knitted Track Jacket
+                          {%- when 4 -%}Heavyweight Loopback Hoodie
+                          {%- when 5 -%}Relaxed Tailored Cargo Pant
+                          {%- else -%}Artisan Relaxed Tracksuit
+                        {%- endcase -%}
+                      </a>
+                    </h3>
+                    <p class="product-card__color-title">
+                      {%- case i -%}
+                        {%- when 3 -%}Vintage Black
+                        {%- when 4 -%}Army Olive
+                        {%- else -%}Jet Black
+                      {%- endcase -%}
+                    </p>
+                    <div class="product-card__swatch-row">
+                      <span class="product-card__swatch-dot" style="background-color: {% if i == 4 %}#3B443B{% elsif i == 3 %}#2B2B2B{% else %}#111111{% endif %};"></span>
+                      <span class="product-card__colour-count">1 Colour</span>
+                    </div>
+                    <div class="product-card__pricing">
+                      <span class="product-card__price">
+                        {%- case i -%}
+                          {%- when 1 -%}$165
+                          {%- when 2 -%}$245
+                          {%- when 3 -%}$245
+                          {%- when 4 -%}$185
+                          {%- else -%}$210
+                        {%- endcase -%}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Bottom Directional CTA Link (Represent Style: → SHOP [COLLECTION]) -->
+      <div class="sliding-products__footer">
+        <a href="{{ target_link }}" class="sliding-products__cta-link">
+          <span class="sliding-products__arrow">&rarr;</span>
+          <span class="sliding-products__link-text">
+            {%- if section.settings.bottom_link_text != blank -%}
+              {{ section.settings.bottom_link_text | upcase }}
+            {%- else -%}
+              SHOP {{ hero_title | upcase }}
+            {%- endif -%}
+          </span>
+        </a>
+      </div>
     </div>
   {%- endif -%}
 </section>
 
 {% schema %}
 {
-  "name": "Editorial Hero Banner",
+  "name": "Hero Collection Section",
   "settings": [
     {
       "type": "header",
-      "content": "Media Settings"
+      "content": "Collection Assignment"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection",
+      "info": "Choose a specific collection (e.g. Outerwear, Hoodies). Its products will automatically show in the sliding catalog below."
+    },
+    {
+      "type": "checkbox",
+      "id": "use_all_products",
+      "label": "Show All Store Products if no collection is selected",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Banner Media"
     },
     {
       "type": "image_picker",
       "id": "image_desktop",
       "label": "Desktop Campaign Image",
-      "info": "Recommended: 2400 x 1400px. High-resolution lookbook image."
+      "info": "If empty, the selected collection's image or default campaign lookbook image will be used."
     },
     {
       "type": "image_picker",
       "id": "image_mobile",
       "label": "Mobile Campaign Image (Optional)",
-      "info": "Recommended: 900 x 1400px vertical portrait image."
+      "info": "Vertical portrait image for mobile screens."
     },
     {
       "type": "text",
@@ -140,23 +280,23 @@
       "step": 5,
       "default": 30,
       "unit": "%",
-      "label": "Dark Overlay Opacity"
+      "label": "Dark Vignette Overlay Opacity"
     },
     {
       "type": "header",
-      "content": "Content & Typography"
+      "content": "Banner Content & Typography"
     },
     {
       "type": "text",
       "id": "subheading",
-      "label": "Subheading / Drop Tag",
-      "default": "Latest Release"
+      "label": "Top Label / Subheading",
+      "default": "Introducing"
     },
     {
       "type": "text",
       "id": "heading",
-      "label": "Main Headline",
-      "default": "Initial FW26"
+      "label": "Main Headline / Collection Name",
+      "info": "Leave blank to automatically use the selected Collection's title."
     },
     {
       "type": "textarea",
@@ -177,7 +317,7 @@
       "type": "url",
       "id": "button_link",
       "label": "Primary Button Link",
-      "default": "/collections/all"
+      "info": "Leave blank to automatically link to the selected Collection."
     },
     {
       "type": "text",
@@ -191,12 +331,12 @@
     },
     {
       "type": "header",
-      "content": "Layout & Sizing"
+      "content": "Banner Sizing & Alignment"
     },
     {
       "type": "select",
       "id": "height",
-      "label": "Section Height",
+      "label": "Banner Height",
       "options": [
         { "value": "fullscreen", "label": "Full Screen (100vh)" },
         { "value": "large", "label": "Large (85vh)" },
@@ -220,17 +360,42 @@
       "id": "show_scroll_indicator",
       "label": "Show subtle animated scroll line",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Sliding Product Catalog"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_products",
+      "label": "Show Sliding Products Below Banner",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "default": 8,
+      "label": "Number of products to show"
+    },
+    {
+      "type": "text",
+      "id": "bottom_link_text",
+      "label": "Bottom Arrow Link Text",
+      "info": "Leave blank to automatically display 'SHOP [COLLECTION NAME]'."
     }
   ],
   "presets": [
     {
-      "name": "Editorial Hero Banner",
+      "name": "Hero Collection Section",
       "settings": {
-        "subheading": "Latest Release",
-        "heading": "Initial FW26",
+        "subheading": "Introducing",
         "button_label": "SHOP NOW",
         "height": "fullscreen",
-        "content_alignment": "bottom-center"
+        "content_alignment": "bottom-center",
+        "show_products": true
       }
     }
   ]
