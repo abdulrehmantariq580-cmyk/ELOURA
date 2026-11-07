@@ -1582,3 +1582,327 @@ button {
     padding: 0.65rem 0 0.15rem;
   }
 }
+
+/* ==========================================================================
+   ELOURA LUXURY STREETWEAR FOOTER (Represent Clo Aesthetic)
+   ========================================================================== */
+.eloura-footer {
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+  padding: 3rem 0 2rem;
+  font-family: inherit;
+  border-top: 1px solid #E5E5E5;
+}
+
+.eloura-footer__top-border {
+  display: none;
+}
+
+.eloura-footer__grid {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr 1fr 1fr 1.2fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.eloura-footer__heading {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #0A0A0A;
+  margin: 0 0 1.25rem 0;
+  text-transform: none;
+}
+
+.eloura-footer__subtext {
+  font-size: 0.8125rem;
+  color: #4A4A4A;
+  line-height: 1.5;
+  margin: 0 0 1.25rem 0;
+  max-width: 340px;
+}
+
+.eloura-footer__signup-btn {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0A0A0A;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: opacity 0.2s ease;
+}
+
+.eloura-footer__signup-btn:hover {
+  opacity: 0.65;
+}
+
+/* Newsletter Input Form */
+.eloura-footer__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 320px;
+  border-bottom: 1px solid #0A0A0A;
+}
+
+.eloura-footer__input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0.6rem 2rem 0.6rem 0;
+  font-size: 0.8125rem;
+  color: #0A0A0A;
+  outline: none;
+}
+
+.eloura-footer__input::placeholder {
+  color: #888888;
+}
+
+.eloura-footer__submit-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #0A0A0A;
+  padding: 0;
+}
+
+.eloura-footer__form-success {
+  font-size: 0.75rem;
+  color: #10B981;
+  margin-top: 0.5rem;
+}
+
+/* Navigation lists */
+.eloura-footer__nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.eloura-footer__nav-item {
+  line-height: 1.3;
+}
+
+.eloura-footer__nav-link {
+  font-size: 0.8125rem;
+  color: #0A0A0A;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.eloura-footer__nav-link:hover {
+  opacity: 0.6;
+}
+
+.eloura-footer__live-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #E53E3E;
+}
+
+.eloura-footer__icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Accordion Summary - Desktop is static, Mobile is accordion */
+.eloura-footer__summary {
+  display: block;
+  list-style: none;
+}
+
+.eloura-footer__summary::-webkit-details-marker {
+  display: none;
+}
+
+.eloura-footer__accordion-icon {
+  display: none;
+}
+
+/* Country Selector */
+.eloura-footer__country-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: 0.8125rem;
+  color: #0A0A0A;
+  cursor: pointer;
+}
+
+.eloura-footer__country-flag {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.eloura-footer__chevron {
+  opacity: 0.7;
+}
+
+/* Bottom Bar */
+.eloura-footer__bottom {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  font-size: 0.6875rem;
+  color: #767676;
+}
+
+.eloura-footer__copyright {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+
+.eloura-footer__policy-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.eloura-footer__policy-link {
+  color: #767676;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.eloura-footer__policy-link:hover {
+  color: #0A0A0A;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVENESS (Represent Mobile Accordion Look)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .eloura-footer {
+    padding: 2.5rem 0 3rem;
+  }
+
+  .eloura-footer__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Loyalty column on mobile */
+  .eloura-footer__col--loyalty {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #ECECEC;
+    margin-bottom: 0.5rem;
+  }
+
+  .eloura-footer__col--loyalty .eloura-footer__heading {
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .eloura-footer__col--loyalty .eloura-footer__subtext {
+    font-size: 0.8125rem;
+    max-width: 100%;
+    margin-bottom: 1.25rem;
+  }
+
+  /* Accordion rows on mobile */
+  .eloura-footer__col--menu,
+  .eloura-footer__col--apps {
+    border-bottom: 1px solid #ECECEC;
+  }
+
+  .eloura-footer__accordion {
+    padding: 1rem 0;
+  }
+
+  .eloura-footer__summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .eloura-footer__summary .eloura-footer__heading {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .eloura-footer__accordion-icon {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 1;
+    color: #0A0A0A;
+    transition: transform 0.25s ease;
+  }
+
+  .eloura-footer__accordion[open] .eloura-footer__accordion-icon {
+    transform: rotate(45deg);
+  }
+
+  .eloura-footer__nav-list {
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+    gap: 0.75rem;
+  }
+
+  /* Country on mobile */
+  .eloura-footer__col--country {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid #ECECEC;
+  }
+
+  .eloura-footer__col--country .eloura-footer__heading {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  /* Bottom bar on mobile */
+  .eloura-footer__bottom {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .eloura-footer__policy-list {
+    justify-content: center;
+    gap: 0.75rem 1rem;
+  }
+
+  .eloura-footer__copyright {
+    order: 2;
+    margin-top: 0.5rem;
+  }
+}
