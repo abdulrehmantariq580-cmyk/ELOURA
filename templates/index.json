@@ -28,17 +28,20 @@
         "show_scroll_indicator": false
       }
     },
-    "sliding_products": {
-      "type": "sliding-products",
+    "collection_category": {
+      "type": "collection-category",
       "settings": {
-        "products_to_show": 8,
-        "link_text": "SHOP INITIAL FW26",
-        "link": "/collections/all"
+        "subheading": "Introducing",
+        "heading": "",
+        "button_label": "SHOP NOW",
+        "banner_height": "large",
+        "overlay_opacity": 30,
+        "products_to_show": 8
       }
     }
   },
   "order": [
     "hero",
-    "sliding_products"
+    "collection_category"
   ]
 }
