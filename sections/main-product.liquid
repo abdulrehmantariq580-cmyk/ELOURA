@@ -1,76 +1,504 @@
-<div class="product-single container">
-  <div class="grid grid-cols-2">
-    <div class="product-single__gallery">
-      {%- if product.featured_image != blank -%}
-        {{ product.featured_image | image_url: width: 1000 | image_tag: alt: product.title }}
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag }}
-      {%- endif -%}
-    </div>
+{%- comment -%}
+  ELOURA - Luxury Represent-Style Product Detail Template
+{%- endcomment -%}
 
-    <div class="product-single__details">
-      <h1>{{ product.title }}</h1>
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign color_option = product.options_by_name['Color'] or product.options_by_name['Colour']
+  assign size_option = product.options_by_name['Size']
+-%}
 
-      <div class="product-single__price">
-        {{ product.selected_or_first_available_variant.price | money }}
-        {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
-          <span style="text-decoration: line-through; color: var(--color-text-muted); font-size: 1.1rem; margin-left: 0.5rem;">
-            {{ product.selected_or_first_available_variant.compare_at_price | money }}
-          </span>
+<div class="eloura-pdp" data-section-id="{{ section.id }}" data-product-id="{{ product.id }}">
+  <div class="eloura-pdp__layout">
+    
+    <!-- ======================================================================
+         1. LEFT: EDITORIAL MEDIA GALLERY (Vertical Scroll / Stack)
+         ====================================================================== -->
+    <div class="eloura-pdp__gallery">
+      <!-- Media Counter & Model Info Floating Tag -->
+      <div class="eloura-pdp__media-tag">
+        <span class="eloura-pdp__media-count"><span id="CurrentMediaIndex">1</span> / {{ product.media.size | default: 1 }}</span>
+        {%- if section.settings.model_info != blank -%}
+          <span class="eloura-pdp__model-info">{{ section.settings.model_info }}</span>
         {%- endif -%}
+        <button type="button" class="eloura-pdp__fullscreen-btn js-gallery-fullscreen" aria-label="Expand image">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path>
+          </svg>
+        </button>
       </div>
 
-      {%- form 'product', product, class: 'product-form' -%}
-        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-
-        {%- unless product.has_only_default_variant -%}
-          <div>
-            <label class="form-label" for="ProductSelect-{{ section.id }}">Variants</label>
-            <select name="id" id="ProductSelect-{{ section.id }}" class="form-select product-variant-selector">
-              {%- for variant in product.variants -%}
-                <option
-                  {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %}
-                  {% unless variant.available %}disabled="disabled"{% endunless %}
-                  value="{{ variant.id }}"
-                  data-price="{{ variant.price | money }}"
-                >
-                  {{ variant.title }} - {{ variant.price | money }}
-                </option>
-              {%- endfor -%}
-            </select>
+      <div class="eloura-pdp__media-stack js-pdp-media-stack">
+        {%- if product.media.size > 0 -%}
+          {%- for media in product.media -%}
+            <div class="eloura-pdp__media-item" data-media-id="{{ media.id }}" data-index="{{ forloop.index }}">
+              {%- case media.media_type -%}
+                {%- when 'image' -%}
+                  <img
+                    src="{{ media | image_url: width: 1800 }}"
+                    alt="{{ media.alt | default: product.title | escape }}"
+                    class="eloura-pdp__image"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                    width="1800"
+                    height="2250"
+                  >
+                {%- when 'video' -%}
+                  {{ media | video_tag: autoplay: true, loop: true, muted: true, controls: false, class: 'eloura-pdp__video' }}
+                {%- else -%}
+                  {{ media | media_tag: class: 'eloura-pdp__media-obj' }}
+              {%- endcase -%}
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="eloura-pdp__media-item" data-index="1">
+            {{ 'product-1' | placeholder_svg_tag: 'eloura-pdp__image eloura-pdp__image--placeholder' }}
           </div>
-        {%- endunless -%}
+        {%- endif -%}
+      </div>
+    </div>
 
-        <div>
-          <label class="form-label" for="Quantity-{{ section.id }}">Quantity</label>
-          <input type="number" id="Quantity-{{ section.id }}" name="quantity" value="1" min="1" class="form-input" style="max-width: 120px;">
+    <!-- ======================================================================
+         2. RIGHT: PRODUCT DETAILS & PURCHASE PANEL (Sticky)
+         ====================================================================== -->
+    <div class="eloura-pdp__info">
+      <div class="eloura-pdp__info-inner">
+
+        <!-- Title & Price Header Row -->
+        <div class="eloura-pdp__header-row">
+          <h1 class="eloura-pdp__title">{{ product.title }}</h1>
+          <div class="eloura-pdp__price-box">
+            <span class="eloura-pdp__price" id="ProductPrice-{{ section.id }}">
+              {{ current_variant.price | money }}
+            </span>
+            {%- if current_variant.compare_at_price > current_variant.price -%}
+              <span class="eloura-pdp__compare-price">
+                {{ current_variant.compare_at_price | money }}
+              </span>
+            {%- endif -%}
+          </div>
         </div>
 
-        <button
-          type="submit"
-          name="add"
-          class="btn btn-primary btn-full"
-          {% unless product.selected_or_first_available_variant.available %}disabled="disabled"{% endunless %}
-        >
-          {%- if product.selected_or_first_available_variant.available -%}
-            {{ 'sections.product.add_to_cart' | t }}
-          {%- else -%}
-            {{ 'sections.product.sold_out' | t }}
-          {%- endif -%}
-        </button>
-      {%- endform -%}
+        {%- form 'product', product, id: 'ProductForm', class: 'eloura-pdp__form' -%}
+          <input type="hidden" name="id" id="SelectedVariantId" value="{{ current_variant.id }}">
 
-      <div class="product-single__description">
-        {{ product.description }}
+          <!-- Colour Selector with Thumbnails (Represent Style) -->
+          {%- if color_option -%}
+            <div class="eloura-pdp__option-group eloura-pdp__option-group--colour">
+              <div class="eloura-pdp__option-header">
+                <span class="eloura-pdp__option-label">
+                  Colour <span class="eloura-pdp__option-count">{{ color_option.values.size }}</span>
+                </span>
+                <span class="eloura-pdp__colour-name" id="SelectedColourName">
+                  {{ current_variant.option1 | default: color_option.values.first }}
+                </span>
+                
+                <button type="button" class="eloura-pdp__wishlist-btn js-wishlist-toggle" aria-label="Add to Wishlist">
+                  <span>Add to Wishlist</span>
+                  {% render 'icon-bookmark' %}
+                </button>
+              </div>
+
+              <!-- Colour Thumbnail Swatches -->
+              <div class="eloura-pdp__colour-swatches">
+                {%- for val in color_option.values -%}
+                  {%- liquid
+                    assign variant_for_val = product.variants | where: 'option1', val | first
+                    assign swatch_img = variant_for_val.featured_media | default: product.featured_media
+                  -%}
+                  <button
+                    type="button"
+                    class="eloura-pdp__colour-thumb {% if current_variant.option1 == val %}is-active{% endif %} js-colour-swatch"
+                    data-color-name="{{ val | escape }}"
+                    data-variant-id="{{ variant_for_val.id }}"
+                    aria-label="{{ val | escape }}"
+                  >
+                    {%- if swatch_img != blank -%}
+                      <img src="{{ swatch_img | image_url: width: 140 }}" alt="{{ val | escape }}" loading="lazy">
+                    {%- else -%}
+                      <span class="eloura-pdp__colour-fallback-dot"></span>
+                    {%- endif -%}
+                  </button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+
+          <!-- Size Selector Buttons Grid (XXS, XS, S, M, L, XL, XXL) -->
+          {%- if size_option -%}
+            <div class="eloura-pdp__option-group eloura-pdp__option-group--size">
+              <div class="eloura-pdp__option-header">
+                <span class="eloura-pdp__option-label">Size</span>
+                <button type="button" class="eloura-pdp__size-chart-btn js-size-chart-open">Size Chart</button>
+              </div>
+
+              <div class="eloura-pdp__size-grid">
+                {%- for val in size_option.values -%}
+                  {%- liquid
+                    assign is_avail = false
+                    for variant in product.variants
+                      if variant.options contains val and variant.available
+                        assign is_avail = true
+                        break
+                      endif
+                    endfor
+                  -%}
+                  <button
+                    type="button"
+                    class="eloura-pdp__size-pill js-size-pill {% unless is_avail %}is-soldout{% endunless %} {% if current_variant.options contains val %}is-selected{% endif %}"
+                    data-size-val="{{ val | escape }}"
+                    {% unless is_avail %}data-disabled="true"{% endunless %}
+                  >
+                    {{ val | upcase }}
+                  </button>
+                {%- endfor -%}
+              </div>
+
+              <!-- Find your perfect size link -->
+              <div class="eloura-pdp__size-guide-row">
+                <button type="button" class="eloura-pdp__find-size-btn js-size-chart-open">
+                  <span>Find your perfect size</span>
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="2" y="7" width="20" height="10" rx="1"></rect>
+                    <line x1="6" y1="7" x2="6" y2="11"></line>
+                    <line x1="10" y1="7" x2="10" y2="11"></line>
+                    <line x1="14" y1="7" x2="14" y2="11"></line>
+                    <line x1="18" y1="7" x2="18" y2="11"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          {%- endif -%}
+
+          <!-- Native Hidden Select for Shopify JS -->
+          <select name="id" id="ProductSelect-{{ section.id }}" class="eloura-pdp__native-select" style="display:none;">
+            {%- for variant in product.variants -%}
+              <option
+                value="{{ variant.id }}"
+                data-price="{{ variant.price | money }}"
+                data-compare-price="{{ variant.compare_at_price | money }}"
+                data-available="{{ variant.available }}"
+                data-option1="{{ variant.option1 }}"
+                data-option2="{{ variant.option2 }}"
+                data-option3="{{ variant.option3 }}"
+                {% if variant == current_variant %}selected="selected"{% endif %}
+              >
+                {{ variant.title }}
+              </option>
+            {%- endfor -%}
+          </select>
+
+          <!-- Add to Cart Full-Width Solid Black Button -->
+          <div class="eloura-pdp__actions">
+            <button
+              type="submit"
+              name="add"
+              id="AddToCartBtn"
+              class="eloura-pdp__atc-btn"
+              {% unless current_variant.available %}disabled{% endunless %}
+            >
+              {%- if current_variant.available -%}
+                ADD TO CART
+              {%- else -%}
+                SOLD OUT
+              {%- endif -%}
+            </button>
+          </div>
+        {%- endform -%}
+
+        <!-- Trust & Loyalty Badges (Duties & Taxes + Prestige Points) -->
+        <div class="eloura-pdp__perks">
+          <div class="eloura-pdp__perk-row">
+            <span class="eloura-pdp__perk-icon">🇵🇰</span>
+            <span class="eloura-pdp__perk-text">{{ section.settings.duties_text | default: 'Duties & Taxes Calculated at Checkout.' }}</span>
+            <span class="eloura-pdp__perk-arrow">&rsaquo;</span>
+          </div>
+          <div class="eloura-pdp__perk-row">
+            <span class="eloura-pdp__perk-icon eloura-pdp__perk-logo">E</span>
+            <span class="eloura-pdp__perk-text">{{ section.settings.points_text | default: 'Earn Prestige Points on Every Purchase' }}</span>
+            <span class="eloura-pdp__perk-arrow">&rsaquo;</span>
+          </div>
+        </div>
+
+        <!-- Breadcrumbs -->
+        <nav class="eloura-pdp__breadcrumb" aria-label="Breadcrumb">
+          <a href="{{ routes.root_url }}">Home</a>
+          <span class="eloura-pdp__bc-sep">&rsaquo;</span>
+          {%- if collection -%}
+            <a href="{{ collection.url }}">{{ collection.title }}</a>
+            <span class="eloura-pdp__bc-sep">&rsaquo;</span>
+          {%- endif -%}
+          <span class="eloura-pdp__bc-current">{{ product.title }}</span>
+        </nav>
+
+        <!-- Product Description with Expandable Read More -->
+        {%- if product.description != blank -%}
+          <div class="eloura-pdp__description-wrapper js-desc-wrapper">
+            <div class="eloura-pdp__description js-desc-text">
+              {{ product.description }}
+            </div>
+            <button type="button" class="eloura-pdp__readmore-btn js-desc-toggle" aria-expanded="false">
+              Read more
+            </button>
+          </div>
+        {%- endif -%}
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ======================================================================
+       3. EDITORIAL PRODUCT HIGHLIGHTS SECTION (Clean Centered Typography)
+       ====================================================================== -->
+  {%- if section.blocks.size > 0 -%}
+    <div class="eloura-pdp__features-section container">
+      <div class="eloura-pdp__features-grid">
+        {%- for block in section.blocks -%}
+          <div class="eloura-pdp__feature-item" {{ block.shopify_attributes }}>
+            <h3 class="eloura-pdp__feature-title">{{ block.settings.heading }}</h3>
+            <p class="eloura-pdp__feature-desc">{{ block.settings.text }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!-- Size Chart Modal -->
+  <div class="eloura-modal" id="SizeChartModal" aria-hidden="true">
+    <div class="eloura-modal__backdrop js-size-chart-close"></div>
+    <div class="eloura-modal__content">
+      <button type="button" class="eloura-modal__close js-size-chart-close" aria-label="Close">&times;</button>
+      <h3 class="eloura-modal__title">SIZE GUIDE &amp; MEASUREMENTS</h3>
+      <div class="eloura-modal__body">
+        <table class="eloura-size-table">
+          <thead>
+            <tr>
+              <th>SIZE</th>
+              <th>CHEST (INCH)</th>
+              <th>LENGTH (INCH)</th>
+              <th>SLEEVE (INCH)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>S</td><td>44 - 46</td><td>27.5</td><td>25.5</td></tr>
+            <tr><td>M</td><td>46 - 48</td><td>28.5</td><td>26.0</td></tr>
+            <tr><td>L</td><td>48 - 50</td><td>29.5</td><td>26.5</td></tr>
+            <tr><td>XL</td><td>50 - 52</td><td>30.5</td><td>27.0</td></tr>
+            <tr><td>XXL</td><td>52 - 54</td><td>31.5</td><td>27.5</td></tr>
+          </tbody>
+        </table>
+        <p class="eloura-size-note">* Designed with signature boxy, dropped-shoulder proportions. Take your normal size for an oversized silhouette.</p>
       </div>
     </div>
   </div>
 </div>
 
+<script>
+  // Product Page Interactivity: Variant switching, Image tracking, Accordions, Modal
+  document.addEventListener('DOMContentLoaded', function() {
+    const section = document.querySelector('.eloura-pdp');
+    if (!section) return;
+
+    // Track scroll position in media stack to update 1 / 12 counter
+    const mediaItems = section.querySelectorAll('.eloura-pdp__media-item');
+    const counterEl = document.getElementById('CurrentMediaIndex');
+    
+    if (mediaItems.length > 0 && counterEl) {
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            const idx = entry.target.getAttribute('data-index');
+            if (idx) counterEl.textContent = idx;
+          }
+        });
+      }, { threshold: 0.6 });
+
+      mediaItems.forEach(function(item) {
+        observer.observe(item);
+      });
+    }
+
+    // Read more / Read less toggle
+    const toggleBtns = section.querySelectorAll('.js-desc-toggle');
+    toggleBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const wrapper = this.closest('.js-desc-wrapper');
+        const descText = wrapper ? wrapper.querySelector('.js-desc-text') : null;
+        if (!descText) return;
+
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+        if (isExpanded) {
+          descText.classList.remove('is-expanded');
+          this.setAttribute('aria-expanded', 'false');
+          this.textContent = 'Read more';
+        } else {
+          descText.classList.add('is-expanded');
+          this.setAttribute('aria-expanded', 'true');
+          this.textContent = 'Read less';
+        }
+      });
+    });
+
+    // Size Selection
+    const sizePills = section.querySelectorAll('.js-size-pill:not([data-disabled="true"])');
+    sizePills.forEach(function(pill) {
+      pill.addEventListener('click', function() {
+        sizePills.forEach(p => p.classList.remove('is-selected'));
+        this.classList.add('is-selected');
+        updateSelectedVariant();
+      });
+    });
+
+    // Colour Swatch Selection
+    const colourSwatches = section.querySelectorAll('.js-colour-swatch');
+    const colourNameEl = document.getElementById('SelectedColourName');
+    colourSwatches.forEach(function(swatch) {
+      swatch.addEventListener('click', function() {
+        colourSwatches.forEach(s => s.classList.remove('is-active'));
+        this.classList.add('is-active');
+        const colorName = this.getAttribute('data-color-name');
+        if (colourNameEl) colourNameEl.textContent = colorName;
+        updateSelectedVariant();
+      });
+    });
+
+    function updateSelectedVariant() {
+      const activeColor = section.querySelector('.js-colour-swatch.is-active');
+      const activeSize = section.querySelector('.js-size-pill.is-selected');
+      const select = document.getElementById('ProductSelect-{{ section.id }}');
+      const atcBtn = document.getElementById('AddToCartBtn');
+      const hiddenInput = document.getElementById('SelectedVariantId');
+      const priceEl = document.getElementById('ProductPrice-{{ section.id }}');
+
+      if (!select) return;
+
+      const chosenColor = activeColor ? activeColor.getAttribute('data-color-name') : null;
+      const chosenSize = activeSize ? activeSize.getAttribute('data-size-val') : null;
+
+      let matchedOption = null;
+      for (let i = 0; i < select.options.length; i++) {
+        const opt = select.options[i];
+        const optColor = opt.getAttribute('data-option1');
+        const optSize = opt.getAttribute('data-option2');
+
+        const matchColor = !chosenColor || optColor === chosenColor || opt.text.includes(chosenColor);
+        const matchSize = !chosenSize || optSize === chosenSize || opt.text.includes(chosenSize);
+
+        if (matchColor && matchSize) {
+          matchedOption = opt;
+          break;
+        }
+      }
+
+      if (!matchedOption && select.options.length > 0) {
+        matchedOption = select.options[0];
+      }
+
+      if (matchedOption) {
+        select.value = matchedOption.value;
+        if (hiddenInput) hiddenInput.value = matchedOption.value;
+        if (priceEl) priceEl.textContent = matchedOption.getAttribute('data-price');
+
+        const isAvail = matchedOption.getAttribute('data-available') === 'true';
+        if (atcBtn) {
+          atcBtn.disabled = !isAvail;
+          atcBtn.textContent = isAvail ? 'ADD TO CART' : 'SOLD OUT';
+        }
+      }
+    }
+
+    // Size Guide Modal
+    const modal = document.getElementById('SizeChartModal');
+    section.querySelectorAll('.js-size-chart-open').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (modal) modal.classList.add('is-open');
+      });
+    });
+    section.querySelectorAll('.js-size-chart-close').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (modal) modal.classList.remove('is-open');
+      });
+    });
+  });
+</script>
+
 {% schema %}
 {
-  "name": "Product Information",
-  "settings": []
+  "name": "Luxury Product Detail",
+  "settings": [
+    {
+      "type": "text",
+      "id": "model_info",
+      "label": "Model Sizing Tag",
+      "default": "Model is 188cm and 75kg wearing size M"
+    },
+    {
+      "type": "text",
+      "id": "duties_text",
+      "label": "Duties & Taxes Label",
+      "default": "Duties & Taxes Calculated at Checkout."
+    },
+    {
+      "type": "text",
+      "id": "points_text",
+      "label": "Loyalty Points Label",
+      "default": "Earn Prestige Points on Every Purchase"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Fabric & Fit Feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Feature Title",
+          "default": "Oversized Cropped Fit"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Feature Description",
+          "default": "Dropped shoulders and a hip-length crop deliver a relaxed, substantial silhouette."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Product Detail",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "heading": "Heavyweight Garment Dye",
+            "text": "Sun-faded wash builds an uneven, worn-in finish unique to each piece."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "heading": "Oversized Cropped Fit",
+            "text": "Dropped shoulders and a hip-length crop deliver a relaxed, substantial silhouette."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "heading": "Brushed Fleece Back",
+            "text": "Anti-pilling treatment and a soft knit face ensure lasting texture and hand feel."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "heading": "Signature Insignia Detail",
+            "text": "Precision embroidery and bespoke high-density hardware finishes."
+          }
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}
-
