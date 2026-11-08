@@ -3009,3 +3009,652 @@ body.template-product .site-header .site-header__logo-image {
   display: inline-block;
   line-height: 0.9;
 }
+
+/* ==========================================================================
+   ELOURA LUXURY CART DRAWER (SLIDE-OVER BAG - Represent Clo Style)
+   ========================================================================== */
+
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  visibility: hidden;
+  transition: visibility 0.35s ease;
+}
+
+.cart-drawer.is-open {
+  visibility: visible;
+}
+
+.cart-drawer__backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.cart-drawer.is-open .cart-drawer__backdrop {
+  opacity: 1;
+}
+
+.cart-drawer__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  background: #FFFFFF;
+  color: #0A0A0A;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+}
+
+.cart-drawer.is-open .cart-drawer__panel {
+  transform: translateX(0);
+}
+
+/* Header */
+.cart-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid #ECECEC;
+}
+
+.cart-drawer__title-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.cart-drawer__title {
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin: 0;
+  color: #0A0A0A;
+}
+
+.cart-drawer__count {
+  font-size: 0.8125rem;
+  color: #666666;
+}
+
+.cart-drawer__close {
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+  color: #0A0A0A;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.2s ease;
+}
+
+.cart-drawer__close:hover {
+  opacity: 0.6;
+}
+
+/* Shipping Progress Bar */
+.cart-drawer__shipping-bar {
+  padding: 0.85rem 1.75rem;
+  background-color: #F8F8F8;
+  border-bottom: 1px solid #EFEFEF;
+}
+
+.cart-drawer__shipping-text {
+  font-size: 0.72rem;
+  color: #333333;
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.02em;
+}
+
+.cart-drawer__progress-track {
+  width: 100%;
+  height: 3px;
+  background-color: #E2E2E2;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.cart-drawer__progress-fill {
+  height: 100%;
+  background-color: #0A0A0A;
+  transition: width 0.4s ease;
+}
+
+/* Body / Item List */
+.cart-drawer__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.75rem;
+}
+
+.cart-drawer__items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.cart-drawer__item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.cart-drawer__item-media {
+  background-color: #F8F8F8;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+}
+
+.cart-drawer__item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: multiply;
+  display: block;
+}
+
+.cart-drawer__item-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cart-drawer__item-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.cart-drawer__item-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.cart-drawer__item-title a {
+  color: #0A0A0A;
+  text-decoration: none;
+}
+
+.cart-drawer__remove-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: #888888;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.cart-drawer__remove-btn:hover {
+  color: #0A0A0A;
+}
+
+.cart-drawer__item-variant {
+  font-size: 0.72rem;
+  color: #666666;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.cart-drawer__item-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+/* Stepper */
+.cart-drawer__qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #E0E0E0;
+  height: 28px;
+}
+
+.cart-drawer__qty-btn {
+  background: none;
+  border: none;
+  width: 26px;
+  height: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #0A0A0A;
+}
+
+.cart-drawer__qty-val {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0 0.4rem;
+  min-width: 20px;
+  text-align: center;
+}
+
+.cart-drawer__item-price {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #0A0A0A;
+}
+
+/* Empty State */
+.cart-drawer__empty {
+  text-align: center;
+  padding: 5rem 1rem;
+}
+
+.cart-drawer__empty-title {
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+.cart-drawer__empty-text {
+  font-size: 0.8125rem;
+  color: #666666;
+  margin-bottom: 2rem;
+}
+
+.cart-drawer__empty-btn {
+  display: inline-block;
+  background-color: #0A0A0A;
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.85rem 1.75rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.cart-drawer__empty-btn:hover {
+  opacity: 0.8;
+}
+
+/* Footer & Sticky Checkout */
+.cart-drawer__footer {
+  padding: 1.5rem 1.75rem;
+  border-top: 1px solid #ECECEC;
+  background: #FFFFFF;
+}
+
+.cart-drawer__subtotal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.cart-drawer__subtotal-label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.cart-drawer__subtotal-val {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.cart-drawer__taxes-note {
+  font-size: 0.6875rem;
+  color: #767676;
+  margin: 0 0 1.25rem;
+}
+
+.cart-drawer__checkout-btn {
+  width: 100%;
+  height: 48px;
+  background-color: #0A0A0A;
+  color: #FFFFFF;
+  border: none;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-bottom: 0.75rem;
+}
+
+.cart-drawer__checkout-btn:hover {
+  background-color: #262626;
+}
+
+.cart-drawer__view-cart-link {
+  display: block;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #666666;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cart-drawer__view-cart-link:hover {
+  color: #0A0A0A;
+}
+
+/* ==========================================================================
+   ACTUAL FULL CART PAGE (ELOURA / Represent Minimalist Luxury Grid)
+   ========================================================================== */
+
+.eloura-cart-page {
+  padding: 3.5rem 0 6rem;
+  color: #0A0A0A;
+}
+
+.eloura-cart__header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #ECECEC;
+  margin-bottom: 2.5rem;
+}
+
+.eloura-cart__title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+.eloura-cart__count {
+  font-size: 1rem;
+  color: #666666;
+}
+
+.eloura-cart__layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+.eloura-cart__table-header {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ECECEC;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #767676;
+}
+
+.eloura-cart__row {
+  display: grid;
+  grid-template-columns: 120px 2fr 1fr 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.eloura-cart__media {
+  background-color: #F8F8F8;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+}
+
+.eloura-cart__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: multiply;
+  display: block;
+}
+
+.eloura-cart__item-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+}
+
+.eloura-cart__item-title a {
+  color: #0A0A0A;
+  text-decoration: none;
+}
+
+.eloura-cart__item-variant {
+  font-size: 0.8125rem;
+  color: #666666;
+  margin: 0 0 0.5rem;
+}
+
+.eloura-cart__unit-price {
+  font-size: 0.8125rem;
+  color: #777777;
+  margin: 0 0 0.75rem;
+}
+
+.eloura-cart__remove-link {
+  font-size: 0.75rem;
+  color: #888888;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.eloura-cart__remove-link:hover {
+  color: #0A0A0A;
+}
+
+.eloura-cart__stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #D8D8D8;
+  height: 36px;
+}
+
+.eloura-cart__stepper-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 100%;
+  text-decoration: none;
+  color: #0A0A0A;
+  font-size: 1rem;
+}
+
+.eloura-cart__stepper-val {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 0 0.65rem;
+  min-width: 24px;
+  text-align: center;
+}
+
+.eloura-cart__total-cell {
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: right;
+}
+
+/* Summary Card */
+.eloura-cart__summary-card {
+  background-color: #FAFAFA;
+  border: 1px solid #ECECEC;
+  padding: 2rem;
+  position: sticky;
+  top: 90px;
+}
+
+.eloura-cart__summary-title {
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin: 0 0 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #E5E5E5;
+}
+
+.eloura-cart__summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+  font-size: 0.8125rem;
+  color: #4A4A4A;
+}
+
+.eloura-cart__summary-row--small {
+  font-size: 0.75rem;
+  color: #767676;
+}
+
+.eloura-cart__summary-price {
+  font-weight: 600;
+  color: #0A0A0A;
+}
+
+.eloura-cart__summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 1.25rem;
+  margin-top: 1.25rem;
+  border-top: 1px solid #E5E5E5;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.eloura-cart__total-price {
+  font-size: 1.25rem;
+}
+
+.eloura-cart__checkout-btn {
+  width: 100%;
+  height: 50px;
+  background-color: #0A0A0A;
+  color: #FFFFFF;
+  border: none;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  margin-bottom: 0.85rem;
+  transition: background-color 0.2s ease;
+}
+
+.eloura-cart__checkout-btn:hover {
+  background-color: #262626;
+}
+
+.eloura-cart__continue-btn {
+  display: block;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #666666;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.eloura-cart__continue-btn:hover {
+  color: #0A0A0A;
+}
+
+.eloura-cart__security {
+  text-align: center;
+  font-size: 0.72rem;
+  color: #777777;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #EFEFEF;
+}
+
+/* Empty Cart Page State */
+.eloura-cart__empty-state {
+  padding: 6rem 1rem;
+}
+
+.eloura-cart__empty-icon {
+  margin-bottom: 1.5rem;
+  color: #888888;
+}
+
+.eloura-cart__empty-headline {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.75rem;
+}
+
+.eloura-cart__empty-sub {
+  font-size: 0.875rem;
+  color: #666666;
+  margin-bottom: 2.5rem;
+}
+
+.eloura-cart__shop-now-btn {
+  display: inline-block;
+  background-color: #0A0A0A;
+  color: #FFFFFF;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 1rem 2.5rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.eloura-cart__shop-now-btn:hover {
+  opacity: 0.85;
+}
+
+/* Mobile Responsive Cart Page */
+@media (max-width: 900px) {
+  .eloura-cart__layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .eloura-cart__table-header {
+    display: none;
+  }
+
+  .eloura-cart__row {
+    grid-template-columns: 90px 1fr;
+    gap: 1rem;
+    position: relative;
+  }
+
+  .eloura-cart__qty-cell {
+    grid-column: 2;
+    margin-top: 0.5rem;
+  }
+
+  .eloura-cart__total-cell {
+    grid-column: 2;
+    text-align: left;
+    margin-top: 0.25rem;
+  }
+}

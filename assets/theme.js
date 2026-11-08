@@ -164,3 +164,110 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+/* ==========================================================================
+   ELOURA CART DRAWER JAVASCRIPT CONTROLLER
+   ========================================================================== */
+document.addEventListener('DOMContentLoaded', function() {
+  const drawer = document.getElementById('CartDrawer');
+  if (!drawer) return;
+
+  function openCartDrawer() {
+    drawer.classList.add('is-open');
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCartDrawer() {
+    drawer.classList.remove('is-open');
+    drawer.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  // Header bag triggers
+  document.querySelectorAll('.js-cart-drawer-trigger').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      openCartDrawer();
+    });
+  });
+
+  // Close triggers
+  document.querySelectorAll('.js-cart-drawer-close').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      closeCartDrawer();
+    });
+  });
+
+  // Quantity updates inside drawer via AJAX
+  drawer.addEventListener('click', function(e) {
+    const qtyBtn = e.target.closest('.js-qty-btn');
+    const removeBtn = e.target.closest('.js-cart-remove');
+
+    if (qtyBtn) {
+      const line = qtyBtn.getAttribute('data-line');
+      const action = qtyBtn.getAttribute('data-action');
+      const qtyValEl = qtyBtn.parentElement.querySelector('.cart-drawer__qty-val');
+      let currentQty = parseInt(qtyValEl ? qtyValEl.textContent : '1', 10);
+      let newQty = action === 'plus' ? currentQty + 1 : currentQty - 1;
+      updateCartLine(line, newQty);
+    }
+
+    if (removeBtn) {
+      const line = removeBtn.getAttribute('data-line');
+      updateCartLine(line, 0);
+    }
+  });
+
+  function updateCartLine(line, quantity) {
+    fetch('/cart/change.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ line: parseInt(line, 10), quantity: quantity })
+    })
+    .then(res => res.json())
+    .then(cart => {
+      // Reload drawer markup or reload page for clean Shopify currency sync
+      window.location.reload();
+    })
+    .catch(err => {
+      console.error('Error updating cart line:', err);
+    });
+  }
+
+  // Intercept Ajax "Add to Cart" on PDP and open Drawer smoothly
+  const pdpForm = document.getElementById('ProductForm');
+  if (pdpForm) {
+    pdpForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const atcBtn = document.getElementById('AddToCartBtn');
+      if (atcBtn) {
+        atcBtn.disabled = true;
+        atcBtn.textContent = 'ADDING...';
+      }
+
+      const formData = new FormData(pdpForm);
+      fetch('/cart/add.js', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(() => {
+        // Open drawer on successful add
+        window.location.href = window.location.pathname + '?cart_open=1';
+      })
+      .catch(err => {
+        console.error('Add to cart error:', err);
+        pdpForm.submit(); // fallback to standard submit
+      });
+    });
+  }
+
+  // Auto-open if redirected with ?cart_open=1
+  if (window.location.search.includes('cart_open=1')) {
+    openCartDrawer();
+  }
+});

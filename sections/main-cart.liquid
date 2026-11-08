@@ -1,72 +1,144 @@
-<div class="cart-page container">
-  <h1>{{ 'sections.cart.title' | t }}</h1>
+{%- comment -%}
+  ELOURA - Luxury Minimalist Cart Page (Represent Clo Aesthetic)
+{%- endcomment -%}
+
+<div class="eloura-cart-page container">
+  <div class="eloura-cart__header">
+    <h1 class="eloura-cart__title">YOUR SHOPPING BAG</h1>
+    <span class="eloura-cart__count">({{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %})</span>
+  </div>
 
   {%- if cart.item_count > 0 -%}
-    <form action="{{ routes.cart_url }}" method="post" id="cart">
-      <table class="cart-table">
-        <thead>
-          <tr>
-            <th>{{ 'sections.cart.product' | t }}</th>
-            <th>{{ 'sections.cart.quantity' | t }}</th>
-            <th>{{ 'sections.cart.total' | t }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {%- for item in cart.items -%}
-            <tr>
-              <td>
-                <div style="display: flex; gap: 1rem; align-items: center;">
-                  {%- if item.image -%}
-                    <img src="{{ item.image | image_url: width: 120 }}" alt="{{ item.title }}" width="60" height="60" style="border-radius: var(--border-radius);">
-                  {%- endif -%}
-                  <div>
-                    <a href="{{ item.url }}" style="font-weight: 600;">{{ item.product.title }}</a>
-                    {%- unless item.product.has_only_default_variant -%}
-                      <div style="font-size: 0.875rem; color: var(--color-text-muted);">{{ item.variant.title }}</div>
-                    {%- endunless -%}
-                    <div>
-                      <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0" style="color: #ef4444; font-size: 0.875rem;">
-                        {{ 'sections.cart.remove' | t }}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <input
-                  type="number"
-                  name="updates[]"
-                  value="{{ item.quantity }}"
-                  min="0"
-                  class="form-input"
-                  style="max-width: 80px;"
-                >
-              </td>
-              <td style="font-weight: 600;">
-                {{ item.final_line_price | money }}
-              </td>
-            </tr>
-          {%- endfor -%}
-        </tbody>
-      </table>
-
-      <div class="cart-summary">
-        <div style="display: flex; justify-content: space-between; font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem;">
-          <span>{{ 'sections.cart.subtotal' | t }}</span>
-          <span>{{ cart.total_price | money }}</span>
+    <form action="{{ routes.cart_url }}" method="post" id="CartForm" class="eloura-cart__layout">
+      <!-- Left Column: Cart Items List -->
+      <div class="eloura-cart__items-col">
+        <div class="eloura-cart__table-header">
+          <span>ITEM</span>
+          <span>QUANTITY</span>
+          <span>TOTAL</span>
         </div>
-        <button type="submit" name="checkout" class="btn btn-primary btn-full">
-          {{ 'sections.cart.checkout' | t }}
-        </button>
+
+        <div class="eloura-cart__items-list">
+          {%- for item in cart.items -%}
+            <div class="eloura-cart__row" data-line="{{ forloop.index }}">
+              <!-- Image -->
+              <div class="eloura-cart__media">
+                <a href="{{ item.url }}">
+                  {%- if item.image -%}
+                    <img
+                      src="{{ item.image | image_url: width: 320 }}"
+                      alt="{{ item.title | escape }}"
+                      class="eloura-cart__img"
+                      loading="lazy"
+                      width="120"
+                      height="150"
+                    >
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'eloura-cart__img' }}
+                  {%- endif -%}
+                </a>
+              </div>
+
+              <!-- Item Info -->
+              <div class="eloura-cart__info">
+                <h3 class="eloura-cart__item-title">
+                  <a href="{{ item.url }}">{{ item.product.title }}</a>
+                </h3>
+
+                {%- unless item.product.has_only_default_variant -%}
+                  <p class="eloura-cart__item-variant">{{ item.variant.title }}</p>
+                {%- endunless -%}
+
+                <p class="eloura-cart__unit-price">{{ item.original_price | money }}</p>
+
+                <a
+                  href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0"
+                  class="eloura-cart__remove-link"
+                >
+                  Remove
+                </a>
+              </div>
+
+              <!-- Quantity Stepper -->
+              <div class="eloura-cart__qty-cell">
+                <div class="eloura-cart__stepper">
+                  <a
+                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}"
+                    class="eloura-cart__stepper-btn"
+                    aria-label="Decrease"
+                  >&minus;</a>
+                  <span class="eloura-cart__stepper-val">{{ item.quantity }}</span>
+                  <a
+                    href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}"
+                    class="eloura-cart__stepper-btn"
+                    aria-label="Increase"
+                  >&plus;</a>
+                </div>
+              </div>
+
+              <!-- Line Price -->
+              <div class="eloura-cart__total-cell">
+                {{ item.final_line_price | money }}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- Right Column: Order Summary (Sticky) -->
+      <div class="eloura-cart__summary-col">
+        <div class="eloura-cart__summary-card">
+          <h2 class="eloura-cart__summary-title">ORDER SUMMARY</h2>
+
+          <div class="eloura-cart__summary-row">
+            <span>Subtotal</span>
+            <span class="eloura-cart__summary-price">{{ cart.total_price | money }}</span>
+          </div>
+
+          <div class="eloura-cart__summary-row eloura-cart__summary-row--small">
+            <span>Shipping</span>
+            <span>Calculated at checkout</span>
+          </div>
+
+          <div class="eloura-cart__summary-row eloura-cart__summary-row--small">
+            <span>Duties &amp; Taxes</span>
+            <span>Included / Calculated at checkout</span>
+          </div>
+
+          <div class="eloura-cart__summary-total">
+            <span>Estimated Total</span>
+            <span class="eloura-cart__total-price">{{ cart.total_price | money }}</span>
+          </div>
+
+          <button type="submit" name="checkout" class="eloura-cart__checkout-btn">
+            PROCEED TO CHECKOUT
+          </button>
+
+          <a href="{{ routes.all_products_collection_url }}" class="eloura-cart__continue-btn">
+            &larr; CONTINUE SHOPPING
+          </a>
+
+          <!-- Payment Security Icons -->
+          <div class="eloura-cart__security">
+            <span>🔒 Guaranteed Secure Checkout</span>
+          </div>
+        </div>
       </div>
     </form>
   {%- else -%}
-    <div style="text-align: center; padding: 4rem 0;">
-      <p style="font-size: 1.25rem; color: var(--color-text-muted); margin-bottom: 1.5rem;">
-        {{ 'sections.cart.empty' | t }}
-      </p>
-      <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">
-        {{ 'general.continue_shopping' | t }}
+    <!-- Empty Cart State -->
+    <div class="eloura-cart__empty-state text-center">
+      <div class="eloura-cart__empty-icon">
+        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+      </div>
+      <h2 class="eloura-cart__empty-headline">YOUR SHOPPING BAG IS CURRENTLY EMPTY</h2>
+      <p class="eloura-cart__empty-sub">Explore the newest silhouettes, heavyweight outerwear, and signature capsules.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="eloura-cart__shop-now-btn">
+        SHOP NEW ARRIVALS
       </a>
     </div>
   {%- endif -%}
@@ -74,8 +146,7 @@
 
 {% schema %}
 {
-  "name": "Cart Page",
+  "name": "Luxury Cart Page",
   "settings": []
 }
 {% endschema %}
-

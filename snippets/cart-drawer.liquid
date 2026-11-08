@@ -1,0 +1,142 @@
+{%- comment -%}
+  ELOURA - Luxury Slide-Over Cart Drawer (Represent Clo Aesthetic)
+{%- endcomment -%}
+
+<div id="CartDrawer" class="cart-drawer" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="cart-drawer__backdrop js-cart-drawer-close"></div>
+
+  <div class="cart-drawer__panel">
+    <!-- Drawer Header -->
+    <div class="cart-drawer__header">
+      <div class="cart-drawer__title-wrap">
+        <h3 class="cart-drawer__title">SHOPPING BAG</h3>
+        <span class="cart-drawer__count" id="CartDrawerCount">({{ cart.item_count }})</span>
+      </div>
+      <button type="button" class="cart-drawer__close js-cart-drawer-close" aria-label="Close Shopping Bag">
+        {% render 'icon-close' %}
+      </button>
+    </div>
+
+    <!-- Free Delivery Progress Bar -->
+    <div class="cart-drawer__shipping-bar">
+      {%- assign free_shipping_threshold = 1500000 -%} <!-- Rs. 15,000 in cents -->
+      {%- assign remaining = free_shipping_threshold | minus: cart.total_price -%}
+      {%- assign progress_pct = cart.total_price | times: 100 | divided_by: free_shipping_threshold -%}
+      {%- if progress_pct > 100 -%}{%- assign progress_pct = 100 -%}{%- endif -%}
+
+      <div class="cart-drawer__shipping-text">
+        {%- if remaining > 0 -%}
+          Add <strong>{{ remaining | money }}</strong> more for <strong>FREE EXPRESS DELIVERY</strong>
+        {%- else -%}
+          <strong>YOU UNLOCKED FREE EXPRESS DELIVERY!</strong> ⚡
+        {%- endif -%}
+      </div>
+      <div class="cart-drawer__progress-track">
+        <div class="cart-drawer__progress-fill" style="width: {{ progress_pct }}%;"></div>
+      </div>
+    </div>
+
+    <!-- Drawer Body: Items or Empty State -->
+    <div class="cart-drawer__body js-cart-drawer-body">
+      {%- if cart.item_count > 0 -%}
+        <div class="cart-drawer__items-list">
+          {%- for item in cart.items -%}
+            <div class="cart-drawer__item" data-line-key="{{ item.key }}" data-line="{{ forloop.index }}">
+              <div class="cart-drawer__item-media">
+                <a href="{{ item.url }}" tabindex="-1">
+                  {%- if item.image -%}
+                    <img
+                      src="{{ item.image | image_url: width: 200 }}"
+                      alt="{{ item.title | escape }}"
+                      class="cart-drawer__item-img"
+                      loading="lazy"
+                      width="100"
+                      height="125"
+                    >
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'cart-drawer__item-img' }}
+                  {%- endif -%}
+                </a>
+              </div>
+
+              <div class="cart-drawer__item-details">
+                <div class="cart-drawer__item-top">
+                  <h4 class="cart-drawer__item-title">
+                    <a href="{{ item.url }}">{{ item.product.title }}</a>
+                  </h4>
+                  <button
+                    type="button"
+                    class="cart-drawer__remove-btn js-cart-remove"
+                    data-line="{{ forloop.index }}"
+                    aria-label="Remove item"
+                  >
+                    &times;
+                  </button>
+                </div>
+
+                {%- unless item.product.has_only_default_variant -%}
+                  <p class="cart-drawer__item-variant">{{ item.variant.title }}</p>
+                {%- endunless -%}
+
+                <div class="cart-drawer__item-bottom">
+                  <!-- Minimal Quantity Stepper -->
+                  <div class="cart-drawer__qty-stepper">
+                    <button
+                      type="button"
+                      class="cart-drawer__qty-btn js-qty-btn"
+                      data-action="minus"
+                      data-line="{{ forloop.index }}"
+                      aria-label="Decrease quantity"
+                    >&minus;</button>
+                    <span class="cart-drawer__qty-val">{{ item.quantity }}</span>
+                    <button
+                      type="button"
+                      class="cart-drawer__qty-btn js-qty-btn"
+                      data-action="plus"
+                      data-line="{{ forloop.index }}"
+                      aria-label="Increase quantity"
+                    >&plus;</button>
+                  </div>
+
+                  <div class="cart-drawer__item-price">
+                    {{ item.final_line_price | money }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="cart-drawer__empty">
+          <p class="cart-drawer__empty-title">YOUR SHOPPING BAG IS EMPTY</p>
+          <p class="cart-drawer__empty-text">Looks like you haven't added anything to your cart yet.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="cart-drawer__empty-btn js-cart-drawer-close">
+            DISCOVER NEW ARRIVALS
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Drawer Footer: Subtotal & Sticky Checkout -->
+    {%- if cart.item_count > 0 -%}
+      <div class="cart-drawer__footer js-cart-drawer-footer">
+        <div class="cart-drawer__subtotal-row">
+          <span class="cart-drawer__subtotal-label">SUBTOTAL</span>
+          <span class="cart-drawer__subtotal-val" id="CartDrawerSubtotal">{{ cart.total_price | money }}</span>
+        </div>
+        <p class="cart-drawer__taxes-note">Shipping, taxes, and discounts calculated at checkout.</p>
+
+        <form action="{{ routes.cart_url }}" method="post">
+          <button type="submit" name="checkout" class="cart-drawer__checkout-btn">
+            CHECKOUT &bull; {{ cart.total_price | money }}
+          </button>
+        </form>
+
+        <a href="{{ routes.cart_url }}" class="cart-drawer__view-cart-link">
+          VIEW FULL BAG
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</div>
