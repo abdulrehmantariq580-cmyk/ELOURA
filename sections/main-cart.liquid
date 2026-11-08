@@ -17,7 +17,7 @@
               <td>
                 <div style="display: flex; gap: 1rem; align-items: center;">
                   {%- if item.image -%}
-                    <img src="{{ item.image | image_url: width: 120 }}" alt="{{ item.title }}" width="60" style="border-radius: var(--border-radius);">
+                    <img src="{{ item.image | image_url: width: 120 }}" alt="{{ item.title }}" width="60" height="60" style="border-radius: var(--border-radius);">
                   {%- endif -%}
                   <div>
                     <a href="{{ item.url }}" style="font-weight: 600;">{{ item.product.title }}</a>

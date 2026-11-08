@@ -4,7 +4,10 @@
 
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
-  assign color_option = product.options_by_name['Color'] or product.options_by_name['Colour']
+  assign color_option = product.options_by_name['Color']
+  if color_option == blank
+    assign color_option = product.options_by_name['Colour']
+  endif
   assign size_option = product.options_by_name['Size']
 -%}
 
@@ -113,7 +116,7 @@
                     aria-label="{{ val | escape }}"
                   >
                     {%- if swatch_img != blank -%}
-                      <img src="{{ swatch_img | image_url: width: 140 }}" alt="{{ val | escape }}" loading="lazy">
+                      <img src="{{ swatch_img | image_url: width: 140 }}" alt="{{ val | escape }}" loading="lazy" width="140" height="160">
                     {%- else -%}
                       <span class="eloura-pdp__colour-fallback-dot"></span>
                     {%- endif -%}

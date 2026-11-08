@@ -45,7 +45,10 @@
       <a href="{{ product.url }}">{{ product.title }}</a>
     </h3>
 
-    {%- assign color_option = product.options_by_name['Color'] or product.options_by_name['Colour'] -%}
+    {%- assign color_option = product.options_by_name['Color'] -%}
+    {%- if color_option == blank -%}
+      {%- assign color_option = product.options_by_name['Colour'] -%}
+    {%- endif -%}
     {%- if color_option -%}
       <p class="product-card__color-title">
         {{ product.selected_or_first_available_variant.option1 | default: color_option.values.first }}
