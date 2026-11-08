@@ -12,11 +12,16 @@
   endif
 
   assign target_link = section.settings.button_link
-  if target_link == blank and collection != blank
-    assign target_link = collection.url
-  endif
-  if target_link == blank
+  if section.settings.link_to_destination == 'all_products'
     assign target_link = routes.all_products_collection_url
+  elsif section.settings.link_to_destination == 'collection' and collection != blank
+    assign target_link = collection.url
+  elsif target_link == blank
+    if collection != blank
+      assign target_link = collection.url
+    else
+      assign target_link = routes.all_products_collection_url
+    endif
   endif
 
   assign hero_height_class = 'hero-banner--' | append: section.settings.height
@@ -305,7 +310,28 @@
     },
     {
       "type": "header",
-      "content": "Buttons"
+      "content": "Buttons & Destination Link"
+    },
+    {
+      "type": "select",
+      "id": "link_to_destination",
+      "label": "Button Link Target",
+      "options": [
+        {
+          "value": "collection",
+          "label": "Selected Collection (/collections/your-collection)"
+        },
+        {
+          "value": "all_products",
+          "label": "All Products (/collections/all)"
+        },
+        {
+          "value": "custom",
+          "label": "Custom URL (Use link field below)"
+        }
+      ],
+      "default": "collection",
+      "info": "Choose whether clicking 'SHOP NOW' opens only this collection's products or all store products."
     },
     {
       "type": "text",
@@ -316,8 +342,8 @@
     {
       "type": "url",
       "id": "button_link",
-      "label": "Primary Button Link",
-      "info": "Leave blank to automatically link to the selected Collection."
+      "label": "Custom URL (Only used if Target is set to Custom)",
+      "info": "Optional custom link."
     },
     {
       "type": "text",
