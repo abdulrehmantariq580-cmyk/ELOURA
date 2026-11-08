@@ -1,0 +1,111 @@
+{%- comment -%}
+  ELOURA - Luxury Represent-Style Collection / All Products Hero Banner
+{%- endcomment -%}
+
+{%- liquid
+  assign is_all_products = false
+  if collection.handle == 'all' or collection.handle == blank
+    assign is_all_products = true
+  endif
+
+  assign banner_img = section.settings.default_image
+  if collection.image != blank
+    assign banner_img = collection.image
+  endif
+
+  if is_all_products and section.settings.all_products_image != blank
+    assign banner_img = section.settings.all_products_image
+  endif
+
+  assign col_title = collection.title
+  if is_all_products
+    assign col_title = section.settings.all_products_title | default: 'ALL PRODUCTS'
+  endif
+
+  assign col_desc = collection.description
+  if is_all_products and section.settings.all_products_desc != blank
+    assign col_desc = section.settings.all_products_desc
+  endif
+-%}
+
+<section class="collection-hero-section" data-section-id="{{ section.id }}">
+  <!-- Collection Full Editorial Banner -->
+  <div class="collection-hero__media-wrapper">
+    {%- if banner_img != blank -%}
+      <img
+        src="{{ banner_img | image_url: width: 2200 }}"
+        alt="{{ col_title | escape }}"
+        class="collection-hero__image"
+        loading="eager"
+        width="2200"
+        height="1200"
+      >
+    {%- else -%}
+      <div class="collection-hero__placeholder">
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'collection-hero__placeholder-svg' }}
+      </div>
+    {%- endif -%}
+    <div class="collection-hero__overlay"></div>
+  </div>
+
+  <!-- Collection Editorial Intro Details -->
+  <div class="collection-hero__header container">
+    <h1 class="collection-hero__title">{{ col_title | upcase }}</h1>
+    
+    {%- if col_desc != blank -%}
+      <div class="collection-hero__desc-wrapper js-desc-wrapper">
+        <div class="collection-hero__desc js-desc-text">
+          {{ col_desc }}
+        </div>
+        <button type="button" class="collection-hero__readmore-btn js-desc-toggle" aria-expanded="false">
+          Read more
+        </button>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection Hero Banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "All Products Banner Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "all_products_image",
+      "label": "All Products Custom Image",
+      "info": "Display this image when viewing /collections/all"
+    },
+    {
+      "type": "text",
+      "id": "all_products_title",
+      "label": "All Products Title",
+      "default": "ALL PRODUCTS"
+    },
+    {
+      "type": "richtext",
+      "id": "all_products_desc",
+      "label": "All Products Description",
+      "default": "<p>Discover the complete ELOURA luxury streetwear collection. Crafted with architectural silhouettes, heavyweight bespoke fabrics, and minimalist aesthetics engineered for versatility and everyday wear.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Fallback Default Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "default_image",
+      "label": "Default Banner Image",
+      "info": "Used for any collection that does not have an uploaded collection image."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Hero Banner"
+    }
+  ]
+}
+{% endschema %}
