@@ -18,7 +18,7 @@
          1. LEFT: EDITORIAL MEDIA GALLERY (Vertical Scroll / Stack)
          ====================================================================== -->
     <div class="eloura-pdp__gallery">
-      <!-- Media Counter & Model Info Floating Tag -->
+      <!-- Media Counter Floating Tag (Cleaned: model text removed) -->
       <div class="eloura-pdp__media-tag">
         <span class="eloura-pdp__media-count"><span id="CurrentMediaIndex">1</span> / {{ product.media.size | default: 1 }}</span>
         {%- if section.settings.model_info != blank -%}
@@ -84,7 +84,7 @@
         {%- form 'product', product, id: 'ProductForm', class: 'eloura-pdp__form' -%}
           <input type="hidden" name="id" id="SelectedVariantId" value="{{ current_variant.id }}">
 
-          <!-- Colour Selector with Thumbnails (Represent Style) -->
+          <!-- Colour Selector with Thumbnails -->
           {%- if color_option -%}
             <div class="eloura-pdp__option-group eloura-pdp__option-group--colour">
               <div class="eloura-pdp__option-header">
@@ -250,22 +250,6 @@
 
   </div>
 
-  <!-- ======================================================================
-       3. EDITORIAL PRODUCT HIGHLIGHTS SECTION (Clean Centered Typography)
-       ====================================================================== -->
-  {%- if section.blocks.size > 0 -%}
-    <div class="eloura-pdp__features-section container">
-      <div class="eloura-pdp__features-grid">
-        {%- for block in section.blocks -%}
-          <div class="eloura-pdp__feature-item" {{ block.shopify_attributes }}>
-            <h3 class="eloura-pdp__feature-title">{{ block.settings.heading }}</h3>
-            <p class="eloura-pdp__feature-desc">{{ block.settings.text }}</p>
-          </div>
-        {%- endfor -%}
-      </div>
-    </div>
-  {%- endif -%}
-
   <!-- Size Chart Modal -->
   <div class="eloura-modal" id="SizeChartModal" aria-hidden="true">
     <div class="eloura-modal__backdrop js-size-chart-close"></div>
@@ -297,7 +281,7 @@
 </div>
 
 <script>
-  // Product Page Interactivity: Variant switching, Image tracking, Accordions, Modal
+  // Product Page Interactivity: Variant switching, Image tracking, Modal
   document.addEventListener('DOMContentLoaded', function() {
     const section = document.querySelector('.eloura-pdp');
     if (!section) return;
@@ -432,8 +416,8 @@
     {
       "type": "text",
       "id": "model_info",
-      "label": "Model Sizing Tag",
-      "default": "Model is 188cm and 75kg wearing size M"
+      "label": "Model Sizing Tag (Leave blank to hide)",
+      "default": ""
     },
     {
       "type": "text",
@@ -446,61 +430,6 @@
       "id": "points_text",
       "label": "Loyalty Points Label",
       "default": "Earn Prestige Points on Every Purchase"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "feature",
-      "name": "Fabric & Fit Feature",
-      "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Feature Title",
-          "default": "Oversized Cropped Fit"
-        },
-        {
-          "type": "textarea",
-          "id": "text",
-          "label": "Feature Description",
-          "default": "Dropped shoulders and a hip-length crop deliver a relaxed, substantial silhouette."
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Luxury Product Detail",
-      "blocks": [
-        {
-          "type": "feature",
-          "settings": {
-            "heading": "Heavyweight Garment Dye",
-            "text": "Sun-faded wash builds an uneven, worn-in finish unique to each piece."
-          }
-        },
-        {
-          "type": "feature",
-          "settings": {
-            "heading": "Oversized Cropped Fit",
-            "text": "Dropped shoulders and a hip-length crop deliver a relaxed, substantial silhouette."
-          }
-        },
-        {
-          "type": "feature",
-          "settings": {
-            "heading": "Brushed Fleece Back",
-            "text": "Anti-pilling treatment and a soft knit face ensure lasting texture and hand feel."
-          }
-        },
-        {
-          "type": "feature",
-          "settings": {
-            "heading": "Signature Insignia Detail",
-            "text": "Precision embroidery and bespoke high-density hardware finishes."
-          }
-        }
-      ]
     }
   ]
 }

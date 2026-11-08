@@ -2708,3 +2708,280 @@ button {
     gap: 2.5rem;
   }
 }
+
+/* ==========================================================================
+   PRODUCT PAGE ENHANCEMENTS: WHITE HEADER, PDP BANNER, BADGES, LOOKBOOK
+   ========================================================================== */
+
+/* 1. Force Pure White Header with Dark Icons ONLY on Product Pages */
+body.template-product .site-header {
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid #ECECEC !important;
+  position: sticky !important;
+  top: 0 !important;
+  color: #0A0A0A !important;
+}
+
+body.template-product .site-header .eloura-brandmark__text,
+body.template-product .site-header .header-icon-btn {
+  color: #0A0A0A !important;
+}
+
+body.template-product .eloura-pdp {
+  padding-top: 1rem;
+}
+
+/* 2. PDP Campaign Media Banner */
+.pdp-banner-section {
+  position: relative;
+  margin: 3.5rem 0 2rem;
+  background-color: #0A0A0A;
+  overflow: hidden;
+}
+
+.pdp-banner-media {
+  position: relative;
+  width: 100%;
+  min-height: 480px;
+  max-height: 680px;
+  overflow: hidden;
+  background-color: #1A1A1A;
+}
+
+.pdp-banner-video,
+.pdp-banner-image {
+  width: 100%;
+  height: 100%;
+  min-height: 480px;
+  max-height: 680px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.pdp-banner-placeholder {
+  min-height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #222222;
+}
+
+.pdp-banner-placeholder-svg {
+  width: 100%;
+  height: 450px;
+  opacity: 0.2;
+}
+
+.pdp-banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.45) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.pdp-banner-content {
+  color: #FFFFFF;
+  max-width: 680px;
+}
+
+.pdp-banner-subheading {
+  font-size: 0.8125rem;
+  letter-spacing: 0.2em;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #D5D5D5;
+}
+
+.pdp-banner-heading {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #FFFFFF;
+  margin: 0;
+  line-height: 1.25;
+}
+
+/* 3. Universal Trust Badges */
+.pdp-trust-badges-section {
+  padding: 3.5rem 0;
+  background-color: #FAFAFA;
+  border-top: 1px solid #ECECEC;
+  border-bottom: 1px solid #ECECEC;
+}
+
+.pdp-trust-badges__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.pdp-trust-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 0.5rem;
+}
+
+.pdp-trust-badge__icon {
+  margin-bottom: 1rem;
+  color: #0A0A0A;
+}
+
+.pdp-trust-badge__title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #0A0A0A;
+  margin: 0 0 0.4rem;
+}
+
+.pdp-trust-badge__desc {
+  font-size: 0.75rem;
+  color: #666666;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* 4. Multi-Image Lookbook Slider */
+.pdp-lookbook-section {
+  padding: 5rem 0 3.5rem;
+  background-color: #FFFFFF;
+}
+
+.pdp-lookbook__header {
+  margin-bottom: 2.5rem;
+}
+
+.pdp-lookbook__title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #0A0A0A;
+  margin: 0 0 0.4rem;
+}
+
+.pdp-lookbook__subtitle {
+  font-size: 0.8125rem;
+  letter-spacing: 0.12em;
+  color: #777777;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* PC: Clean 3-Column Editorial Grid (All visible) */
+.pdp-lookbook__track {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.pdp-lookbook__slide {
+  width: 100%;
+}
+
+.pdp-lookbook__media {
+  position: relative;
+  background-color: #F6F6F6;
+  overflow: hidden;
+  aspect-ratio: 4/5;
+}
+
+.pdp-lookbook__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.pdp-lookbook__slide:hover .pdp-lookbook__img {
+  transform: scale(1.02);
+}
+
+.pdp-lookbook__img--placeholder {
+  min-height: 420px;
+}
+
+.pdp-lookbook__caption {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #0A0A0A;
+  text-transform: uppercase;
+}
+
+/* 5. Recommended / Suggested Products */
+.pdp-recommendations-section {
+  padding: 3rem 0 5rem;
+  border-top: 1px solid #ECECEC;
+  background-color: #FFFFFF;
+}
+
+.pdp-recommendations__header {
+  margin-bottom: 2rem;
+}
+
+.pdp-recommendations__title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #0A0A0A;
+  margin: 0;
+}
+
+/* Mobile Responsiveness for New Sections */
+@media (max-width: 768px) {
+  body.template-product .eloura-pdp {
+    padding-top: 0;
+  }
+
+  .pdp-banner-media {
+    min-height: 380px;
+    max-height: 420px;
+  }
+
+  .pdp-banner-heading {
+    font-size: 1.35rem;
+  }
+
+  /* 2x2 grid for Trust Badges on mobile */
+  .pdp-trust-badges__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1rem;
+  }
+
+  /* Multi-Image Lookbook becomes a smooth touch sliding carousel on mobile */
+  .pdp-lookbook__track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    scrollbar-width: none;
+  }
+
+  .pdp-lookbook__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pdp-lookbook__slide {
+    flex: 0 0 78%;
+    min-width: 78%;
+    scroll-snap-align: start;
+  }
+}

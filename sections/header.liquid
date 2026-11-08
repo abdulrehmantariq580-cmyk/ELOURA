@@ -5,7 +5,9 @@
   endif
   assign overlay_class = ''
   if template.name == 'index' or section.settings.transparent_header
-    assign overlay_class = ' site-header--overlay'
+    unless template.name == 'product'
+      assign overlay_class = ' site-header--overlay'
+    endunless
   endif
 -%}
 

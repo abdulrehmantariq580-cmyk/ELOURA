@@ -1,21 +1,79 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
       "type": "main-product",
-      "settings": {}
+      "settings": {
+        "model_info": "",
+        "duties_text": "Duties & Taxes Calculated at Checkout.",
+        "points_text": "Earn Prestige Points on Every Purchase"
+      }
+    },
+    "banner": {
+      "type": "pdp-media-banner",
+      "settings": {
+        "full_width": true,
+        "subheading": "THE COLLECTION",
+        "heading": "ARCHITECTURAL FIT. TIMELESS QUALITY."
+      }
+    },
+    "trust_badges": {
+      "type": "pdp-trust-badges",
+      "settings": {
+        "badge1_title": "EXPRESS DELIVERY",
+        "badge1_desc": "Dispatched in 24-48 hours with door-to-door tracking",
+        "badge2_title": "BESPOKE QUALITY",
+        "badge2_desc": "Heavyweight custom-milled fabrics built to endure",
+        "badge3_title": "EASY EXCHANGES",
+        "badge3_desc": "7-day hassle-free size replacement & exchange",
+        "badge4_title": "SECURE PAYMENTS",
+        "badge4_desc": "Cash on Delivery & Encrypted 256-bit Online Checkout"
+      }
+    },
+    "lookbook": {
+      "type": "pdp-lookbook-slider",
+      "blocks": {
+        "image_1": {
+          "type": "image",
+          "settings": {
+            "caption": "Precision Ribbed Trims"
+          }
+        },
+        "image_2": {
+          "type": "image",
+          "settings": {
+            "caption": "Custom Heavyweight 480GSM Cotton"
+          }
+        },
+        "image_3": {
+          "type": "image",
+          "settings": {
+            "caption": "Dropped Shoulder Silhouette"
+          }
+        }
+      },
+      "block_order": [
+        "image_1",
+        "image_2",
+        "image_3"
+      ],
+      "settings": {
+        "heading": "CAMPAIGN LOOKBOOK",
+        "subheading": "DISCOVER THE DETAILS"
+      }
+    },
+    "suggested": {
+      "type": "pdp-suggested-products",
+      "settings": {
+        "heading": "COMPLETE THE LOOK",
+        "products_to_show": 6
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "banner",
+    "trust_badges",
+    "lookbook",
+    "suggested"
   ]
 }
-
