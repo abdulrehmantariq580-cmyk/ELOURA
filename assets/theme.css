@@ -2985,3 +2985,27 @@ body.template-product .eloura-pdp {
     scroll-snap-align: start;
   }
 }
+
+/* Remove drop shadow / text shadow / glow completely on product page header */
+body.template-product .site-header {
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid #ECECEC !important;
+  box-shadow: none !important;
+}
+
+body.template-product .site-header .header-icon-btn,
+body.template-product .site-header .eloura-brandmark__text,
+body.template-product .site-header .site-header__logo-image {
+  color: #0A0A0A !important;
+  filter: none !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+
+/* ELOURA brandmark specific underline under O U */
+.eloura-brandmark__underline {
+  border-bottom: 1.5px solid currentColor;
+  padding-bottom: 2px;
+  display: inline-block;
+  line-height: 0.9;
+}
