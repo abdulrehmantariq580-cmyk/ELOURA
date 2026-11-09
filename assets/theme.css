@@ -3658,3 +3658,28 @@ body.template-product .site-header .site-header__logo-image {
     margin-top: 0.25rem;
   }
 }
+
+/* ==========================================================================
+   MOBILE SCROLL SMOOTHING & ANTI-GLITCH OPTIMIZATION
+   ========================================================================== */
+html, body {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+}
+
+/* Eliminate repaint stutter on mobile sticky header */
+.site-header {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: background-color, border-color, box-shadow;
+}
+
+/* Ensure mobile hero height does not flicker on browser URL bar collapse */
+@media (max-width: 768px) {
+  .hero-banner--fullscreen {
+    height: 100vh;
+    height: 100svh; /* Small viewport height prevents toolbar collapse jump */
+  }
+}

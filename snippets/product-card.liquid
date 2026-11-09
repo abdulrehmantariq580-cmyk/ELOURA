@@ -45,26 +45,6 @@
       <a href="{{ product.url }}">{{ product.title }}</a>
     </h3>
 
-    {%- assign color_option = product.options_by_name['Color'] -%}
-    {%- if color_option == blank -%}
-      {%- assign color_option = product.options_by_name['Colour'] -%}
-    {%- endif -%}
-    {%- if color_option -%}
-      <p class="product-card__color-title">
-        {{ product.selected_or_first_available_variant.option1 | default: color_option.values.first }}
-      </p>
-      <div class="product-card__swatch-row">
-        <span class="product-card__swatch-dot" style="background-color: #111111;"></span>
-        <span class="product-card__colour-count">{{ color_option.values.size }} Colour{% if color_option.values.size > 1 %}s{% endif %}</span>
-      </div>
-    {%- else -%}
-      <p class="product-card__color-title">Jet Black</p>
-      <div class="product-card__swatch-row">
-        <span class="product-card__swatch-dot" style="background-color: #111111;"></span>
-        <span class="product-card__colour-count">1 Colour</span>
-      </div>
-    {%- endif -%}
-
     <div class="product-card__pricing">
       <span class="product-card__price">{{ product.price | money }}</span>
       {%- if product.compare_at_price > product.price -%}

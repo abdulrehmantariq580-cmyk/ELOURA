@@ -20,6 +20,7 @@ function initStickyHeader() {
 
   const heroSection = document.querySelector('.hero-banner');
 
+  let ticking = false;
   const updateHeaderState = () => {
     const scrollY = window.pageYOffset || document.documentElement.scrollTop;
 
@@ -30,19 +31,29 @@ function initStickyHeader() {
     }
 
     if (scrollY >= heroThreshold) {
-      // User has scrolled PAST the hero section into normal content
-      header.classList.add('header--below-hero');
-      header.classList.remove('header--on-hero');
+      if (!header.classList.contains('header--below-hero')) {
+        header.classList.add('header--below-hero');
+        header.classList.remove('header--on-hero');
+      }
     } else {
-      // User is INSIDE the hero section -> Always transparent, NO black background!
-      header.classList.remove('header--below-hero');
-      header.classList.add('header--on-hero');
+      if (!header.classList.contains('header--on-hero')) {
+        header.classList.remove('header--below-hero');
+        header.classList.add('header--on-hero');
+      }
+    }
+    ticking = false;
+  };
+
+  const onScroll = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateHeaderState);
+      ticking = true;
     }
   };
 
-  window.addEventListener('scroll', updateHeaderState, { passive: true });
-  window.addEventListener('resize', updateHeaderState, { passive: true });
-  updateHeaderState(); // Check immediately on load
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  updateHeaderState();
 }
 
 /**

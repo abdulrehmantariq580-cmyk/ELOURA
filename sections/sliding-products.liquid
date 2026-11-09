@@ -43,17 +43,7 @@
                       {%- endcase -%}
                     </a>
                   </h3>
-                  <p class="product-card__color-title">
-                    {%- case i -%}
-                      {%- when 3 -%}Vintage Black
-                      {%- when 4 -%}Army Olive
-                      {%- else -%}Jet Black
-                    {%- endcase -%}
-                  </p>
-                  <div class="product-card__swatch-row">
-                    <span class="product-card__swatch-dot" style="background-color: {% if i == 4 %}#3B443B{% elsif i == 3 %}#2B2B2B{% else %}#111111{% endif %};"></span>
-                    <span class="product-card__colour-count">1 Colour</span>
-                  </div>
+                  
                   <div class="product-card__pricing">
                     <span class="product-card__price">
                       {%- case i -%}
