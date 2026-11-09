@@ -9,6 +9,31 @@
  */
 {
   "sections": {
+    "hero_HwnyzL": {
+      "type": "hero",
+      "settings": {
+        "collection": "",
+        "use_all_products": true,
+        "image_desktop": "shopify://shop_images/Gemini_Generated_Image_pq5mf7pq5mf7pq5m.jpg",
+        "image_mobile": "shopify://shop_images/Gemini_Generated_Image_ryo0xryo0xryo0xr.jpg",
+        "video_url": "",
+        "overlay_opacity": 25,
+        "subheading": "Introducing Eloura",
+        "heading": "A new standard of timeless fashion",
+        "description": "",
+        "link_to_destination": "collection",
+        "button_label": "SHOP ALL",
+        "button_link": "",
+        "secondary_button_label": "",
+        "secondary_button_link": "",
+        "height": "fullscreen",
+        "content_alignment": "bottom-center",
+        "show_scroll_indicator": false,
+        "show_products": true,
+        "products_to_show": 8,
+        "bottom_link_text": ""
+      }
+    },
     "hero": {
       "type": "hero",
       "settings": {
@@ -187,6 +212,7 @@
     }
   },
   "order": [
+    "hero_HwnyzL",
     "hero",
     "hero_xczFzf",
     "hero_jwFYxR",
