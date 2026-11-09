@@ -3,7 +3,7 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign wa_num = settings.whatsapp_number | default: '923000000000' | remove: '+' | remove: ' ' | remove: '-'
+  assign wa_num = settings.whatsapp_number | default: '923255136747' | remove: '+' | remove: ' ' | remove: '-'
   
   if template.name == 'product'
     assign default_text = 'Hi ELOURA, I want to inquire about ' | append: product.title | append: ' (' | append: canonical_url | append: ')'

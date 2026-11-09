@@ -4763,3 +4763,48 @@ body:not(.template-index) .site-header .cart-bubble {
   padding-left: 1.5rem;
   margin-bottom: 1.5rem;
 }
+
+
+/* Contact Page Social & Payment additions */
+.eloura-contact-social-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.eloura-contact-social-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px dashed #E5E5E5;
+}
+
+.eloura-contact-social-row:last-child {
+  border-bottom: none;
+}
+
+.eloura-contact-social-platform {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #555555;
+}
+
+.eloura-contact-social-handle {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #0A0A0A;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.eloura-contact-social-handle:hover {
+  color: #777777;
+}
+
+.eloura-contact-card--payment {
+  background-color: #F8F9FA;
+  border-left: 3px solid #0A0A0A;
+}
