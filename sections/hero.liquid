@@ -8,7 +8,7 @@
     assign hero_title = collection.title
   endif
   if hero_title == blank
-    assign hero_title = 'Initial FW26'
+    assign hero_title = 'NEWEST ARRIVALS'
   endif
 
   assign target_link = section.settings.button_link
@@ -154,7 +154,8 @@
               </div>
             {%- endfor -%}
           {%- elsif section.settings.use_all_products -%}
-            {%- for product in collections.all.products limit: product_limit -%}
+            {%- assign sorted_products = collections.all.products | sort: 'created_at' | reverse -%}
+            {%- for product in sorted_products limit: product_limit -%}
               <div class="sliding-products__item">
                 {% render 'product-card', product: product %}
               </div>
