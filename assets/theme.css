@@ -4115,3 +4115,57 @@ html, body {
     right: 10px !important;
   }
 }
+
+/* ==========================================================================
+   HERO NEWEST ARRIVALS: BOLD LUXURY EDITORIAL CENTERED HEADING
+   ========================================================================== */
+.hero-newest-arrivals__header {
+  text-align: center;
+  padding: 3.5rem 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-newest-arrivals__eyebrow {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: #777777;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+}
+
+.hero-newest-arrivals__title {
+  font-size: 2.25rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0A0A0A;
+  margin: 0;
+  line-height: 1.15;
+  font-family: inherit;
+}
+
+.hero-newest-arrivals__divider {
+  width: 48px;
+  height: 2px;
+  background-color: #0A0A0A;
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .hero-newest-arrivals__header {
+    padding: 2.5rem 1rem 1.5rem;
+  }
+  .hero-newest-arrivals__title {
+    font-size: 1.65rem;
+    letter-spacing: 0.08em;
+  }
+  .hero-newest-arrivals__divider {
+    width: 36px;
+    margin-top: 1rem;
+  }
+}

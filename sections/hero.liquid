@@ -146,10 +146,12 @@
   {%- if section.settings.show_products -%}
     <div class="sliding-products__wrapper">
       {%- if collection == blank -%}
-        <div class="container" style="padding-top: 2rem; padding-bottom: 0.5rem;">
-          <h2 style="font-size: 1.15rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #0A0A0A; margin: 0;">
+        <div class="container hero-newest-arrivals__header">
+          <span class="hero-newest-arrivals__eyebrow">JUST DROPPED</span>
+          <h2 class="hero-newest-arrivals__title">
             NEWEST ARRIVALS
           </h2>
+          <div class="hero-newest-arrivals__divider"></div>
         </div>
       {%- endif -%}
 
