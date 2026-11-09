@@ -15,10 +15,10 @@
   <div class="eloura-pdp__layout">
     
     <!-- ======================================================================
-         1. LEFT: EDITORIAL MEDIA GALLERY (Vertical Scroll / Stack)
+         1. LEFT: EDITORIAL MEDIA GALLERY (Horizontal Slider with Smart Arrows)
          ====================================================================== -->
     <div class="eloura-pdp__gallery">
-      <!-- Media Counter & Model Info Floating Tag -->
+      <!-- Media Counter Floating Tag -->
       <div class="eloura-pdp__media-tag">
         <span class="eloura-pdp__media-count"><span id="CurrentMediaIndex">1</span> / {{ product.media.size | default: 1 }}</span>
         {%- if section.settings.model_info != blank -%}
@@ -30,6 +30,29 @@
           </svg>
         </button>
       </div>
+
+      <!-- Left / Right Nav Arrows: White Square Buttons -->
+      <button
+        type="button"
+        class="eloura-pdp__nav-arrow eloura-pdp__nav-arrow--prev js-pdp-arrow-prev is-disabled"
+        aria-label="Previous Image"
+        disabled
+      >
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        class="eloura-pdp__nav-arrow eloura-pdp__nav-arrow--next js-pdp-arrow-next"
+        aria-label="Next Image"
+        {% if product.media.size <= 1 %}disabled class="eloura-pdp__nav-arrow eloura-pdp__nav-arrow--next js-pdp-arrow-next is-disabled"{% endif %}
+      >
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
 
       <div class="eloura-pdp__media-stack js-pdp-media-stack">
         {%- if product.media.size > 0 -%}
@@ -302,23 +325,75 @@
     const section = document.querySelector('.eloura-pdp');
     if (!section) return;
 
-    // Track scroll position in media stack to update 1 / 12 counter
+    // Track scroll position in media stack and manage Left/Right Arrow states
+    const mediaStack = section.querySelector('.js-pdp-media-stack');
     const mediaItems = section.querySelectorAll('.eloura-pdp__media-item');
     const counterEl = document.getElementById('CurrentMediaIndex');
-    
-    if (mediaItems.length > 0 && counterEl) {
-      const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            const idx = entry.target.getAttribute('data-index');
-            if (idx) counterEl.textContent = idx;
-          }
-        });
-      }, { threshold: 0.6 });
+    const prevArrow = section.querySelector('.js-pdp-arrow-prev');
+    const nextArrow = section.querySelector('.js-pdp-arrow-next');
 
-      mediaItems.forEach(function(item) {
-        observer.observe(item);
-      });
+    let currentSlide = 0;
+    const totalSlides = mediaItems.length;
+
+    function updateArrowStates() {
+      if (!mediaStack) return;
+      const scrollLeft = mediaStack.scrollLeft;
+      const maxScroll = mediaStack.scrollWidth - mediaStack.clientWidth;
+
+      // Update current index counter based on scroll position
+      const slideWidth = mediaStack.clientWidth;
+      if (slideWidth > 0) {
+        currentSlide = Math.round(scrollLeft / slideWidth);
+        if (counterEl) {
+          counterEl.textContent = Math.min(Math.max(currentSlide + 1, 1), totalSlides);
+        }
+      }
+
+      // Check left edge (fade & disable)
+      if (scrollLeft <= 5) {
+        if (prevArrow) {
+          prevArrow.disabled = true;
+          prevArrow.classList.add('is-disabled');
+        }
+      } else {
+        if (prevArrow) {
+          prevArrow.disabled = false;
+          prevArrow.classList.remove('is-disabled');
+        }
+      }
+
+      // Check right edge (fade & disable)
+      if (scrollLeft >= maxScroll - 5 || totalSlides <= 1) {
+        if (nextArrow) {
+          nextArrow.disabled = true;
+          nextArrow.classList.add('is-disabled');
+        }
+      } else {
+        if (nextArrow) {
+          nextArrow.disabled = false;
+          nextArrow.classList.remove('is-disabled');
+        }
+      }
+    }
+
+    if (mediaStack) {
+      mediaStack.addEventListener('scroll', updateArrowStates, { passive: true });
+      window.addEventListener('resize', updateArrowStates, { passive: true });
+      updateArrowStates();
+
+      if (prevArrow) {
+        prevArrow.addEventListener('click', function() {
+          const slideWidth = mediaStack.clientWidth;
+          mediaStack.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+        });
+      }
+
+      if (nextArrow) {
+        nextArrow.addEventListener('click', function() {
+          const slideWidth = mediaStack.clientWidth;
+          mediaStack.scrollBy({ left: slideWidth, behavior: 'smooth' });
+        });
+      }
     }
 
     // Read more / Read less toggle
