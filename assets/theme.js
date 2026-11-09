@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Quantity updates inside drawer via AJAX
+  // Quantity updates inside drawer via AJAX (Smooth In-Place update, No Page Reload!)
   drawer.addEventListener('click', function(e) {
     const qtyBtn = e.target.closest('.js-qty-btn');
     const removeBtn = e.target.closest('.js-cart-remove');
@@ -230,7 +230,42 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  function refreshCartDrawer() {
+    fetch('/?sections=cart-drawer-section')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data['cart-drawer-section']) {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(data['cart-drawer-section'], 'text/html');
+          const newDrawer = doc.getElementById('CartDrawer');
+          if (newDrawer) {
+            // Replace inner contents while keeping drawer open and stable without re-sliding
+            const currentPanel = drawer.querySelector('.cart-drawer__panel');
+            const newPanel = newDrawer.querySelector('.cart-drawer__panel');
+            if (currentPanel && newPanel) {
+              currentPanel.innerHTML = newPanel.innerHTML;
+            }
+
+            // Also update header cart count bubble
+            const newCountEl = newDrawer.querySelector('#CartDrawerCount');
+            if (newCountEl) {
+              const countText = newCountEl.textContent.replace(/[()]/g, '').trim();
+              document.querySelectorAll('.cart-bubble, .header-cart-count').forEach(function(el) {
+                el.textContent = countText;
+              });
+            }
+          }
+        }
+      })
+      .catch(err => {
+        console.error('Failed to refresh cart drawer section:', err);
+      });
+  }
+
   function updateCartLine(line, quantity) {
+    // Disable stepper buttons while updating to prevent race conditions
+    drawer.querySelectorAll('.js-qty-btn, .js-cart-remove').forEach(btn => btn.style.pointerEvents = 'none');
+
     fetch('/cart/change.js', {
       method: 'POST',
       headers: {
@@ -240,12 +275,13 @@ document.addEventListener('DOMContentLoaded', function() {
       body: JSON.stringify({ line: parseInt(line, 10), quantity: quantity })
     })
     .then(res => res.json())
-    .then(cart => {
-      // Reload drawer markup or reload page for clean Shopify currency sync
-      window.location.reload();
+    .then(() => {
+      // In-place refresh using Shopify Section Rendering API: No page reload, drawer stays open without re-animating!
+      refreshCartDrawer();
     })
     .catch(err => {
       console.error('Error updating cart line:', err);
+      drawer.querySelectorAll('.js-qty-btn, .js-cart-remove').forEach(btn => btn.style.pointerEvents = '');
     });
   }
 
