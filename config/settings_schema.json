@@ -53,6 +53,18 @@
         "type": "text",
         "id": "social_facebook_link",
         "label": "Facebook"
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_number",
+        "label": "WhatsApp Number (with country code, e.g. 923000000000)",
+        "default": "923000000000"
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_default_message",
+        "label": "WhatsApp Default Message",
+        "default": "Hi ELOURA, I have an inquiry about your products."
       }
     ]
   }

@@ -4233,3 +4233,127 @@ html, body {
     margin-top: 1rem;
   }
 }
+
+
+/* ==========================================================================
+   ELOURA - FLOATING WHATSAPP BUTTON (Represent Streetwear Luxury Aesthetic)
+   ========================================================================== */
+.eloura-floating-wa {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.eloura-floating-wa__btn {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  background-color: #0A0A0A;
+  color: #FFFFFF;
+  padding: 6px 6px 6px 14px;
+  border-radius: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28), 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, background-color 0.25s ease;
+  user-select: none;
+}
+
+.eloura-floating-wa__btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  background-color: #1A1A1A;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35), 0 4px 10px rgba(0, 0, 0, 0.2);
+  color: #FFFFFF;
+}
+
+.eloura-floating-wa__tooltip {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  white-space: nowrap;
+  padding-left: 4px;
+  display: inline-block;
+}
+
+.eloura-floating-wa__icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+  border-radius: 50%;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.eloura-floating-wa__btn:hover .eloura-floating-wa__icon-wrap {
+  background-color: #25D366;
+  color: #FFFFFF;
+  transform: rotate(5deg);
+}
+
+.eloura-floating-wa__icon {
+  width: 20px;
+  height: 20px;
+}
+
+.eloura-floating-wa__status-dot {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 9px;
+  height: 9px;
+  background-color: #25D366;
+  border: 2px solid #0A0A0A;
+  border-radius: 50%;
+}
+
+/* Mobile responsive optimization */
+@media (max-width: 768px) {
+  .eloura-floating-wa {
+    bottom: 20px;
+    right: 16px;
+  }
+
+  .eloura-floating-wa__tooltip {
+    display: none;
+  }
+
+  .eloura-floating-wa__btn {
+    padding: 0;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .eloura-floating-wa__icon-wrap {
+    width: 46px;
+    height: 46px;
+    background-color: #0A0A0A;
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .eloura-floating-wa__icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .eloura-floating-wa__status-dot {
+    top: 2px;
+    right: 2px;
+    border-color: #0A0A0A;
+  }
+}
