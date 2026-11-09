@@ -17,18 +17,18 @@
       </button>
     </div>
 
-    <!-- Free Delivery Progress Bar -->
+    <!-- Free Delivery Progress Bar (Rs. 10,000 Threshold) -->
     <div class="cart-drawer__shipping-bar">
-      {%- assign free_shipping_threshold = 1500000 -%} <!-- Rs. 15,000 in cents -->
+      {%- assign free_shipping_threshold = 1000000 -%} <!-- Rs. 10,000 in cents -->
       {%- assign remaining = free_shipping_threshold | minus: cart.total_price -%}
       {%- assign progress_pct = cart.total_price | times: 100 | divided_by: free_shipping_threshold -%}
       {%- if progress_pct > 100 -%}{%- assign progress_pct = 100 -%}{%- endif -%}
 
       <div class="cart-drawer__shipping-text">
         {%- if remaining > 0 -%}
-          Add <strong>{{ remaining | money }}</strong> more for <strong>FREE EXPRESS DELIVERY</strong>
+          ADD <strong>{{ remaining | money }}</strong> SHOPPING FOR <strong>FREE DELIVERY</strong>
         {%- else -%}
-          <strong>YOU UNLOCKED FREE EXPRESS DELIVERY!</strong> ⚡
+          <strong>YOU UNLOCKED FREE DELIVERY!</strong> ⚡
         {%- endif -%}
       </div>
       <div class="cart-drawer__progress-track">
@@ -117,14 +117,34 @@
       {%- endif -%}
     </div>
 
-    <!-- Drawer Footer: Subtotal & Sticky Checkout -->
+    <!-- Drawer Footer: Product Cost, Shipping Cost, Total & Sticky Checkout -->
     {%- if cart.item_count > 0 -%}
       <div class="cart-drawer__footer js-cart-drawer-footer">
-        <div class="cart-drawer__subtotal-row">
-          <span class="cart-drawer__subtotal-label">SUBTOTAL</span>
-          <span class="cart-drawer__subtotal-val" id="CartDrawerSubtotal">{{ cart.total_price | money }}</span>
+        <div class="cart-drawer__breakdown">
+          <!-- Product Cost -->
+          <div class="cart-drawer__summary-row">
+            <span class="cart-drawer__summary-label">PRODUCT COST</span>
+            <span class="cart-drawer__summary-val" id="CartDrawerProductCost">{{ cart.total_price | money }}</span>
+          </div>
+
+          <!-- Shipping Cost -->
+          <div class="cart-drawer__summary-row">
+            <span class="cart-drawer__summary-label">SHIPPING COST</span>
+            <span class="cart-drawer__summary-val">
+              {%- if cart.total_price >= free_shipping_threshold -%}
+                <strong style="color: #0A0A0A; letter-spacing: 0.04em;">FREE</strong>
+              {%- else -%}
+                <span style="color: #666666;">Calculated at checkout</span>
+              {%- endif -%}
+            </span>
+          </div>
+
+          <!-- Total Row -->
+          <div class="cart-drawer__summary-row cart-drawer__summary-row--total">
+            <span class="cart-drawer__summary-label" style="font-weight: 800; font-size: 0.875rem;">TOTAL</span>
+            <span class="cart-drawer__summary-val" id="CartDrawerSubtotal" style="font-weight: 800; font-size: 1.05rem;">{{ cart.total_price | money }}</span>
+          </div>
         </div>
-        <p class="cart-drawer__taxes-note">Shipping, taxes, and discounts calculated at checkout.</p>
 
         <form action="{{ routes.cart_url }}" method="post">
           <button type="submit" name="checkout" class="cart-drawer__checkout-btn">

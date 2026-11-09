@@ -249,6 +249,46 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // Global Quick-Add Button Handler (.js-quick-add-btn on product cards)
+  document.addEventListener('click', function(e) {
+    const quickAddBtn = e.target.closest('.js-quick-add-btn');
+    if (!quickAddBtn) return;
+
+    e.preventDefault();
+    const variantId = quickAddBtn.getAttribute('data-variant-id');
+    if (!variantId) return;
+
+    quickAddBtn.disabled = true;
+    quickAddBtn.classList.add('is-loading');
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        id: parseInt(variantId, 10),
+        quantity: 1
+      })
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('Network error');
+      return res.json();
+    })
+    .then(() => {
+      // Direct redirect to open drawer smoothly or reload with ?cart_open=1
+      const url = new URL(window.location.href);
+      url.searchParams.set('cart_open', '1');
+      window.location.href = url.toString();
+    })
+    .catch(err => {
+      console.error('Quick add failed:', err);
+      quickAddBtn.disabled = false;
+      quickAddBtn.classList.remove('is-loading');
+    });
+  });
+
   // Intercept Ajax "Add to Cart" on PDP and open Drawer smoothly
   const pdpForm = document.getElementById('ProductForm');
   if (pdpForm) {
