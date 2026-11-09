@@ -3811,3 +3811,61 @@ html, body {
   object-fit: cover !important;
   object-position: center top !important;
 }
+
+/* ==========================================================================
+   PRODUCT CARD: CENTERED FIT & SOLID BLACK OVERSIZED FIT BADGE
+   ========================================================================== */
+.product-card__tag span {
+  background-color: #0A0A0A !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  font-size: 0.6rem !important;
+  letter-spacing: 0.16em !important;
+  padding: 0.22rem 0.55rem !important;
+  font-weight: 700 !important;
+  border-radius: 1px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Image centered with natural padding so head/shoulders do not touch badge */
+.product-card__media-box {
+  aspect-ratio: 1 / 1.15 !important;
+  background-color: #F4F4F2 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1.25rem !important;
+  overflow: hidden !important;
+}
+
+.product-card__link {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.product-card__img {
+  width: auto !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  display: block !important;
+  margin: 0 auto !important;
+  mix-blend-mode: multiply !important;
+  transform: none !important;
+}
+
+.product-card__img--hover {
+  width: auto !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  margin: 0 auto !important;
+  mix-blend-mode: multiply !important;
+}
