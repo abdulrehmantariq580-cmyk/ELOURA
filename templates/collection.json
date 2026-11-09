@@ -14,7 +14,8 @@
       "settings": {
         "all_products_image": "shopify://shop_images/eloura_single_20261109_jacket_desktop.png",
         "all_products_title": "ALL PRODUCTS",
-        "all_products_desc": "<p>Discover the complete ELOURA luxury streetwear collection. Crafted with architectural silhouettes, heavyweight bespoke fabrics, and minimalist aesthetics engineered for versatility and everyday wear.</p>"
+        "all_products_desc": "<p>Discover the complete ELOURA luxury streetwear collection. Crafted with architectural silhouettes, heavyweight bespoke fabrics, and minimalist aesthetics engineered for versatility and everyday wear.</p>",
+        "default_image": "shopify://shop_images/eloura-all-products-campaign-image.png"
       }
     },
     "main": {
