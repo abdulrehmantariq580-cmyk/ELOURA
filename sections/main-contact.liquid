@@ -1,0 +1,119 @@
+{%- comment -%}
+  ELOURA - Luxury Minimalist Contact & Customer Care Template
+{%- endcomment -%}
+
+<div class="eloura-page-wrapper">
+  <div class="container eloura-contact-container">
+    <div class="eloura-page-header">
+      <span class="eloura-page-eyebrow">CLIENT SERVICES</span>
+      <h1 class="eloura-page-title">{{ page.title | upcase }}</h1>
+      <p class="eloura-page-subtitle">Our team is available to assist you with order inquiries, product sizing, and client services.</p>
+    </div>
+
+    <div class="eloura-contact-layout">
+      <!-- Contact Info Cards -->
+      <div class="eloura-contact-info">
+        <div class="eloura-contact-card">
+          <span class="eloura-contact-card__label">WHATSAPP DIRECT</span>
+          <p class="eloura-contact-card__val">Instant support for sizing &amp; orders</p>
+          <a href="https://wa.me/{{ settings.whatsapp_number | default: '923000000000' }}" target="_blank" rel="noopener" class="eloura-contact-card__link">
+            START WHATSAPP CHAT &rarr;
+          </a>
+        </div>
+
+        <div class="eloura-contact-card">
+          <span class="eloura-contact-card__label">EMAIL ENQUIRIES</span>
+          <p class="eloura-contact-card__val">General, orders, and PR queries</p>
+          <a href="mailto:support@eloura.pk" class="eloura-contact-card__link">
+            SUPPORT@ELOURA.PK &rarr;
+          </a>
+        </div>
+
+        <div class="eloura-contact-card">
+          <span class="eloura-contact-card__label">HOURS OF OPERATION</span>
+          <p class="eloura-contact-card__val">Monday &ndash; Saturday: 11:00 AM &ndash; 9:00 PM (PKT)</p>
+          <p class="eloura-contact-card__subval">Sunday: Closed</p>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="eloura-contact-form-wrap">
+        {%- form 'contact', id: 'ContactForm', class: 'eloura-form' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="eloura-form-success" role="status">
+              <p>Thank you for contacting ELOURA. We will reply to your inquiry within 24 hours.</p>
+            </div>
+          {%- elsif form.errors -%}
+            <div class="eloura-form-error" role="alert">
+              <p>Please check the form and correct errors before submitting.</p>
+            </div>
+          {%- endif -%}
+
+          <div class="eloura-form-grid">
+            <div class="eloura-form-field">
+              <label for="ContactFormName" class="eloura-label">NAME *</label>
+              <input
+                type="text"
+                id="ContactFormName"
+                name="contact[name]"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                class="eloura-input"
+                required
+                autocomplete="name"
+              >
+            </div>
+
+            <div class="eloura-form-field">
+              <label for="ContactFormEmail" class="eloura-label">EMAIL *</label>
+              <input
+                type="email"
+                id="ContactFormEmail"
+                name="contact[email]"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                class="eloura-input"
+                required
+                autocomplete="email"
+                spellcheck="false"
+                autocapitalize="off"
+              >
+            </div>
+          </div>
+
+          <div class="eloura-form-field">
+            <label for="ContactFormPhone" class="eloura-label">PHONE NUMBER</label>
+            <input
+              type="tel"
+              id="ContactFormPhone"
+              name="contact[phone]"
+              value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+              class="eloura-input"
+              autocomplete="tel"
+            >
+          </div>
+
+          <div class="eloura-form-field">
+            <label for="ContactFormMessage" class="eloura-label">MESSAGE *</label>
+            <textarea
+              id="ContactFormMessage"
+              name="contact[body]"
+              rows="6"
+              class="eloura-textarea"
+              required
+            >{{ form.body }}</textarea>
+          </div>
+
+          <button type="submit" class="eloura-btn-solid">
+            SEND MESSAGE
+          </button>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact Page",
+  "settings": []
+}
+{% endschema %}

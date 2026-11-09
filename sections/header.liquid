@@ -30,16 +30,14 @@
         <span class="sr-only">Menu</span>
       </button>
 
-      <button
-        type="button"
-        class="header-icon-btn js-search-open"
+      <a
+        href="{{ routes.search_url }}"
+        class="header-icon-btn js-search-link"
         aria-label="Open Search"
-        aria-controls="SearchDrawer"
-        aria-expanded="false"
       >
         {% render 'icon-search' %}
         <span class="sr-only">Search</span>
-      </button>
+      </a>
     </div>
 
     <!-- Center: Brand Logo / Wordmark -->
@@ -129,20 +127,20 @@
       </button>
     </div>
 
-    <!-- 2. Search Bar: Direct action to /collections/all with search autofocus -->
+    <!-- 2. Search Bar: Direct click navigation to Shopify /search page -->
     <div class="nav-drawer__search">
-      <form action="{{ routes.all_products_collection_url }}" method="get" role="search" class="drawer-search-form">
+      <a href="{{ routes.search_url }}" class="drawer-search-form" style="text-decoration: none;">
         <input
-          type="search"
-          name="q"
-          placeholder="SEARCH ALL PRODUCTS..."
+          type="text"
+          readonly
+          placeholder="SEARCH PRODUCTS..."
           class="drawer-search-input"
-          autocomplete="off"
+          style="cursor: pointer;"
         >
-        <button type="submit" class="drawer-search-btn" aria-label="Search Catalog">
+        <span class="drawer-search-btn" aria-label="Search Catalog" style="pointer-events: none;">
           {% render 'icon-search' %}
-        </button>
-      </form>
+        </span>
+      </a>
     </div>
 
     <!-- 3. Drawer Navigation Links -->
@@ -209,7 +207,7 @@
         </a>
 
         <!-- WhatsApp -->
-        <a href="https://wa.me/923000000000" target="_blank" rel="noopener" class="drawer-social-icon drawer-social-icon--wa" aria-label="WhatsApp">
+        <a href="https://wa.me/923000000000" target="_blank" rel="noopener" class="drawer-social-icon" aria-label="WhatsApp">
           {% render 'icon-whatsapp', width: 20, height: 20 %}
         </a>
       </div>

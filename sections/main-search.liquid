@@ -1,41 +1,81 @@
-<div class="search-page container" style="padding: 3rem 0;">
-  <div style="text-align: center; margin-bottom: 3rem;">
-    <h1>{{ 'general.search' | t }}</h1>
-    <form action="{{ routes.search_url }}" method="get" role="search" style="max-width: 500px; margin: 1.5rem auto; display: flex; gap: 0.5rem;">
-      <input
-        type="search"
-        name="q"
-        value="{{ search.terms | escape }}"
-        placeholder="{{ 'general.search' | t }}..."
-        class="form-input"
-      >
-      <button type="submit" class="btn btn-primary">{{ 'general.search' | t }}</button>
+{%- comment -%}
+  ELOURA - Luxury Represent-Style Search Page
+{%- endcomment -%}
+
+<div class="eloura-search-page container" data-section-id="{{ section.id }}">
+  <!-- Search Header Box -->
+  <div class="eloura-search-header">
+    <span class="eloura-search-eyebrow">EXPLORE CATALOG</span>
+    <h1 class="eloura-search-title">SEARCH</h1>
+
+    <!-- Minimalist Streetwear Search Input -->
+    <form action="{{ routes.search_url }}" method="get" role="search" class="eloura-search-form">
+      <input type="hidden" name="type" value="product">
+      <input type="hidden" name="options[prefix]" value="last">
+
+      <div class="eloura-search-input-wrap">
+        <input
+          type="search"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="SEARCH PRODUCTS, HOODIES, JACKETS..."
+          class="eloura-search-input"
+          autocomplete="off"
+          autofocus
+        >
+        <button type="submit" class="eloura-search-submit" aria-label="Submit search">
+          {% render 'icon-search' %}
+        </button>
+      </div>
     </form>
+
+    {%- if search.performed -%}
+      <p class="eloura-search-count">
+        {{ search.results_count }} {{ search.results_count | pluralize: 'RESULT', 'RESULTS' }} FOR "{{ search.terms }}"
+      </p>
+    {%- endif -%}
   </div>
 
+  <!-- Search Results Grid -->
   {%- if search.performed -%}
     {%- paginate search.results by 16 -%}
       {%- if search.results_count > 0 -%}
-        <div class="grid grid-cols-4">
+        <div class="collection-product-grid">
           {%- for item in search.results -%}
             {%- if item.object_type == 'product' -%}
-              {% render 'product-card', product: item %}
-            {%- else -%}
-              <div class="product-card">
-                <h3><a href="{{ item.url }}">{{ item.title }}</a></h3>
-                <p>{{ item.content | strip_html | truncatewords: 25 }}</p>
+              <div class="collection-product-grid__item">
+                {% render 'product-card', product: item %}
               </div>
             {%- endif -%}
           {%- endfor -%}
         </div>
 
         {%- if paginate.pages > 1 -%}
-          {% render 'pagination', paginate: paginate %}
+          <div class="collection-pagination" style="margin-top: 3rem;">
+            {% render 'pagination', paginate: paginate %}
+          </div>
         {%- endif -%}
       {%- else -%}
-        <p style="text-align: center; color: var(--color-text-muted);">No results found for "{{ search.terms }}".</p>
+        <div class="eloura-search-empty">
+          <p class="eloura-search-empty__title">NO RESULTS FOUND</p>
+          <p class="eloura-search-empty__text">We couldn't find any products matching "{{ search.terms }}". Try a different keyword or browse our curated collections.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="eloura-search-empty__btn">
+            VIEW ALL PRODUCTS
+          </a>
+        </div>
       {%- endif -%}
     {%- endpaginate -%}
+  {%- else -%}
+    <!-- Suggestions / Quick Links when search is opened without terms -->
+    <div class="eloura-search-suggestions">
+      <span class="eloura-search-suggestions__title">POPULAR SEARCHES</span>
+      <div class="eloura-search-tags">
+        <a href="{{ routes.search_url }}?q=jacket&type=product" class="eloura-search-tag">JACKETS</a>
+        <a href="{{ routes.search_url }}?q=hoodie&type=product" class="eloura-search-tag">HOODIES</a>
+        <a href="{{ routes.search_url }}?q=oversized&type=product" class="eloura-search-tag">OVERSIZED</a>
+        <a href="{{ routes.all_products_collection_url }}" class="eloura-search-tag">ALL PRODUCTS</a>
+      </div>
+    </div>
   {%- endif -%}
 </div>
 
@@ -45,4 +85,3 @@
   "settings": []
 }
 {% endschema %}
-

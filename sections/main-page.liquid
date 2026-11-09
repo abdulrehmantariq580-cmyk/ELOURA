@@ -1,7 +1,17 @@
-<div class="page-container container" style="padding: 3rem 0; max-width: 800px;">
-  <h1 style="margin-bottom: 2rem;">{{ page.title }}</h1>
-  <div class="page-content" style="line-height: 1.8;">
-    {{ page.content }}
+{%- comment -%}
+  ELOURA - Luxury Minimalist Standard Page Template (About, Terms, Privacy Policy, Shipping)
+{%- endcomment -%}
+
+<div class="eloura-page-wrapper">
+  <div class="container eloura-legal-container">
+    <div class="eloura-page-header">
+      <span class="eloura-page-eyebrow">INFORMATION</span>
+      <h1 class="eloura-page-title">{{ page.title | upcase }}</h1>
+    </div>
+
+    <div class="eloura-article-content">
+      {{ page.content }}
+    </div>
   </div>
 </div>
 
@@ -11,4 +21,3 @@
   "settings": []
 }
 {% endschema %}
-

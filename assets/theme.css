@@ -4300,15 +4300,7 @@ html, body {
   transform: scale(1.06);
 }
 
-.drawer-social-icon--wa {
-  color: #25D366 !important;
-}
-
-.drawer-social-icon--wa:hover {
-  background-color: #25D366 !important;
-  color: #FFFFFF !important;
-  border-color: #25D366 !important;
-}
+/* drawer-social-icon--wa removed in favor of uniform monochrome */
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
@@ -4334,4 +4326,440 @@ html, body {
     height: 48px;
     box-shadow: 0 8px 24px rgba(37, 211, 102, 0.5), 0 2px 6px rgba(0, 0, 0, 0.2);
   }
+}
+
+
+/* ==========================================================================
+   ELOURA - UNIVERSAL CLEAN WHITE HEADER ON NON-HOME PAGES
+   (Search, Contact, Legal Policies, Pages)
+   ========================================================================== */
+body:not(.template-index) .site-header {
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid #ECECEC !important;
+  position: sticky !important;
+  top: 0 !important;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.03) !important;
+}
+
+body:not(.template-index) .site-header .header-icon-btn,
+body:not(.template-index) .site-header .eloura-brandmark__text,
+body:not(.template-index) .site-header .site-header__logo-image {
+  color: #0A0A0A !important;
+  filter: none !important;
+  text-shadow: none !important;
+}
+
+body:not(.template-index) .site-header .eloura-brandmark__line {
+  background-color: #0A0A0A !important;
+}
+
+body:not(.template-index) .site-header .cart-bubble {
+  background-color: #0A0A0A !important;
+  color: #FFFFFF !important;
+}
+
+/* ==========================================================================
+   ELOURA - LUXURY SEARCH PAGE STYLING
+   ========================================================================== */
+.eloura-search-page {
+  padding-top: 3.5rem;
+  padding-bottom: 6rem;
+  min-height: 70vh;
+}
+
+.eloura-search-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 3.5rem;
+}
+
+.eloura-search-eyebrow {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #888888;
+  margin-bottom: 0.65rem;
+}
+
+.eloura-search-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: #0A0A0A;
+  margin: 0 0 1.75rem;
+}
+
+.eloura-search-form {
+  width: 100%;
+}
+
+.eloura-search-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.eloura-search-input {
+  width: 100%;
+  height: 52px;
+  padding: 0 54px 0 20px;
+  background-color: #FFFFFF;
+  border: 1px solid #0A0A0A;
+  border-radius: 2px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #0A0A0A;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.eloura-search-input:focus {
+  border-color: #0A0A0A;
+  box-shadow: 0 0 0 1px #0A0A0A;
+}
+
+.eloura-search-submit {
+  position: absolute;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: #0A0A0A;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.eloura-search-count {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #666666;
+  margin-top: 1.25rem;
+}
+
+.eloura-search-empty {
+  text-align: center;
+  padding: 4rem 1rem;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.eloura-search-empty__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #0A0A0A;
+  margin-bottom: 0.75rem;
+}
+
+.eloura-search-empty__text {
+  font-size: 0.875rem;
+  color: #666666;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.eloura-search-empty__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  background-color: #0A0A0A;
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  border-radius: 1px;
+  transition: background-color 0.2s ease;
+}
+
+.eloura-search-empty__btn:hover {
+  background-color: #262626;
+  color: #FFFFFF;
+}
+
+.eloura-search-suggestions {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.eloura-search-suggestions__title {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #888888;
+  margin-bottom: 1.25rem;
+}
+
+.eloura-search-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.eloura-search-tag {
+  display: inline-block;
+  padding: 8px 18px;
+  background-color: #F7F7F7;
+  border: 1px solid #ECECEC;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #0A0A0A;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.eloura-search-tag:hover {
+  background-color: #0A0A0A;
+  color: #FFFFFF;
+  border-color: #0A0A0A;
+}
+
+/* ==========================================================================
+   ELOURA - PAGES & CONTACT DESIGN
+   ========================================================================== */
+.eloura-page-wrapper {
+  padding-top: 3.5rem;
+  padding-bottom: 6rem;
+  background-color: #FFFFFF;
+  min-height: 70vh;
+}
+
+.eloura-page-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.eloura-page-eyebrow {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #888888;
+  margin-bottom: 0.5rem;
+}
+
+.eloura-page-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: #0A0A0A;
+  margin: 0 0 1rem;
+}
+
+.eloura-page-subtitle {
+  font-size: 0.875rem;
+  color: #666666;
+  line-height: 1.6;
+}
+
+.eloura-contact-container {
+  max-width: 1080px;
+}
+
+.eloura-contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+@media (max-width: 868px) {
+  .eloura-contact-layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+.eloura-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.eloura-contact-card {
+  padding: 1.75rem;
+  background-color: #FAFAFA;
+  border: 1px solid #EAEAEA;
+  border-radius: 2px;
+}
+
+.eloura-contact-card__label {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #888888;
+  margin-bottom: 0.5rem;
+}
+
+.eloura-contact-card__val {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #0A0A0A;
+  margin: 0 0 0.85rem;
+  line-height: 1.5;
+}
+
+.eloura-contact-card__subval {
+  font-size: 0.8125rem;
+  color: #666666;
+  margin: 0;
+}
+
+.eloura-contact-card__link {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #0A0A0A;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.eloura-contact-card__link:hover {
+  color: #555555;
+}
+
+.eloura-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.eloura-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 600px) {
+  .eloura-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.eloura-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.eloura-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #0A0A0A;
+}
+
+.eloura-input,
+.eloura-textarea {
+  width: 100%;
+  background-color: #FFFFFF;
+  border: 1px solid #0A0A0A;
+  border-radius: 1px;
+  padding: 12px 14px;
+  font-size: 0.8125rem;
+  color: #0A0A0A;
+  outline: none;
+  font-family: inherit;
+}
+
+.eloura-input:focus,
+.eloura-textarea:focus {
+  border-color: #0A0A0A;
+  box-shadow: 0 0 0 1px #0A0A0A;
+}
+
+.eloura-btn-solid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 48px;
+  background-color: #0A0A0A;
+  color: #FFFFFF;
+  border: 1px solid #0A0A0A;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.eloura-btn-solid:hover {
+  background-color: #262626;
+}
+
+.eloura-form-success {
+  padding: 1rem;
+  background-color: #E8F5E9;
+  border: 1px solid #C8E6C9;
+  color: #2E7D32;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.eloura-form-error {
+  padding: 1rem;
+  background-color: #FFEBEE;
+  border: 1px solid #FFCDD2;
+  color: #C62828;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Legal & Policy Page Typography */
+.eloura-legal-container {
+  max-width: 820px;
+}
+
+.eloura-article-content {
+  font-size: 0.9375rem;
+  line-height: 1.85;
+  color: #222222;
+}
+
+.eloura-article-content h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 2.5rem 0 1rem;
+  color: #0A0A0A;
+}
+
+.eloura-article-content h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 2rem 0 0.75rem;
+  color: #0A0A0A;
+}
+
+.eloura-article-content p,
+.eloura-article-content li {
+  color: #333333;
+  margin-bottom: 1.25rem;
+}
+
+.eloura-article-content ul,
+.eloura-article-content ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
 }
