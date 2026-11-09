@@ -14,7 +14,7 @@
   endif
 -%}
 
-<div class="product-card" data-product-id="{{ product.id }}">
+<div class="product-card" data-product-id="{{ product.id }}" data-price="{{ product.price }}" data-created-at="{{ product.created_at | date: '%s' }}" data-title="{{ product.title | escape }}">
   <!-- Full-Cover Media Box: Edge-to-Edge Image Fill -->
   <div class="product-card__media-box">
     <a href="{{ product.url }}" class="product-card__link" tabindex="-1">

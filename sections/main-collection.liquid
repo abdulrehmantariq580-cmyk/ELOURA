@@ -1,42 +1,62 @@
 {%- comment -%}
-  ELOURA - Luxury Represent-Style Main Collection Product Grid
+  ELOURA - Luxury Represent-Style Main Collection Product Grid with Live Search & Dynamic Sorting
 {%- endcomment -%}
 
 <div class="collection-main-section" data-section-id="{{ section.id }}">
   <div class="container">
     
-    <!-- Sub-header bar: Collection stats / filters -->
-    <div class="collection-toolbar">
-      <div class="collection-toolbar__count">
-        <span>{{ collection.products_count }} styles</span>
+    <!-- Controls Toolbar: Live Search + Sorting + Count -->
+    <div class="collection-controls-bar">
+      <!-- Live Search Filter Input -->
+      <div class="collection-search-wrap">
+        <div class="collection-search-field">
+          <input
+            type="search"
+            id="CollectionFilterInput"
+            placeholder="FILTER PRODUCTS BY NAME..."
+            class="collection-search-input"
+            autocomplete="off"
+          >
+          <span class="collection-search-icon">
+            {% render 'icon-search' %}
+          </span>
+        </div>
       </div>
-    </div>
 
-    <!-- Instant Filter Search Input on /collections/all -->
-    <div class="collection-filter-search" style="margin-bottom: 2rem; max-width: 480px;">
-      <div style="position: relative; display: flex; align-items: center;">
-        <input
-          type="search"
-          id="CollectionFilterInput"
-          placeholder="FILTER PRODUCTS BY NAME..."
-          style="width: 100%; height: 44px; padding: 0 40px 0 14px; border: 1px solid #0A0A0A; background: #FFFFFF; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; outline: none; border-radius: 1px;"
-          autocomplete="off"
-        >
-        <span style="position: absolute; right: 14px; pointer-events: none; display: flex; align-items: center; color: #0A0A0A;">
-          {% render 'icon-search' %}
-        </span>
+      <!-- Right Action Group: Sorting Selector & Count -->
+      <div class="collection-sort-wrap">
+        <div class="collection-sort-field">
+          <label for="CollectionSortBy" class="collection-sort-label">SORT BY:</label>
+          <select id="CollectionSortBy" class="collection-sort-select">
+            <option value="featured">FEATURED</option>
+            <option value="newest">NEWEST ARRIVALS</option>
+            <option value="price-low">PRICE: LOW TO HIGH</option>
+            <option value="price-high">PRICE: HIGH TO LOW</option>
+            <option value="title-az">ALPHABETICAL: A-Z</option>
+            <option value="title-za">ALPHABETICAL: Z-A</option>
+          </select>
+        </div>
+
+        <div class="collection-toolbar__count">
+          <span id="CollectionItemsCount">{{ collection.products_count }} styles</span>
+        </div>
       </div>
     </div>
 
     <!-- Represent-Style 2-Column (Mobile) & 4-Column (PC) Grid -->
     {%- paginate collection.products by section.settings.products_per_page -%}
       {%- if collection.products.size > 0 -%}
-        <div class="collection-product-grid">
+        <div class="collection-product-grid" id="CollectionProductGrid">
           {%- for product in collection.products -%}
-            <div class="collection-product-grid__item">
+            <div class="collection-product-grid__item" data-price="{{ product.price }}" data-created="{{ product.created_at | date: '%s' }}" data-title="{{ product.title | escape }}">
               {% render 'product-card', product: product %}
             </div>
           {%- endfor -%}
+        </div>
+
+        <div id="CollectionNoMatch" class="collection-empty" style="display: none; padding: 4rem 1rem;">
+          <p style="font-weight: 700; letter-spacing: 0.1em; color: #0A0A0A;">NO MATCHING PRODUCTS FOUND</p>
+          <p style="color: #666666; font-size: 0.875rem;">Try clearing your search query or explore all products.</p>
         </div>
 
         {%- if paginate.pages > 1 -%}
@@ -58,65 +78,93 @@
 </div>
 
 <script>
-  // Instant search / filter for collection products
+  // Live Instant Search & Multi-Sorting for Collection Products
   document.addEventListener('DOMContentLoaded', function() {
     const filterInput = document.getElementById('CollectionFilterInput');
-    const items = document.querySelectorAll('.collection-product-grid__item');
-    if (!filterInput || !items.length) return;
+    const sortSelect = document.getElementById('CollectionSortBy');
+    const grid = document.getElementById('CollectionProductGrid');
+    const noMatch = document.getElementById('CollectionNoMatch');
+    const countEl = document.getElementById('CollectionItemsCount');
 
-    function applyFilter(query) {
-      const q = query.trim().toLowerCase();
-      let matchCount = 0;
+    if (!grid) return;
+
+    let items = Array.from(grid.querySelectorAll('.collection-product-grid__item'));
+
+    function applyFilterAndSort() {
+      const q = filterInput ? filterInput.value.trim().toLowerCase() : '';
+      const sortVal = sortSelect ? sortSelect.value : 'featured';
+
+      // 1. Filter
+      let visibleItems = [];
       items.forEach(function(item) {
         const titleEl = item.querySelector('.product-card__name');
         const title = titleEl ? titleEl.textContent.toLowerCase() : '';
         if (!q || title.includes(q)) {
           item.style.display = '';
-          matchCount++;
+          visibleItems.push(item);
         } else {
           item.style.display = 'none';
         }
       });
-      const countEl = document.querySelector('.collection-toolbar__count span');
+
+      // 2. Sort visible items
+      if (sortVal !== 'featured') {
+        visibleItems.sort(function(a, b) {
+          const priceA = parseFloat(a.getAttribute('data-price')) || 0;
+          const priceB = parseFloat(b.getAttribute('data-price')) || 0;
+          const createdA = parseInt(a.getAttribute('data-created'), 10) || 0;
+          const createdB = parseInt(b.getAttribute('data-created'), 10) || 0;
+          const titleA = (a.getAttribute('data-title') || '').toLowerCase();
+          const titleB = (b.getAttribute('data-title') || '').toLowerCase();
+
+          switch(sortVal) {
+            case 'newest':
+              return createdB - createdA;
+            case 'price-low':
+              return priceA - priceB;
+            case 'price-high':
+              return priceB - priceA;
+            case 'title-az':
+              return titleA.localeCompare(titleB);
+            case 'title-za':
+              return titleB.localeCompare(titleA);
+            default:
+              return 0;
+          }
+        });
+
+        // Re-append in sorted order
+        visibleItems.forEach(function(item) {
+          grid.appendChild(item);
+        });
+      }
+
+      // 3. Update count & empty state
       if (countEl) {
-        countEl.textContent = matchCount + ' styles';
+        countEl.textContent = visibleItems.length + ' styles';
+      }
+
+      if (noMatch) {
+        noMatch.style.display = visibleItems.length === 0 ? 'block' : 'none';
       }
     }
 
-    filterInput.addEventListener('input', function(e) {
-      applyFilter(e.target.value);
-    });
+    if (filterInput) {
+      filterInput.addEventListener('input', applyFilterAndSort);
+    }
 
+    if (sortSelect) {
+      sortSelect.addEventListener('change', applyFilterAndSort);
+    }
+
+    // Check if ?q= query exists in URL
     const params = new URLSearchParams(window.location.search);
     const initialQ = params.get('q');
-    if (initialQ) {
+    if (initialQ && filterInput) {
       filterInput.value = initialQ;
-      applyFilter(initialQ);
+      applyFilterAndSort();
       filterInput.focus();
     }
-  });
-
-  // Read more / Read less toggle for collection description
-  document.addEventListener('DOMContentLoaded', function() {
-    const toggleBtns = document.querySelectorAll('.js-desc-toggle');
-    toggleBtns.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        const wrapper = this.closest('.js-desc-wrapper');
-        const descText = wrapper ? wrapper.querySelector('.js-desc-text') : null;
-        if (!descText) return;
-
-        const isExpanded = this.getAttribute('aria-expanded') === 'true';
-        if (isExpanded) {
-          descText.classList.remove('is-expanded');
-          this.setAttribute('aria-expanded', 'false');
-          this.textContent = 'Read more';
-        } else {
-          descText.classList.add('is-expanded');
-          this.setAttribute('aria-expanded', 'true');
-          this.textContent = 'Read less';
-        }
-      });
-    });
   });
 </script>
 
@@ -128,9 +176,9 @@
       "type": "range",
       "id": "products_per_page",
       "min": 8,
-      "max": 36,
+      "max": 48,
       "step": 4,
-      "default": 16,
+      "default": 24,
       "label": "Products per page"
     }
   ]

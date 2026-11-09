@@ -4808,3 +4808,162 @@ body:not(.template-index) .site-header .cart-bubble {
   background-color: #F8F9FA;
   border-left: 3px solid #0A0A0A;
 }
+
+/* Collection Controls: Live Search + Sorting */
+.collection-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #ECECEC;
+  flex-wrap: wrap;
+}
+
+.collection-search-wrap {
+  flex: 1;
+  max-width: 420px;
+  min-width: 260px;
+}
+
+.collection-search-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.collection-search-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 42px 0 16px;
+  border: 1px solid #0A0A0A;
+  background: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  outline: none;
+  border-radius: 1px;
+  color: #0A0A0A;
+  transition: box-shadow 0.2s ease;
+}
+
+.collection-search-input:focus {
+  box-shadow: 0 0 0 1px #0A0A0A;
+}
+
+.collection-search-icon {
+  position: absolute;
+  right: 14px;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  color: #0A0A0A;
+}
+
+.collection-sort-wrap {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.collection-sort-field {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.collection-sort-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #888888;
+  white-space: nowrap;
+}
+
+.collection-sort-select {
+  height: 44px;
+  padding: 0 32px 0 14px;
+  border: 1px solid #0A0A0A;
+  background-color: #FFFFFF;
+  color: #0A0A0A;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  border-radius: 1px;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%230A0A0A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.collection-sort-select:focus {
+  box-shadow: 0 0 0 1px #0A0A0A;
+}
+
+/* Shopify Policy Pages Design (Terms, Privacy, Shipping, Refund) */
+.shopify-policy__container {
+  max-width: 860px !important;
+  margin: 0 auto !important;
+  padding: 4rem 1.5rem 6rem !important;
+}
+
+.shopify-policy__title {
+  text-align: center !important;
+  margin-bottom: 3rem !important;
+}
+
+.shopify-policy__title h1 {
+  font-size: 2.25rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: #0A0A0A !important;
+}
+
+.shopify-policy__body {
+  font-size: 0.9375rem !important;
+  line-height: 1.85 !important;
+  color: #262626 !important;
+}
+
+.shopify-policy__body h2,
+.shopify-policy__body h3,
+.shopify-policy__body h4 {
+  color: #0A0A0A !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  margin-top: 2.5rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.shopify-policy__body p {
+  margin-bottom: 1.25rem !important;
+}
+
+.shopify-policy__body ul,
+.shopify-policy__body ol {
+  padding-left: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+@media (max-width: 768px) {
+  .collection-controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .collection-search-wrap {
+    max-width: 100%;
+  }
+  .collection-sort-wrap {
+    justify-content: space-between;
+    width: 100%;
+  }
+}

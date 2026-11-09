@@ -1,5 +1,5 @@
 {%- comment -%}
-  ELOURA - Luxury Represent-Style Search Page
+  ELOURA - Luxury Represent-Style Search Page with Instant Live Search
 {%- endcomment -%}
 
 <div class="eloura-search-page container" data-section-id="{{ section.id }}">
@@ -8,80 +8,111 @@
     <span class="eloura-search-eyebrow">EXPLORE CATALOG</span>
     <h1 class="eloura-search-title">SEARCH</h1>
 
-    <!-- Minimalist Streetwear Search Input -->
-    <form action="{{ routes.search_url }}" method="get" role="search" class="eloura-search-form">
-      <input type="hidden" name="type" value="product">
-      <input type="hidden" name="options[prefix]" value="last">
+    <!-- Minimalist Streetwear Live Search Input -->
+    <div class="eloura-search-input-wrap">
+      <input
+        type="search"
+        id="LiveSearchInput"
+        placeholder="TYPE TO SEARCH HOODIES, JACKETS, PANTS..."
+        class="eloura-search-input"
+        autocomplete="off"
+        autofocus
+      >
+      <span class="eloura-search-submit" style="pointer-events: none;">
+        {% render 'icon-search' %}
+      </span>
+    </div>
 
-      <div class="eloura-search-input-wrap">
-        <input
-          type="search"
-          name="q"
-          value="{{ search.terms | escape }}"
-          placeholder="SEARCH PRODUCTS, HOODIES, JACKETS..."
-          class="eloura-search-input"
-          autocomplete="off"
-          autofocus
-        >
-        <button type="submit" class="eloura-search-submit" aria-label="Submit search">
-          {% render 'icon-search' %}
-        </button>
-      </div>
-    </form>
-
-    {%- if search.performed -%}
-      <p class="eloura-search-count">
-        {{ search.results_count }} {{ search.results_count | pluralize: 'RESULT', 'RESULTS' }} FOR "{{ search.terms }}"
-      </p>
-    {%- endif -%}
+    <p class="eloura-search-count" id="LiveSearchCount">
+      SHOWING ALL PRODUCTS
+    </p>
   </div>
 
-  <!-- Search Results Grid -->
-  {%- if search.performed -%}
-    {%- paginate search.results by 16 -%}
-      {%- if search.results_count > 0 -%}
-        <div class="collection-product-grid">
-          {%- for item in search.results -%}
-            {%- if item.object_type == 'product' -%}
-              <div class="collection-product-grid__item">
-                {% render 'product-card', product: item %}
-              </div>
-            {%- endif -%}
-          {%- endfor -%}
+  <!-- Search Results / Catalog Grid (Shows All Products initially and filters instantly) -->
+  <div class="collection-product-grid" id="LiveSearchGrid">
+    {%- paginate collections.all.products by 48 -%}
+      {%- for product in collections.all.products -%}
+        <div class="collection-product-grid__item live-search-item" data-title="{{ product.title | escape }}">
+          {% render 'product-card', product: product %}
         </div>
-
-        {%- if paginate.pages > 1 -%}
-          <div class="collection-pagination" style="margin-top: 3rem;">
-            {% render 'pagination', paginate: paginate %}
-          </div>
-        {%- endif -%}
-      {%- else -%}
-        <div class="eloura-search-empty">
-          <p class="eloura-search-empty__title">NO RESULTS FOUND</p>
-          <p class="eloura-search-empty__text">We couldn't find any products matching "{{ search.terms }}". Try a different keyword or browse our curated collections.</p>
-          <a href="{{ routes.all_products_collection_url }}" class="eloura-search-empty__btn">
-            VIEW ALL PRODUCTS
-          </a>
-        </div>
-      {%- endif -%}
+      {%- endfor -%}
     {%- endpaginate -%}
-  {%- else -%}
-    <!-- Suggestions / Quick Links when search is opened without terms -->
-    <div class="eloura-search-suggestions">
-      <span class="eloura-search-suggestions__title">POPULAR SEARCHES</span>
-      <div class="eloura-search-tags">
-        <a href="{{ routes.search_url }}?q=jacket&type=product" class="eloura-search-tag">JACKETS</a>
-        <a href="{{ routes.search_url }}?q=hoodie&type=product" class="eloura-search-tag">HOODIES</a>
-        <a href="{{ routes.search_url }}?q=oversized&type=product" class="eloura-search-tag">OVERSIZED</a>
-        <a href="{{ routes.all_products_collection_url }}" class="eloura-search-tag">ALL PRODUCTS</a>
-      </div>
-    </div>
-  {%- endif -%}
+  </div>
+
+  <!-- No match empty state -->
+  <div id="LiveSearchEmpty" class="eloura-search-empty" style="display: none;">
+    <p class="eloura-search-empty__title">NO PRODUCTS FOUND</p>
+    <p class="eloura-search-empty__text">We couldn't find any products matching your search query. Try typing something else or check your spelling.</p>
+    <button type="button" id="LiveSearchResetBtn" class="eloura-search-empty__btn" style="cursor: pointer; border: none;">
+      CLEAR SEARCH
+    </button>
+  </div>
 </div>
+
+<script>
+  // Instant Live Search across Catalog
+  document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('LiveSearchInput');
+    const grid = document.getElementById('LiveSearchGrid');
+    const emptyState = document.getElementById('LiveSearchEmpty');
+    const countEl = document.getElementById('LiveSearchCount');
+    const resetBtn = document.getElementById('LiveSearchResetBtn');
+
+    if (!input || !grid) return;
+
+    const items = Array.from(grid.querySelectorAll('.live-search-item'));
+
+    function performLiveSearch(term) {
+      const q = term.trim().toLowerCase();
+      let matchCount = 0;
+
+      items.forEach(function(item) {
+        const title = (item.getAttribute('data-title') || '').toLowerCase();
+        if (!q || title.includes(q)) {
+          item.style.display = '';
+          matchCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      if (q) {
+        countEl.textContent = matchCount + (matchCount === 1 ? ' RESULT' : ' RESULTS') + ' FOR "' + term.toUpperCase() + '"';
+      } else {
+        countEl.textContent = 'SHOWING ALL ' + items.length + ' PRODUCTS';
+      }
+
+      emptyState.style.display = matchCount === 0 ? 'block' : 'none';
+      grid.style.display = matchCount === 0 ? 'none' : 'grid';
+    }
+
+    input.addEventListener('input', function(e) {
+      performLiveSearch(e.target.value);
+    });
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function() {
+        input.value = '';
+        performLiveSearch('');
+        input.focus();
+      });
+    }
+
+    // Check URL params (?q=...)
+    const params = new URLSearchParams(window.location.search);
+    const initialQuery = params.get('q');
+    if (initialQuery) {
+      input.value = initialQuery;
+      performLiveSearch(initialQuery);
+    } else {
+      performLiveSearch('');
+    }
+  });
+</script>
 
 {% schema %}
 {
-  "name": "Search Results",
+  "name": "Live Search",
   "settings": []
 }
 {% endschema %}
