@@ -1,5 +1,5 @@
 {%- comment -%}
-  ELOURA - Luxury Represent Clo Style Product Card
+  ELOURA - Ultra Clean Full-Image Product Card with Direct Add to Cart Button
   Accepts:
   - product: {Object} Product Liquid object
 {%- endcomment -%}
@@ -15,71 +15,67 @@
 -%}
 
 <div class="product-card" data-product-id="{{ product.id }}">
-  <div class="product-card__media-box" style="aspect-ratio: 1 / 1.15; background-color: #F4F4F2; display: flex; align-items: flex-end; justify-content: center; padding: 0 1rem 0.5rem; overflow: hidden; position: relative;">
-    <!-- Minimalist Streetwear Fit Tag: Solid Black with White Text -->
-    <div class="product-card__tag" style="position: absolute; top: 12px; left: 12px; z-index: 10; pointer-events: none;">
-      <span style="background-color: #0A0A0A !important; color: #FFFFFF !important; font-size: 0.6rem !important; letter-spacing: 0.16em !important; font-weight: 700 !important; padding: 0.25rem 0.6rem !important; display: inline-block !important; border-radius: 1px !important; text-transform: uppercase !important; box-shadow: 0 2px 8px rgba(0,0,0,0.25) !important;">
-        OVERSIZED FIT
-      </span>
-    </div>
-
-    <!-- Top-Right Wishlist / Bookmark Icon -->
-    <button type="button" class="product-card__bookmark-btn js-wishlist-toggle" aria-label="Save to Wishlist" style="z-index: 10;">
-      {% render 'icon-bookmark' %}
-    </button>
-
-    <!-- Product Image Shifted Down to Clear Head from Badge -->
-    <a href="{{ product.url }}" class="product-card__link" tabindex="-1" style="width: 100%; height: 100%; display: flex; align-items: flex-end; justify-content: center; padding-top: 3.25rem;">
+  <!-- Full-Cover Media Box: Edge-to-edge full image, No badges, No plus icon, No save bookmark -->
+  <div class="product-card__media-box" style="aspect-ratio: 4 / 5; background-color: #F4F4F2; border-radius: 2px; overflow: hidden; position: relative; margin-bottom: 0.85rem; padding: 0;">
+    <a href="{{ product.url }}" class="product-card__link" tabindex="-1" style="width: 100%; height: 100%; display: block;">
       {%- if product.featured_image != blank -%}
         <img
-          src="{{ product.featured_image | image_url: width: 800 }}"
+          src="{{ product.featured_image | image_url: width: 900 }}"
           alt="{{ product.title | escape }}"
           class="product-card__img product-card__img--primary"
           loading="lazy"
-          width="800"
-          height="950"
-          style="max-width: 92%; max-height: 90%; width: auto; height: 100%; object-fit: contain; object-position: center bottom; display: block; margin: 0 auto; mix-blend-mode: multiply;"
+          width="900"
+          height="1125"
+          style="width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block;"
         >
         {%- if hover_image != nil -%}
           <img
-            src="{{ hover_image | image_url: width: 800 }}"
+            src="{{ hover_image | image_url: width: 900 }}"
             alt="{{ product.title | escape }}"
             class="product-card__img product-card__img--hover"
             loading="lazy"
-            width="800"
-            height="950"
-            style="max-width: 92%; max-height: 90%; width: auto; height: 100%; object-fit: contain; object-position: center bottom; margin: 0 auto; mix-blend-mode: multiply;"
+            width="900"
+            height="1125"
+            style="width: 100%; height: 100%; object-fit: cover; object-position: center top; position: absolute; top: 0; left: 0;"
           >
         {%- endif -%}
       {%- else -%}
         {{ 'product-1' | placeholder_svg_tag: 'product-card__img product-card__img--placeholder' }}
       {%- endif -%}
     </a>
-
-    <!-- Bottom-Right Quick-Add (+) Button -->
-    <button
-      type="button"
-      class="product-card__quick-add-btn js-quick-add-btn"
-      aria-label="Quick Add {{ product.title | escape }}"
-      data-variant-id="{{ current_variant.id }}"
-      {% unless product.available %}disabled{% endunless %}
-      style="z-index: 10;"
-    >
-      {% render 'icon-plus' %}
-    </button>
   </div>
 
-  <!-- Product Details Below Card: Clean Title & Price -->
+  <!-- Product Details Below Card -->
   <div class="product-card__meta">
-    <h3 class="product-card__name">
-      <a href="{{ product.url }}">{{ product.title }}</a>
-    </h3>
+    <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.75rem;">
+      <h3 class="product-card__name" style="margin: 0; font-size: 0.875rem; font-weight: 700;">
+        <a href="{{ product.url }}">{{ product.title }}</a>
+      </h3>
 
-    <div class="product-card__pricing">
-      <span class="product-card__price">{{ product.price | money }}</span>
-      {%- if product.compare_at_price > product.price -%}
-        <span class="product-card__compare-price">{{ product.compare_at_price | money }}</span>
-      {%- endif -%}
+      <div class="product-card__pricing" style="white-space: nowrap;">
+        <span class="product-card__price" style="font-weight: 600; font-size: 0.875rem;">{{ product.price | money }}</span>
+        {%- if product.compare_at_price > product.price -%}
+          <span class="product-card__compare-price" style="text-decoration: line-through; color: #888888; font-size: 0.75rem; margin-left: 0.35rem;">
+            {{ product.compare_at_price | money }}
+          </span>
+        {%- endif -%}
+      </div>
     </div>
+
+    <!-- Direct Solid Black ADD TO CART Button -->
+    <button
+      type="button"
+      class="product-card__atc-btn js-quick-add-btn"
+      aria-label="Add {{ product.title | escape }} to Cart"
+      data-variant-id="{{ current_variant.id }}"
+      {% unless product.available %}disabled{% endunless %}
+      style="width: 100%; height: 42px; background-color: #0A0A0A; color: #FFFFFF; border: none; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background-color 0.2s ease; border-radius: 1px;"
+    >
+      {%- if product.available -%}
+        ADD TO CART
+      {%- else -%}
+        SOLD OUT
+      {%- endif -%}
+    </button>
   </div>
 </div>
