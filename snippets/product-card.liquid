@@ -1,5 +1,5 @@
 {%- comment -%}
-  ELOURA - Ultra Clean Full-Image Product Card with Direct Add to Cart Button
+  ELOURA - Luxury Represent Clo Style Product Card
   Accepts:
   - product: {Object} Product Liquid object
 {%- endcomment -%}
@@ -15,7 +15,7 @@
 -%}
 
 <div class="product-card" data-product-id="{{ product.id }}">
-  <!-- Full-Cover Media Box: Edge-to-edge full image, No badges, No plus icon, No save bookmark -->
+  <!-- Full-Cover Media Box -->
   <div class="product-card__media-box" style="aspect-ratio: 4 / 5; background-color: #F4F4F2; border-radius: 2px; overflow: hidden; position: relative; margin-bottom: 0.85rem; padding: 0;">
     <a href="{{ product.url }}" class="product-card__link" tabindex="-1" style="width: 100%; height: 100%; display: block;">
       {%- if product.featured_image != blank -%}
@@ -43,6 +43,21 @@
         {{ 'product-1' | placeholder_svg_tag: 'product-card__img product-card__img--placeholder' }}
       {%- endif -%}
     </a>
+
+    <!-- Small Circular Add to Cart Bag Icon Button on Bottom-Right of Image -->
+    <button
+      type="button"
+      class="product-card__bag-btn js-quick-add-btn"
+      aria-label="Add {{ product.title | escape }} to Bag"
+      data-variant-id="{{ current_variant.id }}"
+      {% unless product.available %}disabled{% endunless %}
+      style="position: absolute; bottom: 12px; right: 12px; z-index: 5; width: 36px; height: 36px; border-radius: 50%; background-color: #0A0A0A; color: #FFFFFF; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.25); transition: transform 0.2s ease, background-color 0.2s ease;"
+    >
+      <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+        <path d="M4 6.5L3 17H17L16 6.5H4Z"/>
+        <path d="M7 6.5V5C7 3.34315 8.34315 2 10 2C11.6569 2 13 3.34315 13 5V6.5"/>
+      </svg>
+    </button>
   </div>
 
   <!-- Product Details Below Card -->
@@ -62,20 +77,13 @@
       </div>
     </div>
 
-    <!-- Direct Solid Black ADD TO CART Button -->
-    <button
-      type="button"
-      class="product-card__atc-btn js-quick-add-btn"
-      aria-label="Add {{ product.title | escape }} to Cart"
-      data-variant-id="{{ current_variant.id }}"
-      {% unless product.available %}disabled{% endunless %}
-      style="width: 100%; height: 42px; background-color: #0A0A0A; color: #FFFFFF; border: none; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background-color 0.2s ease; border-radius: 1px;"
+    <!-- Quick View / View Product Button (Clean Minimal Outline Button) -->
+    <a
+      href="{{ product.url }}"
+      class="product-card__quick-view-btn"
+      style="display: flex; align-items: center; justify-content: center; width: 100%; height: 40px; background-color: transparent; color: #0A0A0A; border: 1px solid #0A0A0A; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border-radius: 1px; transition: background-color 0.2s ease, color 0.2s ease;"
     >
-      {%- if product.available -%}
-        ADD TO CART
-      {%- else -%}
-        SOLD OUT
-      {%- endif -%}
-    </button>
+      QUICK VIEW
+    </a>
   </div>
 </div>

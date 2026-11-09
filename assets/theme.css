@@ -3869,3 +3869,14 @@ html, body {
   margin: 0 auto !important;
   mix-blend-mode: multiply !important;
 }
+
+/* Product Card Quick View & Bottom-Right Bag Icon Hover Effects */
+.product-card__bag-btn:hover {
+  background-color: #262626 !important;
+  transform: scale(1.08) !important;
+}
+
+.product-card__quick-view-btn:hover {
+  background-color: #0A0A0A !important;
+  color: #FFFFFF !important;
+}
