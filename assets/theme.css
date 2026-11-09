@@ -3971,3 +3971,42 @@ html, body {
 .product-card:hover .product-card__img--primary {
   opacity: 0 !important;
 }
+
+/* ==========================================================================
+   PRODUCT CARD: SMOOTH LUXURY FADE-IN SECONDARY IMAGE TRANSITION
+   ========================================================================== */
+/* Link wrapper stays 100% solid, never dims/fades the container */
+.product-card a,
+.product-card__link,
+.product-card:hover .product-card__link,
+.product-card__link:hover {
+  opacity: 1 !important;
+}
+
+/* Primary image remains solid underneath */
+.product-card__img--primary {
+  opacity: 1 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center top !important;
+}
+
+/* Secondary image smoothly fades in over primary image like Represent Clo */
+.product-card__img--hover {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center top !important;
+  opacity: 0 !important;
+  transition: opacity 0.35s ease-in-out !important;
+  pointer-events: none !important;
+}
+
+.product-card:hover .product-card__img--hover {
+  opacity: 1 !important;
+}
