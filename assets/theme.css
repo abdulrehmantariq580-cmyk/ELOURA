@@ -3942,3 +3942,32 @@ html, body {
   transform: translateY(-2px) !important;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2) !important;
 }
+
+/* ==========================================================================
+   PRODUCT CARD: ELIMINATE HOVER OPACITY/FADE COMPLETELY
+   ========================================================================== */
+.product-card a,
+.product-card__link,
+.product-card:hover .product-card__link,
+.product-card__link:hover {
+  opacity: 1 !important;
+}
+
+.product-card__img--primary {
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+/* Secondary image appears instantly with 100% solid opacity without any fading/dimming */
+.product-card__img--hover {
+  opacity: 0 !important;
+  transition: none !important;
+}
+
+.product-card:hover .product-card__img--hover {
+  opacity: 1 !important;
+}
+
+.product-card:hover .product-card__img--primary {
+  opacity: 0 !important;
+}
