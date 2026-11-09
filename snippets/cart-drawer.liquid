@@ -119,6 +119,12 @@
 
     <!-- Drawer Footer: Product Cost, Shipping Cost, Total & Sticky Checkout -->
     {%- if cart.item_count > 0 -%}
+      {%- assign shipping_cost = 30000 -%} <!-- Rs. 300 in cents -->
+      {%- if cart.total_price >= free_shipping_threshold -%}
+        {%- assign shipping_cost = 0 -%}
+      {%- endif -%}
+      {%- assign calculated_total = cart.total_price | plus: shipping_cost -%}
+
       <div class="cart-drawer__footer js-cart-drawer-footer">
         <div class="cart-drawer__breakdown">
           <!-- Product Cost -->
@@ -132,23 +138,34 @@
             <span class="cart-drawer__summary-label">SHIPPING COST</span>
             <span class="cart-drawer__summary-val">
               {%- if cart.total_price >= free_shipping_threshold -%}
-                <strong style="color: #0A0A0A; letter-spacing: 0.04em;">FREE</strong>
+                <span style="display: inline-flex; align-items: baseline; gap: 0.35rem;">
+                  <span style="text-decoration: line-through; color: #888888; font-size: 0.75rem;">Rs. 300.00</span>
+                  <strong style="color: #0A0A0A; letter-spacing: 0.04em;">FREE DELIVERY</strong>
+                </span>
               {%- else -%}
-                <span style="color: #666666;">Calculated at checkout</span>
+                <strong style="color: #0A0A0A;">Rs. 300.00</strong>
               {%- endif -%}
             </span>
           </div>
 
+          {%- if cart.total_price < free_shipping_threshold -%}
+            <p style="font-size: 0.6875rem; color: #666666; margin: -0.25rem 0 0.35rem; font-style: italic;">
+              Add {{ free_shipping_threshold | minus: cart.total_price | money }} more for Free Delivery
+            </p>
+          {%- endif -%}
+
           <!-- Total Row -->
           <div class="cart-drawer__summary-row cart-drawer__summary-row--total">
             <span class="cart-drawer__summary-label" style="font-weight: 800; font-size: 0.875rem;">TOTAL</span>
-            <span class="cart-drawer__summary-val" id="CartDrawerSubtotal" style="font-weight: 800; font-size: 1.05rem;">{{ cart.total_price | money }}</span>
+            <span class="cart-drawer__summary-val" id="CartDrawerSubtotal" style="font-weight: 800; font-size: 1.05rem;">
+              {{ calculated_total | money }}
+            </span>
           </div>
         </div>
 
         <form action="{{ routes.cart_url }}" method="post">
           <button type="submit" name="checkout" class="cart-drawer__checkout-btn">
-            CHECKOUT &bull; {{ cart.total_price | money }}
+            CHECKOUT &bull; {{ calculated_total | money }}
           </button>
         </form>
 

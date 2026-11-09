@@ -4967,3 +4967,48 @@ body:not(.template-index) .site-header .cart-bubble {
     width: 100%;
   }
 }
+
+/* PDP Standard Delivery Notice */
+.eloura-pdp__shipping-notice {
+  margin: 1.5rem 0 2rem;
+  padding: 1rem 1.25rem;
+  background-color: #F8F9FA;
+  border: 1px solid #EAEAEA;
+  border-radius: 2px;
+}
+
+.eloura-pdp__shipping-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.eloura-pdp__shipping-truck {
+  color: #0A0A0A;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.eloura-pdp__shipping-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.eloura-pdp__shipping-title {
+  font-size: 0.8125rem;
+  color: #0A0A0A;
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+.eloura-pdp__shipping-title strong {
+  font-weight: 700;
+}
+
+.eloura-pdp__shipping-subtitle {
+  font-size: 0.75rem;
+  color: #555555;
+  margin: 0;
+  line-height: 1.4;
+}

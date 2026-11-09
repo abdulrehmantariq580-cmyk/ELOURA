@@ -90,24 +90,39 @@
         <div class="eloura-cart__summary-card">
           <h2 class="eloura-cart__summary-title">ORDER SUMMARY</h2>
 
+          {%- assign free_shipping_threshold = 1000000 -%}
+          {%- assign shipping_charge = 30000 -%}
+          {%- if cart.total_price >= free_shipping_threshold -%}
+            {%- assign shipping_charge = 0 -%}
+          {%- endif -%}
+          {%- assign final_total = cart.total_price | plus: shipping_charge -%}
+
           <div class="eloura-cart__summary-row">
-            <span>Subtotal</span>
+            <span>Product Cost (Subtotal)</span>
             <span class="eloura-cart__summary-price">{{ cart.total_price | money }}</span>
           </div>
 
-          <div class="eloura-cart__summary-row eloura-cart__summary-row--small">
-            <span>Shipping</span>
-            <span>Calculated at checkout</span>
+          <div class="eloura-cart__summary-row">
+            <span>Standard Delivery</span>
+            <span>
+              {%- if cart.total_price >= free_shipping_threshold -%}
+                <span style="text-decoration: line-through; color: #888888; font-size: 0.8rem; margin-right: 0.35rem;">Rs. 300.00</span>
+                <strong style="color: #0A0A0A;">FREE DELIVERY</strong>
+              {%- else -%}
+                <strong>Rs. 300.00</strong>
+              {%- endif -%}
+            </span>
           </div>
 
-          <div class="eloura-cart__summary-row eloura-cart__summary-row--small">
-            <span>Duties &amp; Taxes</span>
-            <span>Included / Calculated at checkout</span>
-          </div>
+          {%- if cart.total_price < free_shipping_threshold -%}
+            <p style="font-size: 0.75rem; color: #666666; margin: -0.5rem 0 1rem; font-style: italic;">
+              Shop above Rs. 10,000 for FREE DELIVERY
+            </p>
+          {%- endif -%}
 
           <div class="eloura-cart__summary-total">
-            <span>Estimated Total</span>
-            <span class="eloura-cart__total-price">{{ cart.total_price | money }}</span>
+            <span>Total</span>
+            <span class="eloura-cart__total-price">{{ final_total | money }}</span>
           </div>
 
           <button type="submit" name="checkout" class="eloura-cart__checkout-btn">
