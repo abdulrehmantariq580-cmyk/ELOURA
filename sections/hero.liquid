@@ -145,6 +145,14 @@
        ====================================================================== -->
   {%- if section.settings.show_products -%}
     <div class="sliding-products__wrapper">
+      {%- if collection == blank -%}
+        <div class="container" style="padding-top: 2rem; padding-bottom: 0.5rem;">
+          <h2 style="font-size: 1.15rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #0A0A0A; margin: 0;">
+            NEWEST ARRIVALS
+          </h2>
+        </div>
+      {%- endif -%}
+
       <div class="sliding-products__track-container js-product-slider">
         <div class="sliding-products__track">
           {%- if collection != blank and collection.products.size > 0 -%}
@@ -209,13 +217,15 @@
         </div>
       </div>
 
-      <!-- Bottom Directional CTA Link (Represent Style: → SHOP [COLLECTION]) -->
+      <!-- Bottom Directional CTA Link (Represent Style: → SHOP [COLLECTION] or → SHOP ALL PRODUCTS) -->
       <div class="sliding-products__footer">
         <a href="{{ target_link }}" class="sliding-products__cta-link">
           <span class="sliding-products__arrow">&rarr;</span>
           <span class="sliding-products__link-text">
             {%- if section.settings.bottom_link_text != blank -%}
               {{ section.settings.bottom_link_text | upcase }}
+            {%- elsif collection == blank -%}
+              SHOP ALL PRODUCTS
             {%- else -%}
               SHOP {{ hero_title | upcase }}
             {%- endif -%}
