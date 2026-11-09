@@ -1,27 +1,53 @@
 {%- comment -%}
-  ELOURA - Represent Clo Style Product Card
+  ELOURA - Luxury Represent Clo Style Product Card
   Accepts:
   - product: {Object} Product Liquid object
 {%- endcomment -%}
 
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign size_option = product.options_by_name['Size']
+  
+  # Secondary hover image
+  assign hover_image = nil
+  if product.images.size > 1
+    assign hover_image = product.images[1]
+  endif
+-%}
+
 <div class="product-card" data-product-id="{{ product.id }}">
   <div class="product-card__media-box">
+    <!-- Feature 1: Minimalist Streetwear Fit Tag -->
+    <div class="product-card__tag">
+      <span>OVERSIZED FIT</span>
+    </div>
+
     <!-- Top-Right Wishlist / Bookmark Icon -->
     <button type="button" class="product-card__bookmark-btn js-wishlist-toggle" aria-label="Save to Wishlist">
       {% render 'icon-bookmark' %}
     </button>
 
-    <!-- Product Cutout Image -->
+    <!-- Product Image with Feature 2: Secondary Image on Hover -->
     <a href="{{ product.url }}" class="product-card__link" tabindex="-1">
       {%- if product.featured_image != blank -%}
         <img
           src="{{ product.featured_image | image_url: width: 700 }}"
           alt="{{ product.title | escape }}"
-          class="product-card__img"
+          class="product-card__img product-card__img--primary"
           loading="lazy"
           width="700"
           height="700"
         >
+        {%- if hover_image != nil -%}
+          <img
+            src="{{ hover_image | image_url: width: 700 }}"
+            alt="{{ product.title | escape }}"
+            class="product-card__img product-card__img--hover"
+            loading="lazy"
+            width="700"
+            height="700"
+          >
+        {%- endif -%}
       {%- else -%}
         {{ 'product-1' | placeholder_svg_tag: 'product-card__img product-card__img--placeholder' }}
       {%- endif -%}
@@ -32,7 +58,7 @@
       type="button"
       class="product-card__quick-add-btn js-quick-add-btn"
       aria-label="Quick Add {{ product.title | escape }}"
-      data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+      data-variant-id="{{ current_variant.id }}"
       {% unless product.available %}disabled{% endunless %}
     >
       {% render 'icon-plus' %}
@@ -44,6 +70,33 @@
     <h3 class="product-card__name">
       <a href="{{ product.url }}">{{ product.title }}</a>
     </h3>
+
+    <!-- Feature 4: Always Visible Available Sizes Row -->
+    {%- if size_option -%}
+      <div class="product-card__sizes-row">
+        {%- for val in size_option.values -%}
+          {%- liquid
+            assign is_available = false
+            for variant in product.variants
+              if variant.options contains val and variant.available
+                assign is_available = true
+                break
+              endif
+            endfor
+          -%}
+          <span class="product-card__size-pill {% unless is_available %}is-soldout{% endunless %}">
+            {{ val | upcase }}
+          </span>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="product-card__sizes-row">
+        <span class="product-card__size-pill">S</span>
+        <span class="product-card__size-pill">M</span>
+        <span class="product-card__size-pill">L</span>
+        <span class="product-card__size-pill">XL</span>
+      </div>
+    {%- endif -%}
 
     <div class="product-card__pricing">
       <span class="product-card__price">{{ product.price | money }}</span>

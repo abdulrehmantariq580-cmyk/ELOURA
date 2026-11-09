@@ -3683,3 +3683,101 @@ html, body {
     height: 100svh; /* Small viewport height prevents toolbar collapse jump */
   }
 }
+
+/* ==========================================================================
+   PRODUCT CARD UPGRADES: FIT BADGE, SECONDARY HOVER IMAGE & SIZES ROW
+   ========================================================================== */
+
+/* 1. Minimalist Fit Tag on Top-Left of Media Box */
+.product-card__tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.product-card__tag span {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: #0A0A0A;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 0.25rem 0.55rem;
+  border-radius: 1px;
+  text-transform: uppercase;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* 2. Secondary Hover Image */
+.product-card__link {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.product-card__img--primary {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.product-card__img--hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 1;
+}
+
+.product-card:hover .product-card__img--hover {
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+.product-card:hover .product-card__img--primary {
+  transform: scale(1.02);
+}
+
+/* 4. Always Visible Available Sizes Row */
+.product-card__sizes-row {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+  margin: 0.45rem 0 0.5rem;
+}
+
+.product-card__size-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 20px;
+  padding: 0 0.35rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #333333;
+  background-color: #ECECEC;
+  border-radius: 1px;
+  line-height: 1;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.product-card:hover .product-card__size-pill {
+  background-color: #E2E2E0;
+}
+
+.product-card__size-pill.is-soldout {
+  opacity: 0.35;
+  text-decoration: line-through;
+  background-color: #F5F5F5;
+  color: #888888;
+}
