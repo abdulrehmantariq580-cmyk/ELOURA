@@ -183,6 +183,7 @@
           "settings": {
             "title": "T-SHIRTS",
             "collection": "",
+            "image": "shopify://shop_images/category-tshirts-editorial-7ae4.png",
             "link": ""
           }
         },
@@ -191,6 +192,7 @@
           "settings": {
             "title": "HOODIES",
             "collection": "",
+            "image": "shopify://shop_images/category-hoodies-editorial-2ae7.png",
             "link": ""
           }
         },
@@ -199,6 +201,7 @@
           "settings": {
             "title": "SWEATSHIRTS",
             "collection": "",
+            "image": "shopify://shop_images/category-sweatshirts-editorial-bf0a.png",
             "link": ""
           }
         },
@@ -207,6 +210,7 @@
           "settings": {
             "title": "JACKETS",
             "collection": "",
+            "image": "shopify://shop_images/category-jackets-editorial-589e.png",
             "link": ""
           }
         }
