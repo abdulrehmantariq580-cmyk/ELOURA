@@ -34,61 +34,128 @@
   style="--overlay-opacity: {{ overlay_opacity }};"
 >
   <!-- ======================================================================
-       1. HERO EDITORIAL CAMPAIGN BANNER (FULL-BLEED / SCREEN)
+       1. HERO EDITORIAL CAMPAIGN BANNER (DUAL VIDEO / MEDIA CAROUSEL)
        ====================================================================== -->
-  <div class="hero-banner {{ hero_height_class }}">
-    <!-- Background Media (Video or Image) -->
-    <div class="hero-banner__media">
-      {%- if section.settings.video_url != blank -%}
-        <video
-          class="hero-banner__video"
-          autoplay
-          muted
-          loop
-          playsinline
-          preload="metadata"
-        >
-          <source src="{{ section.settings.video_url }}" type="video/mp4">
-        </video>
-      {%- elsif section.settings.image_desktop != blank -%}
-        <picture>
-          {%- if section.settings.image_mobile != blank -%}
-            <source
-              media="(max-width: 767px)"
-              srcset="{{ section.settings.image_mobile | image_url: width: 900 }}"
+  {%- assign has_video_2 = false -%}
+  {%- if section.settings.video_url_2 != blank or section.settings.video_url_2_mobile != blank -%}
+    {%- assign has_video_2 = true -%}
+  {%- endif -%}
+
+  <div class="hero-banner {{ hero_height_class }}{% if has_video_2 %} hero-banner--carousel{% endif %}" id="HeroBanner-{{ section.id }}">
+    <!-- Slides Track for Videos -->
+    <div class="hero-banner__slides-track" id="HeroSlidesTrack-{{ section.id }}">
+      
+      <!-- Slide 1 -->
+      <div class="hero-banner__slide is-active" data-slide-index="0">
+        <div class="hero-banner__media">
+          {%- if section.settings.video_url != blank or section.settings.video_url_mobile != blank -%}
+            <!-- Desktop Video -->
+            {%- if section.settings.video_url != blank -%}
+              <video
+                class="hero-banner__video hero-banner__video--desktop{% if section.settings.video_url_mobile != blank %} hide-mobile{% endif %}"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              >
+                <source src="{{ section.settings.video_url }}" type="video/mp4">
+              </video>
+            {%- endif -%}
+
+            <!-- Mobile Video -->
+            {%- if section.settings.video_url_mobile != blank -%}
+              <video
+                class="hero-banner__video hero-banner__video--mobile hide-desktop"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              >
+                <source src="{{ section.settings.video_url_mobile }}" type="video/mp4">
+              </video>
+            {%- endif -%}
+          {%- elsif section.settings.image_desktop != blank -%}
+            <picture>
+              {%- if section.settings.image_mobile != blank -%}
+                <source
+                  media="(max-width: 767px)"
+                  srcset="{{ section.settings.image_mobile | image_url: width: 900 }}"
+                >
+              {%- endif -%}
+              <img
+                src="{{ section.settings.image_desktop | image_url: width: 2400 }}"
+                alt="{{ hero_title | escape }}"
+                class="hero-banner__image"
+                loading="eager"
+                width="2400"
+                height="1400"
+              >
+            </picture>
+          {%- elsif collection.image != blank -%}
+            <img
+              src="{{ collection.image | image_url: width: 2400 }}"
+              alt="{{ hero_title | escape }}"
+              class="hero-banner__image"
+              loading="eager"
+              width="2400"
+              height="1400"
+            >
+          {%- else -%}
+            <img
+              src="{{ 'hero-campaign-default.jpg' | asset_url }}"
+              alt="ELOURA Campaign"
+              class="hero-banner__image"
+              loading="eager"
+              width="2400"
+              height="1400"
             >
           {%- endif -%}
-          <img
-            src="{{ section.settings.image_desktop | image_url: width: 2400 }}"
-            alt="{{ hero_title | escape }}"
-            class="hero-banner__image"
-            loading="eager"
-            width="2400"
-            height="1400"
-          >
-        </picture>
-      {%- elsif collection.image != blank -%}
-        <img
-          src="{{ collection.image | image_url: width: 2400 }}"
-          alt="{{ hero_title | escape }}"
-          class="hero-banner__image"
-          loading="eager"
-          width="2400"
-          height="1400"
-        >
-      {%- else -%}
-        <img
-          src="{{ 'hero-campaign-default.jpg' | asset_url }}"
-          alt="ELOURA Campaign"
-          class="hero-banner__image"
-          loading="eager"
-          width="2400"
-          height="1400"
-        >
+
+          <!-- Dark Gradient Vignette Overlay -->
+          <div class="hero-banner__overlay"></div>
+        </div>
+      </div>
+
+      <!-- Slide 2 (Optional Second Video / Media) -->
+      {%- if has_video_2 -%}
+        <div class="hero-banner__slide" data-slide-index="1">
+          <div class="hero-banner__media">
+            <!-- Desktop Video 2 -->
+            {%- if section.settings.video_url_2 != blank -%}
+              <video
+                class="hero-banner__video hero-banner__video--desktop{% if section.settings.video_url_2_mobile != blank %} hide-mobile{% endif %}"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              >
+                <source src="{{ section.settings.video_url_2 }}" type="video/mp4">
+              </video>
+            {%- endif -%}
+
+            <!-- Mobile Video 2 -->
+            {%- if section.settings.video_url_2_mobile != blank -%}
+              <video
+                class="hero-banner__video hero-banner__video--mobile hide-desktop"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              >
+                <source src="{{ section.settings.video_url_2_mobile }}" type="video/mp4">
+              </video>
+            {%- endif -%}
+
+            <!-- Dark Gradient Vignette Overlay -->
+            <div class="hero-banner__overlay"></div>
+          </div>
+        </div>
       {%- endif -%}
 
-      <!-- Dark Gradient Vignette Overlay -->
-      <div class="hero-banner__overlay"></div>
     </div>
 
     <!-- Hero Content: "Introducing" -> Collection Name -> SHOP NOW -->
@@ -133,12 +200,70 @@
       </div>
     </div>
 
+    <!-- Navigation Dots for Dual Video Carousel -->
+    {%- if has_video_2 -%}
+      <div class="hero-dots" id="HeroDots-{{ section.id }}" aria-label="Video slider controls">
+        <button type="button" class="hero-dot is-active" data-index="0" aria-label="Slide 1"></button>
+        <button type="button" class="hero-dot" data-index="1" aria-label="Slide 2"></button>
+      </div>
+    {%- endif -%}
+
     {%- if section.settings.show_scroll_indicator -%}
       <div class="hero-scroll-indicator" aria-hidden="true">
         <span class="hero-scroll-line"></span>
       </div>
     {%- endif -%}
   </div>
+
+  {%- if has_video_2 -%}
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const track = document.getElementById('HeroSlidesTrack-{{ section.id }}');
+        const dotsWrap = document.getElementById('HeroDots-{{ section.id }}');
+        if (!track || !dotsWrap) return;
+
+        const dots = dotsWrap.querySelectorAll('.hero-dot');
+        const slides = track.querySelectorAll('.hero-banner__slide');
+        let currentIndex = 0;
+
+        function goToSlide(index) {
+          currentIndex = index;
+          track.style.transform = 'translateX(-' + (index * 100) + '%)';
+          dots.forEach((d, i) => d.classList.toggle('is-active', i === index));
+          slides.forEach((s, i) => s.classList.toggle('is-active', i === index));
+        }
+
+        dots.forEach((dot) => {
+          dot.addEventListener('click', function() {
+            const idx = parseInt(this.getAttribute('data-index'), 10);
+            goToSlide(idx);
+          });
+        });
+
+        // Touch swipe support for mobile
+        let startX = 0;
+        let diffX = 0;
+        track.addEventListener('touchstart', function(e) {
+          startX = e.touches[0].clientX;
+          diffX = 0;
+        }, { passive: true });
+
+        track.addEventListener('touchmove', function(e) {
+          diffX = e.touches[0].clientX - startX;
+        }, { passive: true });
+
+        track.addEventListener('touchend', function() {
+          if (Math.abs(diffX) > 40) {
+            if (diffX < 0 && currentIndex === 0) {
+              goToSlide(1);
+            } else if (diffX > 0 && currentIndex === 1) {
+              goToSlide(0);
+            }
+          }
+        });
+      });
+    </script>
+  {%- endif -%}
 
   <!-- ======================================================================
        2. SLIDING PRODUCT CATALOG FOR THIS HERO COLLECTION
@@ -260,7 +385,39 @@
     },
     {
       "type": "header",
-      "content": "Banner Media"
+      "content": "Banner Media - Video 1 (First Slide)"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Video 1 - Desktop MP4 URL",
+      "info": "Overrides image with a silent, looping background video on desktop/laptop screens."
+    },
+    {
+      "type": "text",
+      "id": "video_url_mobile",
+      "label": "Video 1 - Mobile MP4 URL",
+      "info": "Vertical portrait video for phone screens."
+    },
+    {
+      "type": "header",
+      "content": "Banner Media - Video 2 (Second Slide)"
+    },
+    {
+      "type": "text",
+      "id": "video_url_2",
+      "label": "Video 2 - Desktop MP4 URL",
+      "info": "Second video for Desktop screens."
+    },
+    {
+      "type": "text",
+      "id": "video_url_2_mobile",
+      "label": "Video 2 - Mobile MP4 URL",
+      "info": "Second video for Mobile screens. When Video 2 is added, 2 navigation dots appear and user can swipe/click to switch videos."
+    },
+    {
+      "type": "header",
+      "content": "Fallback Images (If No Video)"
     },
     {
       "type": "image_picker",
@@ -273,12 +430,6 @@
       "id": "image_mobile",
       "label": "Mobile Campaign Image (Optional)",
       "info": "Vertical portrait image for mobile screens."
-    },
-    {
-      "type": "text",
-      "id": "video_url",
-      "label": "Direct MP4 Video URL (Optional)",
-      "info": "Overrides image with a silent, looping background video."
     },
     {
       "type": "range",
