@@ -18,8 +18,6 @@
         "video_url_mobile": "https://cdn.shopify.com/videos/c/o/v/5e52e0668c044722b0378e7e2d160b67.mp4",
         "video_url_2": "https://cdn.shopify.com/videos/c/o/v/ed991f980e664b80912738000050f3eb.mp4",
         "video_url_2_mobile": "https://cdn.shopify.com/videos/c/o/v/eede994007914b58a78b30b14046f572.mp4",
-        "image_desktop": "shopify://shop_images/eloura_single_20261109_jacket_desktop.png",
-        "image_mobile": "shopify://shop_images/eloura_single_20261109_jacket_mobile.png",
         "overlay_opacity": 25,
         "subheading": "Introducing Eloura",
         "heading": "A new standard of timeless fashion",
@@ -96,7 +94,7 @@
     "hero_jwFYxR": {
       "type": "hero",
       "settings": {
-        "collection": "16-reflector",
+        "collection": "reflector-hoodie",
         "use_all_products": true,
         "video_url": "",
         "video_url_mobile": "",
@@ -124,7 +122,7 @@
     "hero_4QtRGF": {
       "type": "hero",
       "settings": {
-        "collection": "aura-sweatwear-shirt",
+        "collection": "aura-sweat-wear",
         "use_all_products": true,
         "video_url": "",
         "video_url_mobile": "",
@@ -152,7 +150,7 @@
     "hero_E6ExFJ": {
       "type": "hero",
       "settings": {
-        "collection": "thunder",
+        "collection": "thunder-sweat-wear",
         "use_all_products": true,
         "video_url": "",
         "video_url_mobile": "",
@@ -185,7 +183,6 @@
           "settings": {
             "title": "T-SHIRTS",
             "collection": "",
-            "image": "shopify://shop_images/eloura-category-tshirts-model-4dcc26a6.png",
             "link": ""
           }
         },
@@ -194,7 +191,6 @@
           "settings": {
             "title": "HOODIES",
             "collection": "",
-            "image": "shopify://shop_images/eloura-category-hoodies-model-a6af8a34.png",
             "link": ""
           }
         },
@@ -203,7 +199,6 @@
           "settings": {
             "title": "SWEATSHIRTS",
             "collection": "",
-            "image": "shopify://shop_images/eloura-category-sweatshirts-model-cd0ec81a.png",
             "link": ""
           }
         },
@@ -212,7 +207,6 @@
           "settings": {
             "title": "JACKETS",
             "collection": "",
-            "image": "shopify://shop_images/eloura-category-jackets-model-4b0bb262.png",
             "link": ""
           }
         }
