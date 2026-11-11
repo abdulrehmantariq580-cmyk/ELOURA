@@ -3919,42 +3919,84 @@ body.template-product .site-header .site-header__logo-image {
 /* Mobile Responsive Cart Page */
 @media (max-width: 900px) {
   .eloura-cart-page {
-    padding: 2rem 0 5rem;
+    padding: 1.5rem 0 4rem;
   }
 
   .eloura-cart__header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .eloura-cart__title {
+    font-size: 1.25rem;
+  }
+
+  .eloura-cart__count {
+    font-size: 0.75rem;
   }
 
   .eloura-cart__continue-shopping-top {
     font-size: 0.6875rem;
+    white-space: nowrap;
   }
 
   .eloura-cart__shipping-banner {
-    padding: 1rem;
-    margin-bottom: 1.75rem;
+    padding: 0.85rem 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .eloura-cart__shipping-text {
-    font-size: 0.7rem;
+    font-size: 0.72rem;
+    line-height: 1.4;
   }
 
   .eloura-cart__layout {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
   }
 
   .eloura-cart__table-header {
     display: none;
   }
 
+  /* Clean Mobile Product Card Box */
   .eloura-cart__row {
-    grid-template-columns: 95px 1fr;
+    display: flex;
+    align-items: flex-start;
     gap: 1rem;
     padding: 1.25rem 0;
+    border-bottom: 1px solid #ECECEC;
+    position: relative;
+  }
+
+  .eloura-cart__media {
+    width: 95px;
+    min-width: 95px;
+    aspect-ratio: 4/5;
+    border-radius: 2px;
+  }
+
+  .eloura-cart__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-right: 0.5rem;
+  }
+
+  .eloura-cart__item-title {
+    font-size: 0.875rem;
+    line-height: 1.25;
+    margin-bottom: 0.25rem;
+  }
+
+  .eloura-cart__item-variant {
+    font-size: 0.75rem;
+    color: #666666;
+    margin-bottom: 0.35rem;
   }
 
   .eloura-cart__price-cell {
@@ -3962,47 +4004,105 @@ body.template-product .site-header .site-header__logo-image {
   }
 
   .eloura-cart__mobile-meta {
-    display: block;
-    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.65rem;
   }
 
   .eloura-cart__unit-price {
     font-size: 0.8125rem;
-    font-weight: 600;
-    color: #555555;
+    font-weight: 700;
+    color: #0A0A0A;
   }
 
+  /* Remove Link on Mobile */
+  .eloura-cart__remove-link {
+    font-size: 0.6875rem;
+    color: #888888;
+    margin-top: 0.15rem;
+  }
+
+  /* Mobile Bottom Action Row inside Card */
   .eloura-cart__qty-cell {
-    grid-column: 2;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 0.25rem;
+    position: static;
+    margin-top: 0.75rem;
   }
 
   .eloura-cart__stepper {
-    height: 34px;
+    height: 32px;
+    background: #FFFFFF;
   }
 
   .eloura-cart__stepper-btn {
-    width: 32px;
-  }
-
-  .eloura-cart__total-cell {
-    grid-column: 2;
-    text-align: right;
-    margin-top: -34px;
+    width: 30px;
     font-size: 1rem;
   }
 
-  .eloura-cart__badges-strip {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    padding: 1.25rem 1rem;
+  .eloura-cart__stepper-val {
+    font-size: 0.8125rem;
+    padding: 0 0.5rem;
+    min-width: 22px;
   }
 
+  /* Mobile Line Subtotal Price positioned bottom-right */
+  .eloura-cart__total-cell {
+    margin-left: auto;
+    align-self: flex-end;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #0A0A0A;
+    white-space: nowrap;
+    padding-bottom: 2px;
+  }
+
+  /* Badges Strip on Mobile: Neat clean horizontal or compact vertical */
+  .eloura-cart__badges-strip {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    padding: 1.15rem 1rem;
+    margin-top: 1.75rem;
+    background: #F9F9F8;
+    border: 1px solid #ECECEC;
+  }
+
+  .eloura-cart__badge-item {
+    gap: 0.65rem;
+    align-items: center;
+  }
+
+  .eloura-cart__badge-item svg {
+    width: 18px;
+    height: 18px;
+    margin-top: 0;
+  }
+
+  .eloura-cart__badge-item strong {
+    font-size: 0.6875rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .eloura-cart__badge-item p {
+    font-size: 0.65rem;
+  }
+
+  /* Order Summary Card Mobile */
   .eloura-cart__summary-card {
-    padding: 1.5rem 1.25rem;
+    padding: 1.5rem 1.15rem;
+    position: static;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  }
+
+  .eloura-cart__summary-title {
+    font-size: 0.875rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.85rem;
+  }
+
+  .eloura-cart__checkout-btn {
+    height: 48px;
+    font-size: 0.8125rem;
   }
 }
 
