@@ -1949,19 +1949,21 @@ button {
 .collection-hero__media-wrapper {
   position: relative;
   width: 100%;
-  height: 85vh;
-  min-height: 600px;
-  max-height: 880px;
+  height: auto;
+  min-height: unset;
+  max-height: unset;
   overflow: hidden;
-  background-color: #EAEAE8;
+  background-color: #F4F4F2;
 }
 
 .collection-hero__image {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  max-height: 88vh;
+  object-fit: contain;
   object-position: center top;
   display: block;
+  margin: 0 auto;
 }
 
 .collection-hero__placeholder {
@@ -2117,9 +2119,15 @@ button {
 
 @media (max-width: 768px) {
   .collection-hero__media-wrapper {
-    height: 78vh;
-    height: 78dvh;
-    min-height: 520px;
+    height: auto;
+    min-height: unset;
+    max-height: unset;
+  }
+  .collection-hero__image {
+    width: 100%;
+    height: auto;
+    max-height: unset;
+    object-fit: contain;
   }
 
   .collection-hero__header {
