@@ -8,6 +8,17 @@
     "theme_support_url": "https://github.com/abdulrehmantariq580-cmyk/ELOURA"
   },
   {
+    "name": "Favicon & Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon Image",
+        "info": "Will be scaled down to 32x32px and 192x192px. Displayed in browser tabs, bookmarks, and search engines like Google."
+      }
+    ]
+  },
+  {
     "name": "Colors",
     "settings": [
       {
@@ -69,4 +80,3 @@
     ]
   }
 ]
-

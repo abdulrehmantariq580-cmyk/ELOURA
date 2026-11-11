@@ -8,6 +8,45 @@
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
 
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+      <link rel="icon" sizes="192x192" href="{{ settings.favicon | image_url: width: 192, height: 192 }}">
+      <script>
+        (function() {
+          var favSrc = "{{ settings.favicon | image_url: width: 64, height: 64 }}";
+          if (!favSrc) return;
+          var img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.onload = function() {
+            try {
+              var canvas = document.createElement('canvas');
+              canvas.width = 64;
+              canvas.height = 64;
+              var ctx = canvas.getContext('2d');
+              ctx.beginPath();
+              ctx.arc(32, 32, 32, 0, Math.PI * 2, true);
+              ctx.closePath();
+              ctx.clip();
+              ctx.drawImage(img, 0, 0, 64, 64);
+              var circularFav = canvas.toDataURL('image/png');
+              var link = document.querySelector("link[rel*='icon']");
+              if (!link) {
+                link = document.createElement('link');
+                link.rel = 'icon';
+                document.head.appendChild(link);
+              }
+              link.type = 'image/png';
+              link.href = circularFav;
+            } catch (e) {
+              // Fallback to standard icon if cross-origin canvas security restricts
+            }
+          };
+          img.src = favSrc;
+        })();
+      </script>
+    {%- endif -%}
+
     <title>
       {{ page_title }}
       {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
