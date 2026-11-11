@@ -4335,10 +4335,11 @@ html, body {
 
 
 /* ==========================================================================
-   ELOURA - UNIVERSAL CLEAN WHITE HEADER ON NON-HOME PAGES
-   (Search, Contact, Legal Policies, Pages)
+   ELOURA - UNIVERSAL CLEAN WHITE HEADER ON NON-HERO PAGES
+   (Search, Contact, Legal Policies, Pages, PDP)
+   Excludes template-index and template-collection (which have hero banner overlay)
    ========================================================================== */
-body:not(.template-index) .site-header {
+body:not(.template-index):not(.template-collection) .site-header {
   background-color: #FFFFFF !important;
   border-bottom: 1px solid #ECECEC !important;
   position: sticky !important;
@@ -4346,21 +4347,91 @@ body:not(.template-index) .site-header {
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.03) !important;
 }
 
-body:not(.template-index) .site-header .header-icon-btn,
-body:not(.template-index) .site-header .eloura-brandmark__text,
-body:not(.template-index) .site-header .site-header__logo-image {
+body:not(.template-index):not(.template-collection) .site-header .header-icon-btn,
+body:not(.template-index):not(.template-collection) .site-header .eloura-brandmark__text,
+body:not(.template-index):not(.template-collection) .site-header .site-header__logo-image {
   color: #0A0A0A !important;
   filter: none !important;
   text-shadow: none !important;
 }
 
-body:not(.template-index) .site-header .eloura-brandmark__line {
+body:not(.template-index):not(.template-collection) .site-header .eloura-brandmark__line {
   background-color: #0A0A0A !important;
 }
 
-body:not(.template-index) .site-header .cart-bubble {
+body:not(.template-index):not(.template-collection) .site-header .cart-bubble {
   background-color: #0A0A0A !important;
   color: #FFFFFF !important;
+}
+
+/* ==========================================================================
+   ELOURA - COLLECTION PAGE TRANSPARENT HEADER OVERLAY
+   ========================================================================== */
+body.template-collection .site-header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+}
+
+body.template-collection .collection-hero-section {
+  margin-top: calc(-1 * var(--header-height, 58px));
+  position: relative;
+}
+
+body.template-collection .site-header:not(.header--below-hero) {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+body.template-collection .site-header:not(.header--below-hero) .header-icon-btn,
+body.template-collection .site-header:not(.header--below-hero) .eloura-brandmark__text,
+body.template-collection .site-header:not(.header--below-hero) .site-header__logo-image {
+  color: #FFFFFF !important;
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.65)) !important;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.65) !important;
+}
+
+body.template-collection .site-header:not(.header--below-hero) .eloura-brandmark__line {
+  background-color: #FFFFFF !important;
+}
+
+body.template-collection .site-header:not(.header--below-hero) .cart-bubble {
+  background-color: #FFFFFF !important;
+  color: #0A0A0A !important;
+}
+
+body.template-collection .site-header.header--below-hero {
+  background-color: rgba(244, 244, 242, 0.96) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.template-collection .site-header.header--below-hero .header-icon-btn,
+body.template-collection .site-header.header--below-hero .eloura-brandmark__text,
+body.template-collection .site-header.header--below-hero .site-header__logo-image {
+  color: #0A0A0A !important;
+  filter: none !important;
+  text-shadow: none !important;
+}
+
+body.template-collection .site-header.header--below-hero .eloura-brandmark__line {
+  background-color: #0A0A0A !important;
+}
+
+body.template-collection .site-header.header--below-hero .cart-bubble {
+  background-color: #0A0A0A !important;
+  color: #FFFFFF !important;
+}
+
+@media (max-width: 768px) {
+  body.template-collection .collection-hero-section {
+    margin-top: -52px;
+  }
 }
 
 /* ==========================================================================
