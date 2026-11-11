@@ -4,7 +4,7 @@
     assign sticky_class = ' site-header--sticky'
   endif
   assign overlay_class = ''
-  if template.name == 'index' or template.name == 'collection' or section.settings.transparent_header
+  if template.name == 'index' or section.settings.transparent_header
     unless template.name == 'product'
       assign overlay_class = ' site-header--overlay'
     endunless

@@ -18,7 +18,7 @@ function initStickyHeader() {
   const header = document.querySelector('.site-header');
   if (!header) return;
 
-  const heroSection = document.querySelector('.hero-banner, .collection-hero__media-wrapper, .collection-hero-section');
+  const heroSection = document.querySelector('.hero-banner');
 
   let ticking = false;
   const updateHeaderState = () => {
