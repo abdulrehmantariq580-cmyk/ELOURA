@@ -177,7 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================================================
-   ELOURA CART DRAWER JAVASCRIPT CONTROLLER
+   ELOURA LIGHTNING-FAST CART DRAWER CONTROLLER
+   - Instant In-Place Updates: Zero page reloads for Add, Increment, Decrement, and Delete
+   - Robust Event Delegation: Close button & backdrop always work reliably
+   - Optimistic UI Feedback: Instant visual response on all interactions
    ========================================================================== */
 document.addEventListener('DOMContentLoaded', function() {
   const drawer = document.getElementById('CartDrawer');
@@ -195,58 +198,49 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.style.overflow = '';
   }
 
-  // Header bag triggers
-  document.querySelectorAll('.js-cart-drawer-trigger').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
+  // 1. Delegated Click Listener for Opening & Closing (Reliable on mobile & desktop)
+  document.addEventListener('click', function(e) {
+    const openTrigger = e.target.closest('.js-cart-drawer-trigger');
+    if (openTrigger) {
       e.preventDefault();
+      e.stopPropagation();
       openCartDrawer();
-    });
-  });
+      return;
+    }
 
-  // Close triggers
-  document.querySelectorAll('.js-cart-drawer-close').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
+    const closeTrigger = e.target.closest('.js-cart-drawer-close');
+    if (closeTrigger) {
+      e.preventDefault();
+      e.stopPropagation();
       closeCartDrawer();
-    });
-  });
-
-  // Quantity updates inside drawer via AJAX (Smooth In-Place update, No Page Reload!)
-  drawer.addEventListener('click', function(e) {
-    const qtyBtn = e.target.closest('.js-qty-btn');
-    const removeBtn = e.target.closest('.js-cart-remove');
-
-    if (qtyBtn) {
-      const line = qtyBtn.getAttribute('data-line');
-      const action = qtyBtn.getAttribute('data-action');
-      const qtyValEl = qtyBtn.parentElement.querySelector('.cart-drawer__qty-val');
-      let currentQty = parseInt(qtyValEl ? qtyValEl.textContent : '1', 10);
-      let newQty = action === 'plus' ? currentQty + 1 : currentQty - 1;
-      updateCartLine(line, newQty);
-    }
-
-    if (removeBtn) {
-      const line = removeBtn.getAttribute('data-line');
-      updateCartLine(line, 0);
+      return;
     }
   });
 
-  function refreshCartDrawer() {
-    fetch('/?sections=cart-drawer-section')
-      .then(res => res.json())
-      .then(data => {
+  // ESC key to close cart drawer
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
+      closeCartDrawer();
+    }
+  });
+
+  // 2. Refresh Cart Drawer Content without Page Reload (Shopify Section Rendering API)
+  function refreshCartDrawer(openAfterRefresh) {
+    return fetch('/?sections=cart-drawer-section')
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
         if (data && data['cart-drawer-section']) {
           const parser = new DOMParser();
           const doc = parser.parseFromString(data['cart-drawer-section'], 'text/html');
           const newDrawer = doc.getElementById('CartDrawer');
           if (newDrawer) {
-            // Replace inner contents while keeping drawer open and stable without re-sliding
             const currentPanel = drawer.querySelector('.cart-drawer__panel');
             const newPanel = newDrawer.querySelector('.cart-drawer__panel');
             if (currentPanel && newPanel) {
               currentPanel.innerHTML = newPanel.innerHTML;
             }
 
-            // Also update header cart count bubble
+            // Update all cart count bubbles across the website instantly
             const newCountEl = newDrawer.querySelector('#CartDrawerCount');
             if (newCountEl) {
               const countText = newCountEl.textContent.replace(/[()]/g, '').trim();
@@ -254,17 +248,55 @@ document.addEventListener('DOMContentLoaded', function() {
                 el.textContent = countText;
               });
             }
+
+            if (openAfterRefresh) {
+              openCartDrawer();
+            }
           }
         }
       })
-      .catch(err => {
-        console.error('Failed to refresh cart drawer section:', err);
+      .catch(function(err) {
+        console.error('Failed to refresh cart drawer:', err);
       });
   }
 
+  // 3. Lightning Fast Quantity Change & Item Removal (Optimistic UI)
+  drawer.addEventListener('click', function(e) {
+    const qtyBtn = e.target.closest('.js-qty-btn');
+    const removeBtn = e.target.closest('.js-cart-remove');
+
+    if (qtyBtn) {
+      e.preventDefault();
+      const line = qtyBtn.getAttribute('data-line');
+      const action = qtyBtn.getAttribute('data-action');
+      const qtyValEl = qtyBtn.parentElement.querySelector('.cart-drawer__qty-val');
+      let currentQty = parseInt(qtyValEl ? qtyValEl.textContent : '1', 10);
+      let newQty = action === 'plus' ? currentQty + 1 : currentQty - 1;
+
+      // Instant optimistic UI update
+      if (qtyValEl && newQty > 0) {
+        qtyValEl.textContent = newQty;
+      }
+      updateCartLine(line, newQty);
+    }
+
+    if (removeBtn) {
+      e.preventDefault();
+      const line = removeBtn.getAttribute('data-line');
+      const itemRow = removeBtn.closest('.cart-drawer__item');
+      if (itemRow) {
+        itemRow.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+        itemRow.style.opacity = '0.3';
+        itemRow.style.transform = 'scale(0.97)';
+      }
+      updateCartLine(line, 0);
+    }
+  });
+
   function updateCartLine(line, quantity) {
-    // Disable stepper buttons while updating to prevent race conditions
-    drawer.querySelectorAll('.js-qty-btn, .js-cart-remove').forEach(btn => btn.style.pointerEvents = 'none');
+    drawer.querySelectorAll('.js-qty-btn, .js-cart-remove').forEach(function(btn) {
+      btn.style.pointerEvents = 'none';
+    });
 
     fetch('/cart/change.js', {
       method: 'POST',
@@ -274,18 +306,17 @@ document.addEventListener('DOMContentLoaded', function() {
       },
       body: JSON.stringify({ line: parseInt(line, 10), quantity: quantity })
     })
-    .then(res => res.json())
-    .then(() => {
-      // In-place refresh using Shopify Section Rendering API: No page reload, drawer stays open without re-animating!
-      refreshCartDrawer();
+    .then(function(res) { return res.json(); })
+    .then(function() {
+      return refreshCartDrawer(false);
     })
-    .catch(err => {
+    .catch(function(err) {
       console.error('Error updating cart line:', err);
-      drawer.querySelectorAll('.js-qty-btn, .js-cart-remove').forEach(btn => btn.style.pointerEvents = '');
+      refreshCartDrawer(false);
     });
   }
 
-  // Global Quick-Add Button Handler (.js-quick-add-btn on product cards)
+  // 4. Lightning Quick-Add Button on Product Cards (NO PAGE RELOAD)
   document.addEventListener('click', function(e) {
     const quickAddBtn = e.target.closest('.js-quick-add-btn');
     if (!quickAddBtn) return;
@@ -308,29 +339,30 @@ document.addEventListener('DOMContentLoaded', function() {
         quantity: 1
       })
     })
-    .then(res => {
-      if (!res.ok) throw new Error('Network error');
+    .then(function(res) {
+      if (!res.ok) throw new Error('Add to cart failed');
       return res.json();
     })
-    .then(() => {
-      // Direct redirect to open drawer smoothly or reload with ?cart_open=1
-      const url = new URL(window.location.href);
-      url.searchParams.set('cart_open', '1');
-      window.location.href = url.toString();
+    .then(function() {
+      // In-place refresh cart drawer and slide open immediately (Zero reload delay!)
+      return refreshCartDrawer(true);
     })
-    .catch(err => {
+    .catch(function(err) {
       console.error('Quick add failed:', err);
+    })
+    .finally(function() {
       quickAddBtn.disabled = false;
       quickAddBtn.classList.remove('is-loading');
     });
   });
 
-  // Intercept Ajax "Add to Cart" on PDP and open Drawer smoothly
+  // 5. Lightning Add-To-Cart on Product Detail Page (PDP) (NO PAGE RELOAD)
   const pdpForm = document.getElementById('ProductForm');
   if (pdpForm) {
     pdpForm.addEventListener('submit', function(e) {
       e.preventDefault();
       const atcBtn = document.getElementById('AddToCartBtn');
+      const originalText = atcBtn ? atcBtn.innerHTML : 'ADD TO BAG';
       if (atcBtn) {
         atcBtn.disabled = true;
         atcBtn.textContent = 'ADDING...';
@@ -341,19 +373,28 @@ document.addEventListener('DOMContentLoaded', function() {
         method: 'POST',
         body: formData
       })
-      .then(res => res.json())
-      .then(() => {
-        // Open drawer on successful add
-        window.location.href = window.location.pathname + '?cart_open=1';
+      .then(function(res) {
+        if (!res.ok) throw new Error('PDP add failed');
+        return res.json();
       })
-      .catch(err => {
-        console.error('Add to cart error:', err);
-        pdpForm.submit(); // fallback to standard submit
+      .then(function() {
+        // Instantly refresh cart drawer in-place and slide open smoothly
+        return refreshCartDrawer(true);
+      })
+      .catch(function(err) {
+        console.error('PDP add to cart error:', err);
+        pdpForm.submit();
+      })
+      .finally(function() {
+        if (atcBtn) {
+          atcBtn.disabled = false;
+          atcBtn.innerHTML = originalText;
+        }
       });
     });
   }
 
-  // Auto-open if redirected with ?cart_open=1
+  // Auto-open if query parameter exists
   if (window.location.search.includes('cart_open=1')) {
     openCartDrawer();
   }

@@ -3129,16 +3129,32 @@ body.template-product .site-header .site-header__logo-image {
 .cart-drawer__close {
   background: none;
   border: none;
-  padding: 0.25rem;
+  padding: 0.5rem;
+  min-width: 44px;
+  min-height: 44px;
   cursor: pointer;
   color: #0A0A0A;
   display: flex;
   align-items: center;
-  transition: opacity 0.2s ease;
+  justify-content: center;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 10;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cart-drawer__close svg {
+  pointer-events: none;
+  width: 20px;
+  height: 20px;
 }
 
 .cart-drawer__close:hover {
   opacity: 0.6;
+}
+
+.cart-drawer__close:active {
+  transform: scale(0.92);
 }
 
 /* Shipping Progress Bar */
