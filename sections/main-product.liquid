@@ -93,14 +93,16 @@
         <div class="eloura-pdp__header-row">
           <h1 class="eloura-pdp__title">{{ product.title }}</h1>
           <div class="eloura-pdp__price-box">
+            {%- if current_variant.compare_at_price > current_variant.price -%}
+              <span class="eloura-pdp__compare-price" id="ComparePrice-{{ section.id }}" style="display: block;">
+                {{ current_variant.compare_at_price | money }}
+              </span>
+            {%- else -%}
+              <span class="eloura-pdp__compare-price" id="ComparePrice-{{ section.id }}" style="display: none;"></span>
+            {%- endif -%}
             <span class="eloura-pdp__price" id="ProductPrice-{{ section.id }}">
               {{ current_variant.price | money }}
             </span>
-            {%- if current_variant.compare_at_price > current_variant.price -%}
-              <span class="eloura-pdp__compare-price">
-                {{ current_variant.compare_at_price | money }}
-              </span>
-            {%- endif -%}
           </div>
         </div>
 
@@ -467,6 +469,7 @@
       const atcBtn = document.getElementById('AddToCartBtn');
       const hiddenInput = document.getElementById('SelectedVariantId');
       const priceEl = document.getElementById('ProductPrice-{{ section.id }}');
+      const comparePriceEl = document.getElementById('ComparePrice-{{ section.id }}');
 
       if (!select) return;
 
@@ -496,6 +499,16 @@
         select.value = matchedOption.value;
         if (hiddenInput) hiddenInput.value = matchedOption.value;
         if (priceEl) priceEl.textContent = matchedOption.getAttribute('data-price');
+
+        const comparePrice = matchedOption.getAttribute('data-compare-price');
+        if (comparePriceEl) {
+          if (comparePrice && comparePrice !== '' && comparePrice !== matchedOption.getAttribute('data-price')) {
+            comparePriceEl.textContent = comparePrice;
+            comparePriceEl.style.display = 'block';
+          } else {
+            comparePriceEl.style.display = 'none';
+          }
+        }
 
         const isAvail = matchedOption.getAttribute('data-available') === 'true';
         if (atcBtn) {
