@@ -3919,33 +3919,57 @@ body.template-product .site-header .site-header__logo-image {
 /* Mobile Responsive Cart Page */
 @media (max-width: 900px) {
   .eloura-cart-page {
-    padding: 1.5rem 0 4rem;
+    padding: 1.5rem 0.5rem 4rem;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
   }
 
+  /* Centered Header on Mobile */
   .eloura-cart__header {
-    flex-direction: row;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding-bottom: 1rem;
-    margin-bottom: 1.25rem;
+    justify-content: center;
+    text-align: center;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
+    gap: 0.5rem;
+    border-bottom: 1px solid #ECECEC;
+  }
+
+  .eloura-cart__header-title-wrap {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
   }
 
   .eloura-cart__title {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
   }
 
   .eloura-cart__count {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
+    color: #666666;
   }
 
   .eloura-cart__continue-shopping-top {
-    font-size: 0.6875rem;
-    white-space: nowrap;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #555555;
+    letter-spacing: 0.06em;
   }
 
+  /* Shipping Banner */
   .eloura-cart__shipping-banner {
     padding: 0.85rem 1rem;
     margin-bottom: 1.5rem;
+    text-align: center;
   }
 
   .eloura-cart__shipping-text {
@@ -3956,58 +3980,55 @@ body.template-product .site-header .site-header__logo-image {
   .eloura-cart__layout {
     display: flex;
     flex-direction: column;
-    gap: 1.75rem;
+    gap: 2rem;
+    width: 100%;
   }
 
   .eloura-cart__table-header {
-    display: none;
+    display: none !important;
   }
 
-  /* Clean Mobile Product Card Box */
+  /* Clean Mobile Row */
   .eloura-cart__row {
     display: flex;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 0.85rem;
     padding: 1.25rem 0;
     border-bottom: 1px solid #ECECEC;
-    position: relative;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .eloura-cart__media {
-    width: 95px;
-    min-width: 95px;
+    width: 90px;
+    min-width: 90px;
+    max-width: 90px;
     aspect-ratio: 4/5;
     border-radius: 2px;
   }
 
   .eloura-cart__info {
     flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    padding-right: 0.5rem;
   }
 
   .eloura-cart__item-title {
     font-size: 0.875rem;
     line-height: 1.25;
-    margin-bottom: 0.25rem;
+    margin: 0 0 0.25rem 0;
+    word-break: break-word;
   }
 
   .eloura-cart__item-variant {
     font-size: 0.75rem;
     color: #666666;
-    margin-bottom: 0.35rem;
+    margin: 0 0 0.35rem 0;
   }
 
-  .eloura-cart__price-cell {
-    display: none;
-  }
-
-  .eloura-cart__mobile-meta {
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    margin-bottom: 0.65rem;
+  .eloura-cart__unit-price-wrap {
+    margin-bottom: 0.45rem;
   }
 
   .eloura-cart__unit-price {
@@ -4016,22 +4037,26 @@ body.template-product .site-header .site-header__logo-image {
     color: #0A0A0A;
   }
 
-  /* Remove Link on Mobile */
   .eloura-cart__remove-link {
     font-size: 0.6875rem;
     color: #888888;
-    margin-top: 0.15rem;
+    margin-bottom: 0.75rem;
+    width: fit-content;
   }
 
-  /* Mobile Bottom Action Row inside Card */
-  .eloura-cart__qty-cell {
-    position: static;
-    margin-top: 0.75rem;
+  /* Mobile In-Card Stepper + Subtotal Row */
+  .eloura-cart__mobile-controls {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 0.25rem;
   }
 
   .eloura-cart__stepper {
     height: 32px;
     background: #FFFFFF;
+    border: 1px solid #D0D0CE;
   }
 
   .eloura-cart__stepper-btn {
@@ -4042,27 +4067,30 @@ body.template-product .site-header .site-header__logo-image {
   .eloura-cart__stepper-val {
     font-size: 0.8125rem;
     padding: 0 0.5rem;
-    min-width: 22px;
+    min-width: 20px;
   }
 
-  /* Mobile Line Subtotal Price positioned bottom-right */
-  .eloura-cart__total-cell {
-    margin-left: auto;
-    align-self: flex-end;
+  .eloura-cart__mobile-subtotal {
     font-size: 0.95rem;
     font-weight: 800;
     color: #0A0A0A;
     white-space: nowrap;
-    padding-bottom: 2px;
   }
 
-  /* Badges Strip on Mobile: Neat clean horizontal or compact vertical */
+  /* Hide Desktop Price & Stepper Cells on Mobile */
+  .eloura-cart__price-cell,
+  .eloura-cart__qty-cell,
+  .eloura-cart__total-cell {
+    display: none !important;
+  }
+
+  /* Badges Strip */
   .eloura-cart__badges-strip {
     display: grid;
     grid-template-columns: 1fr;
     gap: 0.85rem;
     padding: 1.15rem 1rem;
-    margin-top: 1.75rem;
+    margin-top: 1.5rem;
     background: #F9F9F8;
     border: 1px solid #ECECEC;
   }
@@ -4087,7 +4115,7 @@ body.template-product .site-header .site-header__logo-image {
     font-size: 0.65rem;
   }
 
-  /* Order Summary Card Mobile */
+  /* Summary Card Mobile */
   .eloura-cart__summary-card {
     padding: 1.5rem 1.15rem;
     position: static;
@@ -4098,6 +4126,7 @@ body.template-product .site-header .site-header__logo-image {
     font-size: 0.875rem;
     margin-bottom: 1.25rem;
     padding-bottom: 0.85rem;
+    text-align: center;
   }
 
   .eloura-cart__checkout-btn {
@@ -4106,6 +4135,12 @@ body.template-product .site-header .site-header__logo-image {
   }
 }
 
+/* Hide mobile controls on desktop */
+@media (min-width: 901px) {
+  .eloura-cart__mobile-controls {
+    display: none !important;
+  }
+}
 /* ==========================================================================
    MOBILE SCROLL SMOOTHING & ANTI-GLITCH OPTIMIZATION
    ========================================================================== */

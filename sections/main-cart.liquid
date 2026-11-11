@@ -3,7 +3,7 @@
 {%- endcomment -%}
 
 <div class="eloura-cart-page container">
-  <!-- Header with Live Item Count & Subtitle -->
+  <!-- Header with Live Item Count & Subtitle (Centered on Mobile) -->
   <div class="eloura-cart__header">
     <div class="eloura-cart__header-title-wrap">
       <h1 class="eloura-cart__title">SHOPPING BAG</h1>
@@ -47,7 +47,7 @@
         <div class="eloura-cart__items-list">
           {%- for item in cart.items -%}
             <div class="eloura-cart__row" data-line="{{ forloop.index }}">
-              <!-- Image with subtle luxury border -->
+              <!-- Image -->
               <div class="eloura-cart__media">
                 <a href="{{ item.url }}">
                   {%- if item.image -%}
@@ -75,7 +75,7 @@
                   <p class="eloura-cart__item-variant">{{ item.variant.title }}</p>
                 {%- endunless -%}
 
-                <div class="eloura-cart__mobile-meta">
+                <div class="eloura-cart__unit-price-wrap">
                   <span class="eloura-cart__unit-price">{{ item.original_price | money }}</span>
                 </div>
 
@@ -87,6 +87,27 @@
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                   <span>Remove</span>
                 </a>
+
+                <!-- Mobile Only Controls Row (Stepper on Left + Subtotal on Right) -->
+                <div class="eloura-cart__mobile-controls">
+                  <div class="eloura-cart__stepper">
+                    <a
+                      href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}"
+                      class="eloura-cart__stepper-btn"
+                      aria-label="Decrease quantity"
+                    >&minus;</a>
+                    <span class="eloura-cart__stepper-val">{{ item.quantity }}</span>
+                    <a
+                      href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}"
+                      class="eloura-cart__stepper-btn"
+                      aria-label="Increase quantity"
+                    >&plus;</a>
+                  </div>
+
+                  <div class="eloura-cart__mobile-subtotal">
+                    <strong>{{ item.final_line_price | money }}</strong>
+                  </div>
+                </div>
               </div>
 
               <!-- Desktop Unit Price Cell -->
@@ -94,7 +115,7 @@
                 {{ item.original_price | money }}
               </div>
 
-              <!-- Quantity Stepper -->
+              <!-- Desktop Quantity Stepper -->
               <div class="eloura-cart__qty-cell">
                 <div class="eloura-cart__stepper">
                   <a
@@ -111,7 +132,7 @@
                 </div>
               </div>
 
-              <!-- Line Total Cell -->
+              <!-- Desktop Line Total Cell -->
               <div class="eloura-cart__total-cell">
                 <strong>{{ item.final_line_price | money }}</strong>
               </div>
@@ -122,7 +143,7 @@
         <!-- Cart Page Assurance Notes (Transit Guarantee, Easy Returns) -->
         <div class="eloura-cart__badges-strip">
           <div class="eloura-cart__badge-item">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
             <div>
               <strong>FAST NATIONWIDE SHIPPING</strong>
               <p>Safe delivery right to your doorstep</p>
