@@ -17,6 +17,14 @@
     assign banner_img = section.settings.all_products_image
   endif
 
+  assign banner_img_mobile = section.settings.all_products_image_mobile
+  if banner_img_mobile == blank
+    assign banner_img_mobile = section.settings.default_image_mobile
+  endif
+  if banner_img_mobile == blank
+    assign banner_img_mobile = banner_img
+  endif
+
   assign col_title = collection.title
   if is_all_products
     assign col_title = section.settings.all_products_title | default: 'ALL PRODUCTS'
@@ -32,14 +40,19 @@
   <!-- Collection Full Editorial Banner -->
   <div class="collection-hero__media-wrapper">
     {%- if banner_img != blank -%}
-      <img
-        src="{{ banner_img | image_url: width: 2200 }}"
-        alt="{{ col_title | escape }}"
-        class="collection-hero__image"
-        loading="eager"
-        width="2200"
-        height="1200"
-      >
+      <picture class="collection-hero__picture">
+        {%- if banner_img_mobile != blank -%}
+          <source media="(max-width: 767px)" srcset="{{ banner_img_mobile | image_url: width: 1200 }}">
+        {%- endif -%}
+        <img
+          src="{{ banner_img | image_url: width: 2200 }}"
+          alt="{{ col_title | escape }}"
+          class="collection-hero__image"
+          loading="eager"
+          width="2200"
+          height="1200"
+        >
+      </picture>
     {%- else -%}
       <div class="collection-hero__placeholder">
         {{ 'lifestyle-1' | placeholder_svg_tag: 'collection-hero__placeholder-svg' }}
@@ -76,8 +89,14 @@
     {
       "type": "image_picker",
       "id": "all_products_image",
-      "label": "All Products Custom Image",
-      "info": "Display this image when viewing /collections/all"
+      "label": "All Products Custom Image (Desktop)",
+      "info": "Display this image when viewing /collections/all on Desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "all_products_image_mobile",
+      "label": "All Products Custom Image (Mobile - Optional)",
+      "info": "Optional custom image for mobile screens (portrait crop)"
     },
     {
       "type": "text",
@@ -98,8 +117,14 @@
     {
       "type": "image_picker",
       "id": "default_image",
-      "label": "Default Banner Image",
+      "label": "Default Banner Image (Desktop)",
       "info": "Used for any collection that does not have an uploaded collection image."
+    },
+    {
+      "type": "image_picker",
+      "id": "default_image_mobile",
+      "label": "Default Banner Image (Mobile - Optional)",
+      "info": "Optional custom mobile banner image."
     }
   ],
   "presets": [
