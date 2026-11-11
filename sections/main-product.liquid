@@ -215,6 +215,18 @@
             {%- endfor -%}
           </select>
 
+          <!-- Product Description with Expandable Read More (Above Add to Cart) -->
+          {%- if product.description != blank -%}
+            <div class="eloura-pdp__description-wrapper js-desc-wrapper">
+              <div class="eloura-pdp__description js-desc-text">
+                {{ product.description }}
+              </div>
+              <button type="button" class="eloura-pdp__readmore-btn js-desc-toggle" aria-expanded="false">
+                Read more
+              </button>
+            </div>
+          {%- endif -%}
+
           <!-- Add to Cart Full-Width Solid Black Button -->
           <div class="eloura-pdp__actions">
             <button
@@ -277,18 +289,6 @@
           {%- endif -%}
           <span class="eloura-pdp__bc-current">{{ product.title }}</span>
         </nav>
-
-        <!-- Product Description with Expandable Read More -->
-        {%- if product.description != blank -%}
-          <div class="eloura-pdp__description-wrapper js-desc-wrapper">
-            <div class="eloura-pdp__description js-desc-text">
-              {{ product.description }}
-            </div>
-            <button type="button" class="eloura-pdp__readmore-btn js-desc-toggle" aria-expanded="false">
-              Read more
-            </button>
-          </div>
-        {%- endif -%}
 
       </div>
     </div>
